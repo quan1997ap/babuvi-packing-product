@@ -45,7 +45,7 @@ export class PackingProductsComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.productGrouped = [this.defaultPackage];
+    this.productGrouped = [JSON.parse(JSON.stringify(this.defaultPackage))];
     this.packageIndexSelected = 0;
   }
 
@@ -70,7 +70,8 @@ export class PackingProductsComponent implements OnInit {
   }
 
   addGroup() {
-    this.productGrouped.unshift(this.defaultPackage);
+    this.productGrouped.unshift(JSON.parse(JSON.stringify(this.defaultPackage)));
+    this.packageIndexSelected = 0;
   }
 
   saveGr(i: number) {
@@ -80,12 +81,17 @@ export class PackingProductsComponent implements OnInit {
     this.merchandiseServices.createPackage(saveParams).subscribe(
       (res) => {
         console.log(res);
+        this.checkSumNetWeight();
+        if(this.products && this.products.length){
+          this.addGroup();
+        }
         this.showMessage("success", "Lưu nhóm", res.result.message);
       },
       (error) => {
         this.showMessage("error", "Lưu nhóm", "Bạn chưa lưu được nhóm");
       }
     );
+
   }
 
   removeGr(i) {

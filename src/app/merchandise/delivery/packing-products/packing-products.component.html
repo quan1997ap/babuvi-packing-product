@@ -79,7 +79,7 @@
           </div>
         </div>
 
-        <div *ngIf="packages['products'] && packages['products'].length; else grEmpty;">
+        <div *ngIf="packages['products'] && packages['products'].length; else grEmpty;" class="table-grouped">
           <p-table [columns]="colSelectedTables" [value]="packages['products']" dataKey="merchandiseCode">
             <ng-template pTemplate="header" let-columns>
               <tr>

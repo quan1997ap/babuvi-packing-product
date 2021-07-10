@@ -1,0 +1,32 @@
+export class Storekeeper {
+    userId;
+    userCode;
+    firstName;
+    lastName;
+    address;
+    district;
+    districtDisplay;
+    city;
+    cityDisplay;
+    phone;
+    email;
+    birthday;
+    sex;
+    username;
+    password;
+    status;
+    statusDisplay;
+    rightId;
+    rightDisplay;
+    lastChangePass;
+    type;
+    avatarUrl;
+    userLevel;
+    warehouseReceive;
+    createdDate;
+    changeDate;
+    lockedDate;
+    createdUser;
+    changeUser;
+    failureCount;
+}

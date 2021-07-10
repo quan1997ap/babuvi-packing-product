@@ -1,0 +1,44 @@
+.bgff {
+  background-color: #ffffff;
+}  
+.pad10 {
+  padding: 10px;
+}
+.w100 {
+  width: 100% !important;
+}
+.txtAlign-center {
+  text-align: center !important;
+} 
+  
+.dp-inBlock {
+  display: inline-block;
+}
+  
+.unactiveClass {
+  color: #3366ff;
+  background-color: #ffffff;
+  padding: 0.75rem 1.25rem;
+  font-size: 0.875rem;
+  line-height: 1rem;
+  cursor: pointer;
+} 
+  
+.acctiveClass {
+  color: #ffffff;
+  background-color: #3366ff;
+  padding: 0.75rem 1.25rem;
+  font-size: 0.875rem;
+  line-height: 1rem;
+  cursor: pointer;
+} 
+.bor-corde {
+  border-color: #dee2e6;
+}
+.corbl {
+  color: #000;
+}
+
+nav li {
+  float: left;
+}

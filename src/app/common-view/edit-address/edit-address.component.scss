@@ -1,0 +1,16 @@
+.mat-dialog-container {
+    padding: 0px !important;
+}
+
+.mat-dialog-content {
+  margin: unset !important;
+  padding: unset !important;
+  max-height: unset !important;
+}
+
+.dialog-content {
+  .row {
+    margin-right: unset !important;
+    margin-left: unset !important;
+  }
+}

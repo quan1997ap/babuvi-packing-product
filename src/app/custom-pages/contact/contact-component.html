@@ -1,0 +1,65 @@
+<div class="example-container mat-elevation-z8">
+    <mat-table #table [dataSource]="dataSource">
+  
+      <!-- Position Column -->
+      <ng-container matColumnDef="position">
+        <mat-header-cell *matHeaderCellDef> No. </mat-header-cell>
+        <mat-cell *matCellDef="let element">
+          <div fxLayout="row wrap" >
+            <div class="content-info" fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="100" fxFlex.lg="100" fxFlex.xl="100">
+              <div class="column" fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="50" fxFlex.lg="33.33" fxFlex.xl="33.33">
+                 a
+              </div>
+              <div class="column" fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="50" fxFlex.lg="33.33" fxFlex.xl="33.33">
+                <div>CP73539731</div>
+                <div>Shop:</div>
+                <div>Số lượng:</div>
+                <div>Cân nặng:</div>
+                <div>Loại:</div>
+              </div>
+           
+              <div class="column" fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="50" fxFlex.lg="33.33" fxFlex.xl="33.33">
+                <div>Đang vận chuyển TQ-VN</div>
+                <div>dffdsgf</div>
+                <div>32/32-</div>
+                <div>0.3kg</div>
+                <div>Mua hàng hộ</div>
+              </div>
+           </div >
+          </div>
+        </mat-cell>
+      </ng-container>
+  
+      <!-- Name Column -->
+      <ng-container matColumnDef="name">
+        <mat-header-cell *matHeaderCellDef> Name </mat-header-cell>
+        <mat-cell *matCellDef="let element"> {{element.name}} </mat-cell>
+      </ng-container>
+  
+      <!-- Weight Column -->
+      <ng-container matColumnDef="weight">
+        <mat-header-cell *matHeaderCellDef> Weight </mat-header-cell>
+        <mat-cell *matCellDef="let element"> {{element.weight}} </mat-cell>
+      </ng-container>
+  
+      <!-- Symbol Column -->
+      <ng-container matColumnDef="symbol">
+        <mat-header-cell *matHeaderCellDef> Symbol </mat-header-cell>
+        <mat-cell *matCellDef="let element"> {{element.symbol}} </mat-cell>
+      </ng-container>
+  
+      <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+      <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+    </mat-table>
+  
+    <mat-paginator #paginator
+                   [pageSize]="10"
+                   [pageSizeOptions]="[5, 10, 20]"
+                   [showFirstLastButtons]="true">
+    </mat-paginator>
+  </div>
+  
+  
+  <!-- Copyright 2018 Google Inc. All Rights Reserved.
+      Use of this source code is governed by an MIT-style license that
+      can be found in the LICENSE file at http://angular.io/license -->

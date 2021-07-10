@@ -1,0 +1,34 @@
+.post-module {
+    .content-info {
+        margin-top: 20px;
+    }
+    .column {
+        .post-meta {
+            padding: 12px 0px 12px 0px;
+            border-top: 1px solid #a2a2a1;
+        }
+        .bottom-meta {
+            border-bottom: 1px solid #a2a2a1;
+        }
+        .client-name {
+            font-size: 16px;
+        }
+        .client-id {
+            color: #a2a2a1;
+            font-size: 14px;
+            .id {
+                font-size: 11px;
+                color: white;
+                padding: 2px;
+                border-radius: 3px;
+                background-color: green;
+            }
+        }
+        .timestamp {
+            .note {
+                margin-right: 10px;
+                color: #a2a2a1;
+            }
+        }
+    }
+}

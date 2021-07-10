@@ -1,0 +1,161 @@
+<p-toast></p-toast>
+<div class="w100 ms-user-profile">
+    <div class="p-grid user-profile">
+        <div class="p-col-12 p-md-12 p-lg-4 no-padding h100">
+            <div class="user-infor">
+                <span class="edit-avatar">
+                    <mat-icon>edit</mat-icon>
+                    <span>Ảnh đại diện</span>
+                </span>
+                <div class="avatar">
+                    <img *ngIf="currentUser.avatarUrl" [src]="currentUser.avatarUrl" class="avatar-img">
+                    <img *ngIf="!currentUser.avatarUrl"
+                    src="assets/images/default_avatar.png" class="avatar-img">
+
+                </div>
+                <p class="customer-name">
+                    {{currentUser.username }}
+                </p>
+                <p class="customer-id">
+                    <span class="title">Mã khách hàng: </span>
+                    <span class="id-number">
+                        BBV_{{currentUser.userCode }}
+                    </span>
+                </p>
+                <div class="line"></div>
+                <p class="infor-detail">
+                    <mat-icon class="infor-icon">phone</mat-icon>
+                    <span> {{currentUser.phone }} </span>
+                </p>
+
+                <div class="line"></div>
+                <p class="infor-detail">
+                    <mat-icon class="infor-icon">email</mat-icon>
+                    <span> {{currentUser.email }} </span>
+                </p>
+
+                <div class="line"></div>
+                <p class="infor-detail">
+                    <mat-icon class="infor-icon">location_on</mat-icon>
+                    <span> {{currentUser.address }}</span>
+                </p>
+
+                <div class="line"></div>
+                <p class="infor-detail">
+                    <mat-icon class="infor-icon">event_note</mat-icon>
+                    <span> Ghi chú </span>
+                </p>
+                <p class="infor-detail">
+                    Các thông tin quan trọng của quý khách như số điện thoại, gmail dùng để nhận thông báo v.v...
+                </p>
+                <p class="infor-detail">
+                    Để bảo mật tài khoản, quý khách nên đổi mật khẩu 3 tháng một lần, mật khẩu nên sử dụng chữ số và
+                    kí tự viết hoa.
+                </p>
+            </div>
+        </div>
+        <div class="p-col-12 p-md-12 p-lg-8 no-padding form-container h100">
+
+            <div class="d-flex">
+                <div class="tab-title"> Thay đổi thông tin cá nhân</div>
+                <div class="border-tab"></div>
+            </div>
+            <form [formGroup]="editUserProfileForm" class="edit-profile-form" *ngIf="loadDataSuccess !== undefined &&  loadDataSuccess == true">
+
+                <div class="form-row">
+                    <label class="title"> Họ và tên(<span class="required">*</span>) </label>
+                    <input type="text" formControlName="firstName" placeholder="Họ của bạn" class="first-name"
+                        pInputText />
+                    <input type="text" formControlName="lastName" placeholder="Tên của bạn" class="last-name"
+                        pInputText />
+                </div>
+
+                <div class="form-row">
+                    <label class="title"> Số điện thoại(<span class="required">*</span>) </label>
+                    <input type="text" formControlName="phone" placeholder="Số điện thoại" class="input-full"
+                        pInputText />
+                </div>
+                <div class="form-row">
+                    <label class="title"> Email(<span class="required">*</span>) </label>
+                    <input type="text" formControlName="email" placeholder="Email" class="input-full" pInputText />
+                </div>
+                <div class="form-row">
+                    <label class="title"> <strong>Tên đăng nhập</strong></label>
+                    {{currentUser.username }}
+                </div>
+
+                <div class="form-row change-pass">
+                    <label class="title"> Mật khẩu</label>
+                    <span>
+                        Lần cuối lúc {{currentUser.lastChangePass | date:'dd/MM/yyyy' }}
+                    </span>
+                    <span class="change-password">
+                        <mat-icon>edit</mat-icon>
+                        <span>Thay đổi</span>
+                    </span>
+                </div>
+
+                <div class="form-row birthdate-sex">
+                    <div class="form-control-birthdate">
+                        <label class="title"> Ngày sinh </label>
+                        <p-calendar  placeholder="dd/mm/yyyy" dateFormat="dd/mm/yy" [yearNavigator]="true" yearRange="1930:2030" formControlName="birthday" showButtonBar="true" [showIcon]="false" inputId="icon"></p-calendar>
+                    </div>
+                    <div class="form-control-sex">
+                        <label class="title sex-title"> Giới tính </label>
+                        <div class="dr-sex">
+                            <p-dropdown [style]="{'width':'100%'}" placeholder="Chọn" [options]="listSexOptions" formControlName="sex"></p-dropdown>
+                        </div>
+                    </div>
+                </div>
+
+
+                <div class="form-row">
+                    <label class="title"> Địa chỉ(<span class="required">*</span>) </label>
+                    <input type="text" formControlName="address" class="input-full" pInputText />
+                </div>
+
+                <div class="form-row">
+                    <label class="title"> Quốc gia (<span class="required">*</span>) </label>
+                    <p-dropdown (onChange)="onChangeDropdownAdress('country')" placeholder="Chọn"
+                        [style]="{'width':'100%'}" [filter]="true" [showClear]="true" [options]="countryOptions"
+                        formControlName="country"></p-dropdown>
+                </div>
+
+                <div class="form-row">
+                    <label class="title"> Tỉnh/Thành Phố (<span class="required">*</span>) </label>
+                    <p-dropdown (onChange)="onChangeDropdownAdress('city')" placeholder="Chọn"
+                        [style]="{'width':'100%'}" [options]="cityOptions" [filter]="true" [showClear]="true"
+                        [disabled]="!this.editUserProfileForm.value.country" formControlName="city"></p-dropdown>
+                </div>
+
+                <div class="form-row">
+                    <label class="title"> Quận/Huyện (<span class="required">*</span>) </label>
+                    <p-dropdown (onChange)="onChangeDropdownAdress('district')" placeholder="Chọn"
+                        [style]="{'width':'100%'}" [options]="districtOptions" formControlName="district" [filter]="true"
+                        [showClear]="true" [disabled]="!this.editUserProfileForm.value.country || !this.editUserProfileForm.value.city"></p-dropdown>
+                </div>
+
+                <div class="form-row">
+                    <label class="title"> Xã/Phường (<span class="required">*</span>) </label>
+                    <p-dropdown placeholder="Chọn" [style]="{'width':'100%'}" [options]="wardOptions"
+                        formControlName="ward" [filter]="true" [showClear]="true"
+                        [disabled]="!this.editUserProfileForm.value.country || !this.editUserProfileForm.value.city || !this.editUserProfileForm.value.district"></p-dropdown>
+                </div>
+
+                <p-messages [(value)]="msgs" [closable]="false"></p-messages>
+
+                <div class="w100 d-flex justify-content-end update-profile-section">
+                    <div class="pb5 pt5 cur-point bgF44335 corffffff update-profile" (click)="updateUserProfile()">
+                        Cập nhật thông tin
+                    </div>
+                </div>
+            </form>
+            <div *ngIf="loadDataSuccess !== undefined && loadDataSuccess === false">
+                <span class="loadDataErr">
+                    Có lỗi xảy ra trong quá trình load dữ liệu
+                    <p class="refresh-btn" (click)="refresh()"> Thử lại </p>
+                </span>
+            </div>
+        </div>
+    </div>
+</div>

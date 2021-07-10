@@ -1,0 +1,19 @@
+<div style="width: 250px; height: 120px;" >
+
+    <div mat-dialog-title style="margin-top: 10px;">
+        <h4 style="border-bottom: 1px solid #d4d4d4;">
+            Bạn có muốn xóa?
+        </h4>
+    </div>
+
+    <div mat-dialog-actions class="d-block text-right mar-right10">
+        <button mat-raised-button class="btn-cancel-actions" (click)="onDismiss()">
+            <mat-icon >close</mat-icon> cancel
+        </button>
+        <button mat-raised-button class="btn-save-actions" (click)="onConfirm()" cdkFocusInitial>
+            <mat-icon>check</mat-icon> đồng ý
+        </button>
+    </div>
+    
+  </div>
+  

@@ -1,0 +1,150 @@
+$c_primary-color: #f15922;
+$c_status-16-background: #e10d0c;
+$c_status-15-background: orange;
+$c_status-14-background: yellow;
+$c_status-1-background: green;
+$c_status_default: blue;
+$c_white: #fff;
+$c_border: #e8e8e8;
+$c_alert: #d90000;
+$col-left-md-width: 40%;
+
+.col-left, .col-right {
+  width: 100%;
+}
+
+.block {
+  background-color: #ffffff;
+}
+
+.block-content {
+  padding-top: 0 !important;
+}
+
+.block-title {
+  border-top: 2px solid $c_primary-color;
+  display: table;
+}
+
+@media (min-width: 768px) {
+  .col-left {
+    width: $col-left-md-width;
+  }
+  .col-right {
+    width: calc(100% - #{$col-left-md-width});
+  }
+}
+
+.btn-primary {
+  background-color: $c_primary-color;
+  border-color: $c_primary-color;
+}
+
+.btn-primary:active {
+  background-color: $c_primary-color;
+  border-color: $c_primary-color;
+}
+
+.btn-primary:focus {
+  background-color: $c_primary-color;
+  border-color: $c_primary-color;
+}
+
+.btn-primary:hover {
+  background-color: $c_primary-color;
+  border-color: $c_primary-color;
+}
+
+/deep/ {
+  .alert-no-bg {
+    border: none !important;
+    background: transparent;
+    color: $c_alert;
+  }
+}
+
+.btn-dashboard {
+  .top-feature {
+    margin-right: 5px;
+
+    button {
+      margin-bottom: 5px;
+    }
+
+    :last-child {
+      margin-right: 0;
+    }
+  }
+}
+
+/deep/ .spinner-wrapper {
+  background-color: rgba(0, 0, 0, .1);
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  z-index: 1;
+
+  .spinner-container {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    padding: 0 !important;
+    transform: translate(-50%, -50%);
+  }
+}
+
+.mat-row {
+  height: auto;
+}
+
+.mat-cell {
+  padding: 8px 8px 8px 0;
+}
+
+td.mat-cell:first-of-type, td.mat-footer-cell:first-of-type, th.mat-header-cell:first-of-type,
+td.mat-cell:last-of-type, td.mat-footer-cell:last-of-type, th.mat-header-cell:last-of-type {
+  padding-left: 0;
+  padding-right: 0;
+}
+
+/deep/ {
+  .merchandise-table {
+    thead {
+      th {
+        background-color: $c_primary-color;
+        color: #fff;
+        border-right: 1px solid #fff;
+        border-left: 1px solid #fff;
+      }
+    }
+
+    tr.mat-header-row {
+      height: 35px;
+    }
+
+    td.mat-cell {
+      border-right: 1px solid rgba(0, 0, 0, 0.12);
+
+      &:first-child {
+        border-left: 1px solid rgba(0, 0, 0, 0.12);
+      }
+    }
+  }
+
+  .merchandise-table-container {
+    overflow-x: scroll;
+    webkit-overflow-scrolling: touch;
+    -ms-overflow-style: none;
+    .table-wrapper {
+      min-width: 370px;
+    }
+  }
+
+  .edit-transporterPackageNumber {
+    cursor: pointer;
+    color: #1b82d7;
+    margin-left: 10px;
+  }
+}

@@ -1,0 +1,163 @@
+<div class="mat-dialog-custom h100 pad-t20 scrollx-hid scrolly-hid">
+  <div mat-dialog-content class="dialog-content">
+    <div class="row pad-l15 dp-inBlock">
+      <h4>
+        Sửa địa chỉ
+      </h4>
+    </div>
+    
+      <!-- ================================================================================ receiver -->
+      <div class="row pad-l15 pad-r15 dp-inBlock">
+          <div class="col-3">
+            <label >Người nhận <span class="text-red">*</span> </label>
+          </div>
+          <div class="col-9">
+            <input class="w100" type="text" [(ngModel)] = "receiverName" placeholder="Nguyễn văn A" (input)="checkName($event.target.value)" >
+
+            <div *ngIf="validate.ckReceiver" class="corRed">
+                {{validate.smgReceiver}}
+            </div>
+          </div>
+      </div>
+      <!-- ================================================================================ phone -->
+      <div class="row pad-l15 pad-r15 dp-inBlock mar-t10">
+        <div class="col-3">
+          <label >Điện thoại <span class="text-red">*</span> </label>
+        </div>
+        <div class="col-9">
+          <input class="w100" type="tel" [(ngModel)] = "receiverPhone"  placeholder="nhập số điện thoại" (input)="checkPhone($event.target.value)">
+
+          <div *ngIf="validate.ckPhone" class="corRed">
+              {{validate.smgPhone}}
+          </div>
+        </div>
+      </div>
+      <!-- ================================================================================ email -->
+      <div class="row pad-l15 pad-r15 dp-inBlock mar-t10">
+          <div class="col-3">
+            <label >Email<br><small class="text-nomal">(không bắt buộc)</small></label>
+          </div>
+          <div class="col-9">
+            <input class="w100" type="text" [(ngModel)] = "receiverEmail" placeholder="nhập địa chỉ  email">
+          </div>
+      </div>
+
+      
+        <!-- ================================================================================ city -->
+        <div class="row pad-l15 pad-r15 dp-inBlock">
+            <div class="col-3">
+              <label class="pad-t20" >Quốc gia<span class="text-red">*</span></label>
+            </div>
+            <div class="col-9">
+              <mat-form-field class="w100">
+                  <mat-select [(ngModel)]="nationDisplay" placeholder="chọn quốc gia">
+                      <mat-option *ngFor="let country of nation" [value]="country.areaName" >
+                          {{ country.areaName }}
+                      </mat-option>
+                  </mat-select>
+              </mat-form-field>
+            </div>
+        </div>
+
+        <form [formGroup]="dpInfomation">
+        <!-- ================================================================================ cityDisplay -->
+        <div class="row pad-l15 pad-r15 dp-inBlock">
+            <div class="col-3">
+              <label class="fw-un pad-t20" >Thành phố<span class="text-red">*</span></label>
+            </div>
+            <div class="col-9">
+              <mat-form-field class="w100">
+                  <mat-select placeholder="chọn thành phố" (selectionChange)="changeCity($event.value)" formControlName="dpInfoCity" >
+                    <mat-option >---</mat-option>
+                    <mat-option *ngFor="let country of lstDataCountry" [value]="country" >
+                        {{ country.areaName }}
+                    </mat-option>
+                  </mat-select>
+              </mat-form-field>
+
+              <div *ngIf="validate.ckCity" class="corRed">
+                  {{validate.smgCity}}
+              </div>
+            </div>
+        </div>
+        <!-- ================================================================================ districtDisplay -->
+        <div class="row pad-l15 pad-r15 dp-inBlock">
+            <div class="col-3">
+              <label class="fw-un pad-t20" >Quận huyện<span class="text-red">*</span></label>
+            </div>
+            <div class="col-9">
+              <mat-form-field class="w100">
+                  <mat-select placeholder="chọn quận huyện" (selectionChange)="changeDistrict($event.value)" formControlName="dpInfoDistrict" >
+                    <mat-option >---</mat-option>
+                    <mat-option *ngFor="let country of district" [value]="country" >
+                        {{ country.areaName }}
+                    </mat-option>
+                  </mat-select>
+              </mat-form-field>
+
+              <div *ngIf="validate.ckDistrict" class="corRed">
+                  {{validate.smgDistrict}}
+              </div>
+            </div>
+        </div>
+        <!-- ================================================================================ districtDisplay -->
+        <div class="row pad-l15 pad-r15 dp-inBlock">
+            <div class="col-3">
+              <label class="fw-un pad-t20" >Xã Phường<span class="text-red">*</span></label>
+            </div>
+            <div class="col-9">
+              <mat-form-field class="w100">
+                  <mat-select placeholder="chọn Xã Phường" (selectionChange)="changeWards($event.value)" formControlName="dpInfoWards" >
+                    <mat-option >---</mat-option>
+                    <mat-option *ngFor="let country of ward" [value]="country" >
+                        {{ country.areaName }}
+                    </mat-option>
+                  </mat-select>
+              </mat-form-field>
+
+              <div *ngIf="validate.ckWard" class="corRed">
+                  {{validate.smgWard}}
+              </div>
+            </div>
+        </div>
+
+
+      </form>
+      <!-- ================================================================================ address -->
+      <div class="row pad-l15 pad-r15 dp-inBlock">
+          <div class="col-3">
+            <label >Số nhà <span class="text-red">*</span></label>
+          </div>
+          <div class="col-9">
+              <input class="w100" type="text" name="Address" [(ngModel)]="receiverAddress" (input)="checkAddress($event.target.value)" />
+
+              <div *ngIf="validate.ckAddress" class="corRed">
+                  {{validate.smgAddress}}
+              </div>
+          </div>
+      </div>
+      <!-- ================================================================================ description -->
+      <div class="row pad-l15 pad-r15 dp-inBlock mar-t10">
+        <div class="col-3">
+          <div >Ghi chú </div>
+          <small class="text-nomal">(không bắt buộc)</small>
+        </div>
+        <div class="col-9">
+          <textarea cols="30" rows="2" class="w100" name="description" [(ngModel)]="receiverDescription"></textarea>
+        </div>
+      </div>
+  </div>
+
+  <div mat-dialog-actions class="d-block text-right mar-right10">
+    <button mat-raised-button class="btn-cancel-actions" (click)="onDismiss()" >
+      <mat-icon>close</mat-icon>
+      cancel
+    </button>
+    <button mat-raised-button class="btn-save-actions" (click)="updateAddress()">
+      <mat-icon>check</mat-icon>
+      update
+    </button>
+  </div>
+
+</div>
+  

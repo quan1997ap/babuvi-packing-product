@@ -1,0 +1,21 @@
+export class lstAddress {
+    address: string = null;
+    country: number = null;
+    countryDisplay: string = null;
+    city: number = null;
+    cityDisplay: string = null;
+    deliveryAddressCode?: string = "";
+    deliveryAddressId?: number = 0;
+    description: string = null;
+    district: number = null;
+    districtDisplay: string = null;
+    ward: number = null;
+    wardDisplay: string = null;
+    email: string = null;
+    isDefault: boolean = false;
+    phone: string = null;
+    receiver: string = null;
+    status: string = null;
+    userId: number = null;
+    selected: boolean = false;
+}

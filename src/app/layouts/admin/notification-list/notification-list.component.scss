@@ -1,0 +1,86 @@
+.header {
+  margin-bottom: 24px;
+  font-weight: bold;
+  border-bottom: 4px solid #f44335;
+  width: fit-content;
+  padding-bottom: 3px;
+  .title {
+    font-size: 20px;
+    color: #f44335;
+  }
+}
+.notification {
+  .notification-item {
+    display: flex;
+    margin-bottom: 8px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid #ddd;
+    .type {
+      width: 90px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      color: red;
+    }
+    .title {
+      flex: 1;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      padding-right: 12px;
+    }
+    .date {
+      width: 116px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      text-align: center;
+    }
+  }
+  .checkbox {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 24px;
+    margin-bottom: 12px;
+  }
+}
+
+.footer {
+  display: flex;
+  justify-content: flex-end;
+  border-top: 1px solid #ddd;
+  padding-top: 20px;
+  max-width: 220px;
+  float: right;
+  min-width: 200px;
+}
+.loading {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 200px;
+  .loading-content{
+      text-align: center;
+      i {
+        font-size: 50px !important;
+        color: gray;
+      }
+      div{
+          font-size: 20px;
+      }
+  }
+}
+
+.error{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 200px;
+    .error-content{
+        .try-again{
+            margin-top: 20px;
+            display: flex;
+            justify-content: flex-end;
+        }
+    }
+}

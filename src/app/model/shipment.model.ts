@@ -1,0 +1,34 @@
+export class Shipment {
+    shipmentId;
+    deliveryRequestId;
+    packageNumber;
+    packageTotal;
+    warehouseExpId;
+    transporterId;
+    transporterName;
+    transporterPackageNumber;
+    storekeeperId;
+    warehouseStartedId;
+    warehouseEndId;
+    fromCountry;
+    fromCity;
+    fromDistrict;
+    fromWard;
+    fromAddress;
+    contactName;
+    contactPhone;
+    toCountry;
+    toCity;
+    toDistrict;
+    toWard;
+    toAddress;
+    codAmount;
+    couponCode;
+    totalAmount;
+    startDate;
+    endDate;
+    description;
+    trackingWeb;
+    status;
+    type;
+}

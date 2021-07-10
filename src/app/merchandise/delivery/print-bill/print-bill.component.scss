@@ -1,0 +1,29 @@
+$c_primary-color: #f15922;
+$c_alert:#d90000;
+
+/deep/ {
+  .print-bill-dialog {
+    width: 50vw;
+  }
+  @media screen and (max-width: 768px) {
+    .print-bill-dialog {
+      width: 80vw;
+
+      .mat-dialog-container {
+        .mat-dialog-content {
+          padding: 10px;
+        }
+      }
+    }
+  }
+
+  .alert-no-bg {
+    border: none !important;
+    background: transparent;
+    color: $c_alert;
+  }
+
+  .print-container {
+    display: none;
+  }
+}

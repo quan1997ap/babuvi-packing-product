@@ -1,0 +1,47 @@
+import { LService } from "./lservice.model";
+
+export class ShipOrders{
+    orderId: number = 0;
+    orderCode: string= "";
+    orderNumber: string = "";
+    orderImage: string= "";
+    userId: number = 0;
+    userLevel: number = 0;
+    depositRate: string= "";
+    sender: string= "";
+    senderLink: string= "";
+    senderContact: string= "";
+    deliveryAddressId: number = 0;
+    exchangeRate: string= "";
+    netWeight: string= "";
+    chargedWeight: string= "";
+    totalPrice: string= "";
+    totalFee: string= "";
+    amount: string= "";
+    promotion: number = 0;
+    promotionOrder: string= "";
+    paid: string= "";
+    missing: string= "";
+    refundAmount: string= "";
+    totalBuyPrice: string= "";
+    shippingType: number = 0;
+    warehouseStartedId: string= "";
+    warehouseEndId: number = 0;
+    orderSource: number = 0;
+    customerId: number = 0;
+    description: string= "";
+    createdDate: string= "";
+    type: string= "";
+    typeDisplay: string= "";
+    typeLink: string= "";
+    status: number = 0;
+    paymentStatus: number = 0;
+    statusDisplay: string= "";
+    paymentStatusDisplay: string= "";
+    totalQuantityOrder: string= "";
+    totalQuantityBuy: string= "";
+    promotionBuy: string= "";
+    totalQuantityReceived: string= "";
+    paymentWeight: string= "";
+    lsService: LService[] = [];
+}

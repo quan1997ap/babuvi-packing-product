@@ -1,0 +1,109 @@
+<p-toast></p-toast>
+<p-confirmDialog header="Confirmation" [autoZIndex]="false" [baseZIndex]="50001" icon="pi pi-exclamation-triangle"></p-confirmDialog>
+
+<div mat-dialog-title>
+  <mat-toolbar class="dialog-header">
+    <span> Đóng gói kiện hàng </span>
+    <span class="fx-spacer"></span>
+    <button mat-icon-button (click)="close()">
+      <mat-icon mat-list-icon>close</mat-icon>
+    </button>
+  </mat-toolbar>
+</div>
+<div mat-dialog-content>
+  <div class="row">
+    <div class="col-sm-12 col-md-6 p-bottom-20px">
+      <p-table #dt [columns]="colSelectedTables" [value]="products" [(selection)]="selectedProducts"
+        dataKey="merchandiseCode">
+        <ng-template pTemplate="caption">
+          <div style="display: flex; flex-direction: column;">
+            <div
+              style=" display: flex; width: 100%; align-items: center; justify-content: space-between; margin-bottom: 12px;">
+              <span>Đang chọn {{selectedProducts.length}} / {{products.length}} sản phẩm</span>
+              <p-button iconPos="right" icon="pi pi-angle-double-right" label="Thêm vào kiện đang chọn  "
+                (click)="addProductToPackage()"></p-button>
+            </div>
+            <div style=" display: flex; width: 100%; align-items: center;">
+              <i class="fa fa-search" style="margin: 4px 9px 0 0; font-size: 20px;"></i>
+              <input type="text" pInputText size="50" placeholder="Tìm kiếm"
+                (input)="dt.filter($event.target.value, 'merchandiseCode' ,'contains' )"
+                style="flex: 1; max-width: calc( 100% - 30px );">
+            </div>
+          </div>
+        </ng-template>
+        <ng-template pTemplate="header" let-columns>
+          <tr>
+            <th style="width: 3em">
+              <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
+            </th>
+            <th *ngFor="let col of columns">
+              {{col.name}}
+            </th>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-rowData let-columns="columns">
+          <tr [pSelectableRow]="rowData">
+            <td>
+              <p-tableCheckbox [value]="rowData"></p-tableCheckbox>
+            </td>
+            <td *ngFor="let col of columns">
+              {{rowData[col.id]}}
+            </td>
+          </tr>
+        </ng-template>
+      </p-table>
+    </div>
+
+    <div class="col-sm-12 col-md-6 p-bottom-20px">
+      <div *ngFor="let packages of productGrouped; let i = index;" class="package-config">
+        <div class="package-header" [ngClass]="{ 'active':  packageIndexSelected == i }">
+          <div class="package-infor">
+            <div class="option">
+              <p-radioButton name="packages" [value]="i" [(ngModel)]="packageIndexSelected" [disabled]="true">
+              </p-radioButton>
+            </div>
+            <div>
+              <span> Kiện số <strong>{{ i + 1 }}</strong> </span>
+              <span *ngIf="packages['products'] && packages['products'].length;">
+                - <strong> {{packages['products'].length}} </strong> mã -
+                Cân nặng <strong>{{packages['sumNetWeight']}} kg</strong>
+              </span>
+            </div>
+          </div>
+          <div class="gr-btn">
+            <button pButton pRipple type="button" icon="pi pi-save"
+              (click)="saveGr(i)" pTooltip="Lưu nhóm" tooltipPosition="top"></button>
+            &nbsp;
+            <button pButton pRipple type="button" icon="pi pi-trash"
+              class="ui-button-danger" (click)="removeGr(i)"  pTooltip="Xóa nhóm" tooltipPosition="top"></button>
+          </div>
+        </div>
+
+        <div *ngIf="packages['products'] && packages['products'].length; else grEmpty;">
+          <p-table [columns]="colSelectedTables" [value]="packages['products']" dataKey="merchandiseCode">
+            <ng-template pTemplate="header" let-columns>
+              <tr>
+                <th *ngFor="let col of columns">
+                  {{col.name}}
+                </th>
+              </tr>
+            </ng-template>
+            <ng-template pTemplate="body" let-rowData let-columns="columns">
+              <tr [pSelectableRow]="rowData">
+                <td *ngFor="let col of columns">
+                  {{rowData[col.id]}}
+                </td>
+              </tr>
+            </ng-template>
+          </p-table>
+        </div>
+
+        <ng-template #grEmpty>
+          <div class="empty-section">
+            Không có sản phẩm nào
+          </div>
+        </ng-template>
+      </div>
+    </div>
+  </div>
+</div>

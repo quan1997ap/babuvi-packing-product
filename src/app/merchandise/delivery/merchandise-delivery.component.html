@@ -1,0 +1,261 @@
+<div *ngFor="let message of messages" class="message alert {{message.messageClass}}"
+     role="alert">{{message.detail}}</div>
+
+<div class="btn-dashboard mb-2 p-2">
+    <span class="top-feature">
+        <button mat-raised-button color="warn" (click)="createPackage()">Đóng gói</button>
+    </span>
+    <span class="top-feature">
+        <button mat-raised-button color="warn" (click)="sendDelivery()">Giao hàng</button>
+    </span>
+    <span class="top-feature">
+        <button mat-raised-button color="warn" (click)="cancelDelivery()">Hủy giao</button>
+    </span>
+    <span class="top-feature">
+        <button mat-raised-button color="warn" (click)="exportByDeliveryRequest()">Xuất hàng</button>
+    </span>
+    <span class="top-feature">
+        <button mat-raised-button color="warn" (click)="cancelExp()">Hủy xuất</button>
+    </span>
+    <span class="top-feature">
+        <button mat-raised-button color="warn" (click)="printExpBill()">In phiếu xuất</button>
+    </span>
+</div>
+
+<div class="row ng-scope m-0">
+    <div class="col-left pr-2 pl-2 mb-3 mb-md-0">
+        <div class="block mb-3">
+            <div class="block-title text-uppercase p-2 font-weight-bold">Thông tin phiếu yêu cầu</div>
+            <div class="block-content p-3">
+
+                <div class="form-group">
+                    <label for="deliveryRequestCd">Mã phiếu yêu cầu xuất hàng</label>
+                    <input type="text" class="form-control" id="deliveryRequestCd" name="deliveryRequestCd"
+                           required #deliveryRequestCd="ngModel" ngModel
+                           [(ngModel)]="deliveryRequestCode"
+                           (keydown.enter)="getDeliveryRequestByCode(deliveryRequestCd.value)">
+                </div>
+                <p><span
+                    class="font-weight-bold">Ngày tạo: </span>{{deliveryRequest.createdDate | date: 'dd/MM/yyyy hh:mm:ss' }}
+                </p>
+                <p>Hình thức giao: <span class="font-weight-bold">{{ deliveryRequest.typeDisplay }}</span></p>
+                <p>Kho: <span class="font-italic">[{{ deliveryRequest.warehouseId }}
+                    ] {{ deliveryRequest.warehouseName }}</span></p>
+            </div>
+        </div>
+
+        <div class="block mb-3">
+            <div class="block-title text-uppercase p-2 font-weight-bold">Thông tin nhận hàng</div>
+            <div class="block-content p-3">
+                <p>Người nhận: <span>{{ deliveryRequest.contactName }} - {{ deliveryRequest.userCode }}</span></p>
+                <p>Điện thoại: <span>{{ deliveryRequest.contactPhone }}</span></p>
+                <p>Địa chỉ: <span>{{ deliveryRequest.address }} -
+                    {{deliveryRequest.wardDisplay }} -
+                    {{deliveryRequest.districtDisplay }} -
+                    {{deliveryRequest.cityDisplay }} -
+                    {{deliveryRequest.countryDisplay }}</span></p>
+                <p>Tên nhà xe: <span>{{ deliveryRequest.vehicleName }}</span></p>
+                <p>Điện thoại nhà xe: <span>{{ deliveryRequest.vehiclePhone }}</span></p>
+                <p>Địa chỉ nhà xe: <span>{{ deliveryRequest.vehicleAddress }}</span></p>
+                <p>Ghi chú:
+                    <span>{{ deliveryRequest.description ? deliveryRequest.description : 'Chưa có ghi chú' }}</span></p>
+            </div>
+        </div>
+
+        <div class="block">
+            <div class="block-title text-uppercase p-2 font-weight-bold">Thông tin phiếu xuất hàng</div>
+            <div class="block-content p-3">
+                <p>Mã phiếu xuất: <span
+                        class="font-weight-bold">{{ deliveryRequest?.warehouseExp?.warehouseExpCode }}</span></p>
+                <p>Ngày xuất: <span>{{ deliveryRequest?.warehouseExp?.expDate | date: 'dd/mm/yyy' }}</span></p>
+                <p>Người xuất:
+                    <span>{{ deliveryRequest?.warehouseExp?.storekeeperFirstName }} {{deliveryRequest?.warehouseExp?.storekeeperLastName}}</span>
+                </p>
+                <p>Mã vận đơn: <span class="font-weight-bold text-info">
+                    {{ transporterPackageNumber }}
+                </span>
+                <!-- <span (click)="openDeliveryAddressForm()" class="edit-delivery-address">
+                    <i class="fa fa-edit"></i>
+                </span> -->
+                <span class="edit-transporterPackageNumber" (click)="editTransporter = true;" >
+                    <i class="fa fa-edit"></i>
+                </span>
+                </p>
+                <p>Đơn vị vận chuyển: <span class="font-weight-bold text-info">
+                    {{ transporterName }}
+                </span>
+                </p>
+                <p>Trạng thái: <span class="font-weight-bold">{{ deliveryRequest?.warehouseExp?.statusDisplay }}</span>
+                </p>
+            </div>
+        </div>
+    </div>
+    <div class="col-right pr-2 pl-2">
+        <div class="block">
+            <div class="block-title text-uppercase p-2 font-weight-bold">Danh sách kiện hàng</div>
+            <div class="block-content p-3">
+                <div class="form-group">
+                    <label for="parentMerchandiseCd">Mã đơn hàng</label>
+                    <input type="text" class="form-control" id="parentMerchandiseCd" name="parentMerchandiseCd" ngModel
+                           #parentMerchandiseCd="ngModel"
+                           [(ngModel)]="parentMerchandiseCode" (keydown.enter)="applyFilter(parentMerchandiseCd.value)">
+                </div>
+                <div class="merchandise-table-container">
+                    <div class="table-wrapper">
+                        <table mat-table [dataSource]="dataSource" class="w-100 merchandise-table">
+                            <!-- Position Column -->
+                            <ng-container matColumnDef="orderCode">
+                                <th class="merchandise-code text-center" mat-header-cell *matHeaderCellDef>
+                                    <span>Mã đơn hàng</span>
+                                </th>
+                                <td [class.text-center]="!element.isParrent" mat-cell
+                                    [attr.colspan]="element.isParrent ? 5 : 1"
+                                    *matCellDef="let element">
+                            <span *ngIf="element.isParrent" class="font-weight-bold">
+                                Mã kiện hàng: {{element.merchandiseCode}}
+                                <span *ngIf="element.paymentWeight"> - Cân nặng: {{element.paymentWeight}} kg</span>
+                            </span>
+                                    <span *ngIf="!element.isParrent">
+                            {{element.orderCode}}
+                            </span>
+                                </td>
+                            </ng-container>
+
+                            <ng-container matColumnDef="merchandiseCode">
+                                <th class="text-center" mat-header-cell *matHeaderCellDef> Mã kiện</th>
+                                <td class="text-center" mat-cell [hidden]="element.isParrent"
+                                    *matCellDef="let element"> {{element.merchandiseCode}}
+                                </td>
+                            </ng-container>
+
+                            <ng-container matColumnDef="netWeight">
+                                <th class="text-center" mat-header-cell *matHeaderCellDef> Cân nặng</th>
+                                <td class="text-center" mat-cell [hidden]="element.isParrent"
+                                    *matCellDef="let element"> {{element.netWeight}} kg
+                                </td>
+                            </ng-container>
+
+                            <ng-container matColumnDef="capacity">
+                                <th class="text-center" mat-header-cell *matHeaderCellDef> Thể tích</th>
+                                <td class="text-center" mat-cell [hidden]="element.isParrent"
+                                    *matCellDef="let element">
+                                    {{element.length}} x {{element.width}}
+                                    x {{element.height}}
+                                </td>
+                            </ng-container>
+
+                            <ng-container matColumnDef="chargedWeight">
+                                <th class="text-center" mat-header-cell *matHeaderCellDef> Quy đổi</th>
+                                <td class="text-center" mat-cell [hidden]="element.isParrent"
+                                    *matCellDef="let element">{{element.chargedWeight}} kg
+                                </td>
+                            </ng-container>
+                            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                            <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+                        </table>
+                        <div *ngIf="dataSource.data.length === 0" class="text-center p-2">Không có dữ liệu</div>
+                        <mat-paginator class="mb-2" [pageSize]="10" showFirstLastButtons></mat-paginator>
+                    </div>
+                </div>
+                <div class="missing-amount">
+                    <div class="font-weight-bold mb-2">Cần thanh toán: 
+                        <!-- <span
+                            class="text-danger">{{deliveryRequest.missingAmount| currencyFormat}}</span> -->
+                        <span class="corF44335" [innerHTML]="symbolsLocation=== '2' ? symbolsDisplay : ''"></span>
+                        <span class="corF44335">
+                            {{deliveryRequest.missingAmount| currencyChina}}
+                        </span>
+                        <span class="corF44335" [innerHTML]="symbolsLocation === '1' ? symbolsDisplay : ''"></span>
+                    </div>
+                    <div class="font-weight-bold mb-2">Số tiền trong ví: 
+                        <!-- <span
+                                class="text-danger">{{deliveryRequest.walletAmount| currencyFormat}}</span> -->
+                        <span class="corF44335" [innerHTML]="symbolsLocation=== '2' ? symbolsDisplay : ''"></span>
+                        <span class="corF44335">
+                            {{deliveryRequest.walletAmount| currencyChina}}
+                        </span>
+                        <span class="corF44335" [innerHTML]="symbolsLocation === '1' ? symbolsDisplay : ''"></span>
+                    </div>
+                    <div class="font-weight-bold mb-2">Số tiền còn thiếu: 
+                        <!-- <span
+                                    class="text-danger">{{deliveryRequest.needTopupAmount| currencyFormat}}</span> -->
+                        <span class="corF44335" [innerHTML]="symbolsLocation=== '2' ? symbolsDisplay : ''"></span>
+                        <span class="corF44335">
+                            {{deliveryRequest.needTopupAmount| currencyChina}}
+                        </span>
+                        <span class="corF44335" [innerHTML]="symbolsLocation === '1' ? symbolsDisplay : ''"></span>       
+                    </div>
+                    <div class="form-group">
+                        <button (click)="paymentOrders()" [disabled]="!(deliveryRequest.missingAmount > 0)"
+                                class="btn btn-sm btn-danger mr-1">
+                            Thanh toán
+                        </button>
+                        <button (click)="chargeWallet()" class="btn btn-sm btn-info mr-1">
+                            Nạp ví
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="spinner-wrapper" [hidden]="!loading">
+    <div class="spinner-container">
+        <mat-progress-spinner mode="indeterminate"></mat-progress-spinner>
+    </div>
+</div>
+
+<p-dialog header="SỬA VẬN ĐƠN" [(visible)]="editTransporter" [modal]="true" appendTo="body">
+        <div class="form-group col-sm">
+            <div>Đơn vị vận chuyển(<span class="required">*</span>)</div>
+            <select class="form-control" id="lsTransporter" name="Transporter" ngModel
+            [(ngModel)]="deliveryRequest.shipment[0].transporterId">
+                <option *ngFor="let item of lsTransporter" [ngValue]="item.transporterId"
+                        data-status="">{{item.name}}</option>
+            </select>
+        </div>
+        <div class="form-group col-sm">
+            <label for="editTransporterPackageNumber">Mã vận đơn 
+                <span class="alert-no-bg" 
+                [style.visibility]="deliveryRequest.shipment[0].TransporterId != 1 ? 'visible' : 'hidden'" >*</span></label>
+            <input type="text" class="form-control" id="editTransporterPackageNumber"
+                   name="editTransporterPackageNumber"
+                    [required]="deliveryRequest.shipment[0].transporterId != 1" 
+                    [readonly]= "deliveryRequest.shipment[0].transporterId === 1"
+                    #editTransporterPackageNumber="ngModel" ngModel placeholder="Mã vận đơn"
+                   [(ngModel)]="deliveryRequest.shipment[0].transporterPackageNumber">
+            <div *ngIf="editTransporterPackageNumber.invalid && ((editTransporterPackageNumber.dirty || editTransporterPackageNumber.touched))"
+                 class="alert-no-bg">
+                 <small *ngIf="editTransporterPackageNumber.errors.required" role="alert">Trường "Mã vận đơn"
+                    không
+                    được để trống</small>
+            </div>
+        </div>
+        <div class="form-group col-sm">
+            <div style="display:flex; justify-content: space-between;">
+                <label for="codAmount">Tiền COD
+                    <span class="alert-no-bg">*</span>
+                </label>
+                <span style="font-weight: 400;text-align: right;">{{money_format(deliveryRequest.shipment[0].codAmount,'','1')}} đ</span>
+            </div>
+            <input type="number" step=".001" class="form-control" id="codAmount"
+                   name="codAmount"
+                    #codAmount="ngModel" ngModel placeholder="Tiền COD"
+                   [(ngModel)]="deliveryRequest.shipment[0].codAmount">
+        </div>
+        <div class="form-group col-sm">
+            <div style="display:flex; justify-content: space-between;">
+                 <label for="codAmount">Tiền Ship
+                    <span class="alert-no-bg">*</span>
+                </label>
+                <span style="font-weight: 400;text-align: right;">{{money_format(deliveryRequest.shipment[0].totalAmount,'','1')}} đ</span>
+            </div>
+            <input type="number" step=".001" class="form-control" id="shipAmount"
+                   name="shipAmount"
+                    #shipAmount="ngModel" ngModel placeholder="Tiền COD"
+                   [(ngModel)]="deliveryRequest.shipment[0].totalAmount">
+        </div>
+        <div class="form-group col-sm">
+            <button class="classBtn classBtnHover" (click)="changeTransporter()">Cập nhật</button>
+        </div>
+</p-dialog>

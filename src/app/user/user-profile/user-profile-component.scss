@@ -1,0 +1,322 @@
+.ms-user-profile {
+  .loadDataErr {
+    color: #333;
+    display: block;
+    margin: 10% auto;
+    font-size: 20px;
+    width: fit-content;
+  }
+
+  .refresh-btn {
+    border-radius: 3px;
+    padding: 5px 10px;
+    width: 100px;
+    margin: 15px auto;
+    background: #f0622f;
+    color: #fff;
+    text-align: center;
+  }
+  
+  .h100 {
+    height: 100% !important;
+  }
+  .user-profile {
+    background-color: #fff;
+  }
+  padding-right: 10px;
+  // format style
+  .no-padding {
+    padding: 0 0 !important;
+  }
+  .no-margin {
+    margin: 0 0 !important;
+  }
+  input[type="text"] {
+    border: 1px solid #ddd;
+    padding-left: 10px;
+    border-radius: 5px;
+    min-height: 36px;
+    &:focus {
+      outline: none !important;
+    }
+  }
+  .required {
+    color: #f05922;
+  }
+
+  .user-infor {
+    color: #707070;
+    display: flex;
+    justify-content: center;
+    font-size: 16px;
+    flex-direction: column;
+    background: #fff;
+    border-top: 5px solid #f05922;
+    position: relative;
+    padding-bottom: 20px;
+    .avatar {
+      display: flex;
+      justify-content: center;
+      margin: 40px auto 10px auto;
+      .avatar-img {
+        max-height: 150px;
+        border-radius: 50%;
+        box-shadow: 1px 2px 10px #999;
+        padding: 2px;
+      }
+    }
+    .edit-avatar {
+      position: absolute;
+      right: 10px;
+      top: 8px;
+      cursor: pointer;
+      display: flex;
+      mat-icon {
+        font-size: 20px;
+      }
+    }
+    .customer-name {
+      font-size: 25px;
+      color: #333;
+      text-align: center;
+    }
+    .customer-id {
+      display: flex;
+      justify-content: center;
+      .title {
+        white-space: nowrap;
+        margin-right: 10px;
+      }
+      .id-number {
+        background-color: #089f55;
+        padding: 2px;
+        border-radius: 3px;
+        font-size: 14px;
+        color: #fff;
+        min-width: 50px;
+        text-align: center;
+      }
+    }
+    .line {
+      margin: 20px 10px;
+      border-bottom: 1px solid #ddd;
+    }
+    .infor-detail {
+      padding: 0 0 0 15px;
+      display: flex;
+      align-items: center;
+      margin: 0;
+      .infor-icon {
+        font-size: 20px;
+        margin-right: 10px !important;
+        margin: 0 0;
+        text-align: center;
+        line-height: 24px;
+        height: 24px;
+        width: 24px;
+      }
+    }
+  }
+
+  .form-container {
+    border-left: 20px solid #f0f2f7;
+    background: #fff;
+    min-height: 100vh;
+    .tab-title {
+      border-top: 5px solid #f05922;
+      font-size: 16px;
+      height: 40px;
+      border-right: 1px solid #ddd;
+      width: -webkit-fit-content;
+      width: -moz-fit-content;
+      width: 290px;
+      padding-left: 20px;
+      line-height: 40px;
+      text-transform: uppercase;
+      font-weight: bold;
+    }
+    .border-tab {
+      border-bottom: 1px solid #ddd;
+      height: 40px;
+      flex: 1;
+    }
+
+    .edit-profile-form {
+      padding-left: 20px;
+      padding-right: 20px;
+      padding-top: 20px;
+      padding-bottom: 40px;
+      .form-row {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        margin-bottom: 20px;
+        align-items: center;
+        p-dropdown {
+          flex: 1;
+        }
+        .title {
+          width: 200px;
+          padding-right: 25px;
+          font-weight: 500;
+          color: #333;
+          text-align: right;
+          margin-bottom: 0;
+        }
+        .first-name {
+          width: calc(50% - 220px);
+          min-width: 150px;
+          margin-right: 10px;
+        }
+        .last-name {
+          flex: 1;
+          width: calc(50% - 10px);
+        }
+        .input-full {
+          flex: 1 !important;
+          width: auto;
+        }
+        .change-password {
+          color: #4d7ba6;
+          cursor: pointer;
+          display: flex;
+          align-items: center;
+          margin-left: 10px;
+          &:hover {
+            color: #1e5990;
+          }
+        }
+        &.birthdate-sex {
+          display: flex;
+          justify-content: space-between;
+          p-dropdown {
+            min-width: 300px;
+          }
+          p-calendar {
+            min-width: 300px;
+          }
+        }
+      }
+      .update-profile {
+        white-space: nowrap;
+        padding-right: 20px;
+        padding-left: 20px;
+        border-radius: 3px;
+        display: block;
+      }
+    }
+  }
+}
+
+@media (max-width: 769px) {
+  .ms-user-profile .form-container .edit-profile-form .form-row {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+  }
+  .ms-user-profile .form-container .edit-profile-form .form-row .title {
+    width: 100%;
+    text-align: left;
+    margin-bottom: 10px;
+  }
+  .ms-user-profile .form-container .edit-profile-form .form-row {
+    input[type="text"],
+    input[type="tel"] {
+      width: 100%;
+    }
+    p-dropdown {
+      width: 100%;
+    }
+  }
+  .form-control-birthdate,
+  .form-control-sex {
+    margin-bottom: 0px;
+    width: 100%;
+    p-dropdown {
+      width: 100%;
+    }
+    p-calendar {
+      width: 100%;
+      .ui-calendar {
+        width: 100%;
+        display: flex !important;
+      }
+    }
+    .dr-sex {
+      width: 100%;
+    }
+  }
+  .change-pass {
+    flex-direction: row !important;
+  }
+  .ms-user-profile .form-container .edit-profile-form .form-row .first-name {
+    margin-bottom: 10px;
+  }
+}
+@media (max-width: 870px) {
+  .form-control-birthdate {
+    margin-bottom: 20px;
+  }
+  .form-container {
+    border-left: 0 !important;
+  }
+}
+
+@media (max-width: 992px) {
+  .form-container {
+    border-left: 0 !important;
+  }
+}
+
+@media only screen and (min-width: 992px) and (max-width: 1280px) {
+  .ms-user-profile .form-container .edit-profile-form .form-row.birthdate-sex {
+    height: 120px;
+    .form-control-birthdate,
+    .form-control-sex {
+      align-items: center;
+      display: flex;
+      width: 100%;
+      p-dropdown,
+      p-calendar {
+        flex: 1;
+      }
+    }
+  }
+  .ms-user-profile .form-container .edit-profile-form .form-row .title {
+    width: 140px !important;
+  }
+}
+
+@media only screen and (min-width: 1281px) and (max-width: 1500px) {
+  .ms-user-profile .form-container .edit-profile-form .form-row.birthdate-sex {
+    height: 120px;
+    .form-control-birthdate,
+    .form-control-sex {
+      display: flex;
+      align-items: center;
+      flex-direction: row !important;
+      .ms-user-profile
+        .form-container
+        .edit-profile-form
+        .form-row
+        .title.sex-title {
+        width: 210px !important;
+      }
+      p-dropdown,
+      p-calendar {
+        flex: 1;
+      }
+    }
+  }
+}
+@media only screen and (min-width: 1500px) {
+  .form-row .title.sex-title {
+    width: 210px;
+  }
+  .form-control-sex {
+    display: flex;
+    align-items: center;
+    flex-direction: row !important;
+  }
+}

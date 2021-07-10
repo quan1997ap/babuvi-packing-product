@@ -1,0 +1,156 @@
+<p-toast></p-toast>
+<div class="w100 ms-user-customer">
+    <div class="no-padding form-container h100">
+        <div class="d-flex">
+            <div class="tab-title" *ngIf="!currentUser || !currentUser.userId"> Thêm tài khoản</div>
+            <div class="tab-title" *ngIf="currentUser && currentUser.userId"> Sửa tài khoản</div>
+            <div class="border-tab"></div>
+        </div>
+        <form [formGroup]="editUserCustomerForm" class="edit-profile-form" *ngIf="loadDataSuccess == true">
+
+            <div class="form-row">
+                <label class="title"> Họ và tên(<span class="required">*</span>) </label>
+                <input type="text" formControlName="firstName" placeholder="Họ của bạn" class="first-name" pInputText />
+                <input type="text" formControlName="lastName" placeholder="Tên của bạn" class="last-name" pInputText />
+            </div>
+
+            <div class="form-row">
+                <label class="title"> Số điện thoại(<span class="required">*</span>) </label>
+                <input type="text" formControlName="phone" placeholder="Số điện thoại" class="input-full" pInputText />
+            </div>
+            <div class="form-row">
+                <label class="title"> Email(<span class="required">*</span>) </label>
+                <input type="text" formControlName="email" placeholder="Email" class="input-full" pInputText />
+            </div>
+            <div class="form-row">
+                <label class="title"> <strong>Tên đăng nhập</strong></label>
+                <input type="text" formControlName="username" placeholder="Tên đăng nhập" class="input-full" pInputText />
+
+            </div>
+
+            <div class="form-row birthdate-sex">
+                <div class="form-control-birthdate">
+                    <label class="title"> Mật khẩu </label>
+                    <input type="password" formControlName="password" placeholder="Mật khẩu" class="input-full"
+                        pInputText />
+                </div>
+                <div class="form-control-sex">
+                    <label class="title sex-title"> Nhập lại mật khẩu </label>
+                    <input type="password" formControlName="rePassword" placeholder="Nhập lại mật khẩu"
+                        class="input-full" pInputText />
+                </div>
+            </div>
+
+            <div class="form-row birthdate-sex">
+                <div class="form-control-birthdate">
+                    <label class="title"> Ngày sinh </label>
+                    <div class="dr-sex">
+                        <p-calendar [style]="{'width':'100%'}" [inputStyle]="{'width':'100%'}" placeholder="dd/mm/yyyy" dateFormat="dd/mm/yy" [yearNavigator]="true" yearRange="1930:2030"  showButtonBar="true" formControlName="birthday" [showIcon]="false" inputId="icon"></p-calendar>                        
+                    </div>
+                </div>
+                <div class="form-control-sex">
+                    <label class="title sex-title"> Giới tính </label>
+                    <div class="dr-sex">
+                        <p-dropdown [style]="{'width':'100%'}" placeholder="Chọn" [options]="listSexOptions" formControlName="sex"></p-dropdown>
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="form-row">
+                <label class="title"> Địa chỉ(<span class="required">*</span>) </label>
+                <input type="text" formControlName="address" class="input-full" pInputText />
+            </div>
+
+            <div class="form-row">
+                <label class="title"> Quốc gia (<span class="required">*</span>) </label>
+                <p-dropdown #dropDownCountry (onChange)="onChangeDropdownAdress('country')" placeholder="Chọn"
+                    [style]="{'width':'100%'}" [filter]="true" [options]="countryOptions" formControlName="country">
+                </p-dropdown>
+            </div>
+
+            <div class="form-row">
+                <label class="title"> Tỉnh/Thành Phố (<span class="required">*</span>) </label>
+                <p-dropdown #dropDownCity (onChange)="onChangeDropdownAdress('city')" placeholder="Chọn"
+                    [style]="{'width':'100%'}" [options]="cityOptions" [filter]="true"
+                    [disabled]="!this.editUserCustomerForm.value.country" formControlName="city"></p-dropdown>
+            </div>
+
+            <div class="form-row">
+                <label class="title"> Quận/Huyện (<span class="required">*</span>) </label>
+                <p-dropdown #dropDownDistrict (onChange)="onChangeDropdownAdress('district')" placeholder="Chọn"
+                    [style]="{'width':'100%'}" [options]="districtOptions" formControlName="district" [filter]="true"
+                    [disabled]="!this.editUserCustomerForm.value.country || !this.editUserCustomerForm.value.city">
+                </p-dropdown>
+            </div>
+
+            <div class="form-row">
+                <label class="title"> Xã/Phường (<span class="required">*</span>) </label>
+                <p-dropdown #dropDownWard placeholder="Chọn" [style]="{'width':'100%'}" [options]="wardOptions"
+                    formControlName="ward" [filter]="true"
+                    [disabled]="!this.editUserCustomerForm.value.country || !this.editUserCustomerForm.value.city || !this.editUserCustomerForm.value.district">
+                </p-dropdown>
+            </div>
+
+            <div class="form-row birthdate-sex">
+                <div class="form-control-birthdate">
+                    <label class="title"> Level </label>
+                    <div class="dr-sex">
+                        <p-dropdown placeholder="Chọn" [style]="{'width':'100%'}" [options]="listLevelOptions" [filter]="true"
+                            formControlName="userLevel">
+                        </p-dropdown>
+                    </div>
+                </div>
+                <div class="form-control-sex">
+                    <label class="title sex-title"> Quyền(<span class="required">*</span>) </label>
+                    <div class="dr-sex">
+                        <p-dropdown placeholder="Chọn" [style]="{'width':'100%'}" [options]="listRightOptions" [filter]="true"
+                            formControlName="rightId">
+                        </p-dropdown>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-row birthdate-sex">
+                <div class="form-control-birthdate">
+                    <label class="title"> Nhân viên CSKH(<span class="required">*</span>) </label>
+                    <div class="dr-sex">
+                        <p-dropdown placeholder="Chọn" [style]="{'width':'100%'}" [options]="userStaffOptions" [filter]="true"
+                            formControlName="careStaffId">
+                        </p-dropdown>
+                    </div>
+                </div>
+                <div class="form-control-sex">
+                    <label class="title sex-title"> Nhân viên đặt hàng(<span class="required">*</span>) </label>
+                    <div class="dr-sex">
+                        <p-dropdown placeholder="Chọn" [style]="{'width':'100%'}" [options]="userStaffOptions" [filter]="true"
+                            formControlName="orderStaffId">
+                        </p-dropdown>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-row">
+                <label class="title">Kho nhập hàng </label>
+                <p-dropdown placeholder="Chọn" [style]="{'width':'100%'}" [options]="warehouseVNOptions" formControlName="warehouseReceive" [filter]="true"
+                    [filter]="true">
+                </p-dropdown>
+            </div>
+
+            <p-messages [(value)]="msgs" [closable]="false"></p-messages>
+
+            <div class="w100 d-flex justify-content-end update-profile-section">
+                <div class="pb5 pt5 cur-point bgF44335 corffffff update-profile" (click)="updateUserProfile()">
+                    <span *ngIf="!currentUser || !currentUser.userId"> Thêm tài khoản</span>
+                    <span *ngIf="currentUser && currentUser.userId">Cập nhật thông tin</span>
+                </div>
+            </div>
+        </form>
+        <div *ngIf="loadDataSuccess == false">
+            <span class="loadDataErr">
+                Có lỗi xảy ra trong quá trình load dữ liệu
+                <p class="refresh-btn" (click)="refresh()"> Thử lại </p>
+            </span>
+        </div>
+    </div>
+</div>

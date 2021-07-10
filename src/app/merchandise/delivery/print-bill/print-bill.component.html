@@ -1,0 +1,240 @@
+<h2 mat-dialog-title>Thanh toán đơn hàng</h2>
+<mat-dialog-content class="mat-typography">
+  <div *ngFor="let message of messages" class="message alert {{message.messageClass}}"
+       role="alert">{{message.detail}}</div>
+  <button ngxPrint printSectionId="print-section-form-1"
+          [styleSheetFile]="styleSheetFiles"
+          [printDelay]="printDelay"
+          mat-button [disabled]="loading['exp']"
+          class="btn btn-primary d-block w-100 mb-3">In phiếu xuất hàng</button>
+  <button ngxPrint printSectionId="print-section-form-2"
+          [styleSheetFile]="styleSheetFiles"
+          [printDelay]="printDelay"
+          mat-button [disabled]="loading['ship']" class="btn btn-primary d-block w-100 mb-3">In phiếu vận đơn</button>
+  <button ngxPrint printSectionId="print-section-form-vandon50"
+          [styleSheetFile]="styleSheetFiles"
+          [printDelay]="printDelay"
+          mat-button [disabled]="loading['ship']" class="btn btn-primary d-block w-100 mb-3">In phiếu vận đơn 50x50</button>
+  <button ngxPrint printSectionId="print-section-form-3"
+          [styleSheetFile]="styleSheetFiles"
+          [printDelay]="printDelay"
+          mat-button [disabled]="loading['request']" class="btn btn-primary d-block w-100 mb-3">In phiếu yêu cầu giao hàng</button>
+  <button ngxPrint printSectionId="print-section-form-ycgh-50-50"
+          [styleSheetFile]="styleSheetFiles"
+          [printDelay]="printDelay"
+          mat-button [disabled]="loading['request']" class="btn btn-primary d-block w-100 mb-3">In phiếu yêu cầu giao hàng 50x50 </button>
+  <div id="print-section-form-1">
+    <div class="print-container">
+      <div class="page">
+        <div class="subpage">
+          <div class="form-1">
+            <h1 class="text-center text-uppercase">Phiếu xuất hàng</h1>
+            <ngx-barcode [bc-value]="expData.warehouseExpCode" bc-height="30" bc-font-size="15" bc-width="1.8" [bc-display-value]="true"></ngx-barcode>
+            <div class="info">
+              <div><strong>Loại:</strong> {{expData?.typeDisplay}} </div>
+              <div><strong>Kho xuất:</strong> {{expData?.expWarehouseName}} </div>
+              <div><strong>Điện thoại:</strong> {{expData?.expWarehousePhone}}</div>
+              <div><strong>Địa chỉ:</strong> {{expData?.expWarehouseAddress + (expData? '-' + expData.expWarehouseDistrict: '') + (expData? '-' + expData.expWarehouseCity : '')}}</div>
+              <div class="text-center">**************</div>
+              <div><strong>Khách hàng:</strong> {{expData?.customerName}} </div>
+              <div><strong>Điện thoại:</strong> {{expData?.customerPhone}}</div>
+              <div><strong>Địa chỉ:</strong> {{expData?.customerAddress + (expData ? '-' + expData.customerDistrict : '' ) + (expData? '-' + expData.customerCity : '') }}</div>
+            </div>
+            <div class="list">
+              <table>
+                <thead>
+                <tr>
+                  <th>Mã hàng</th>
+                  <th>Vị trí</th>
+                  <th>Trọng lượng</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr *ngFor="let mer of expData?.lsDetail">
+                  <td>{{mer.merchandiseCode}}</td>
+                  <td>{{mer.shelfPosition}}</td>
+                  <td>{{mer.paymentWeight}}</td>
+                </tr>
+                <tr>
+                  <td class="no-border">{{expData?.lsDetail?.length}} kiện hàng</td>
+                  <td class="no-border"></td>
+                  <td class="no-border">{{sumExpWeight}} kg</td>
+                </tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="print-footer">
+              <div class="text-center">{{APP_NAME}} - Order </div>
+              <div class="text-center">Hotline: 03030203023 </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div id="print-section-form-2">
+    <div class="print-container">
+      <div class="page">
+        <div class="subpage">
+          <div *ngFor="let shipDt of shipData" class="form-2">
+            <ngx-barcode [bc-value]="shipDt?.shipCode" bc-height="30" bc-font-size="15" bc-width="1.8" [bc-display-value]="true"></ngx-barcode>
+            <div class="text-center">Vận chuyển: <span>{{shipDt?.transporterName}}</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div id="print-section-form-3">
+    <div class="print-container">
+      <div class="page">
+        <div class="subpage">
+          <div class="form-3">
+            <h1 class="text-center text-uppercase"> Phiếu yêu cầu giao hàng </h1>
+            <ngx-barcode [bc-value]="deliveryRequestCode" bc-height="30" bc-font-size="15" bc-width="1.8" [bc-display-value]="true"></ngx-barcode>
+            <div class="info">
+              <div><strong>Loại:</strong> {{deliveryRequest.typeDisplay}} </div>
+              <div><strong>Khách hàng:</strong> {{deliveryRequest.contactName}} </div>
+              <div><strong>Điện thoại:</strong> {{deliveryRequest.contactPhone}} </div>
+              <div><strong>Địa chỉ:</strong> {{deliveryRequest.address
+              + '-' + deliveryRequest.wardDisplay
+              + '-' + deliveryRequest.districtDisplay
+              + '-' + deliveryRequest.cityDisplay
+              + '-' + deliveryRequest.countryDisplay}}</div>
+              <div class="text-center">**************</div>
+              <div><strong>Nhà xe:</strong> {{deliveryRequest.vehicleName}} </div>
+              <div><strong>Điện thoại:</strong> {{deliveryRequest.vehiclePhone}}</div>
+              <div><strong>Địa chỉ:</strong> {{deliveryRequest.vehicleAddress}}</div>
+              <div class="text-center">**************</div>
+            </div>
+            <div class="list">
+              <table>
+                <thead>
+                <tr>
+                  <th>Mã hàng</th>
+                  <th>Vị trí</th>
+                  <th>Trọng lượng</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr *ngFor="let mer of deliveryRequest.lsDetail">
+                  <td>{{mer.merchandiseCode}}</td>
+                  <td>{{mer.shelfPosition}}</td>
+                  <td>{{mer.paymentWeight}}</td>
+                </tr>
+                <tr>
+                  <td class="no-border">{{deliveryRequest.lsDetail?.length}} kiện hàng</td>
+                  <td class="no-border"></td>
+                  <td class="no-border">{{sumRequestWeight}} kg</td>
+                </tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="print-footer">
+              <div class="text-center">{{APP_NAME}} - Order </div>
+              <div class="text-center">Hotline: 03030203023 </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div id="print-section-form-ycgh-50-50">
+    <div class="print-container">
+      <div class="page50">
+        <div class="subpage">
+          <div class="form-3">
+            <h1 class="text-center text-uppercase"> Yêu cầu giao hàng </h1>
+            <ngx-barcode 
+            [bc-value]="deliveryRequestCode" 
+            bc-height="30" 
+            bc-font-size="15" 
+            bc-width="1.8" 
+            [bc-display-value]="true"
+            [bc-margin-top]="1" 
+            [bc-margin-bottom]="1"
+            >
+           </ngx-barcode>
+            <div class="infor50">
+              <div>{{deliveryRequest.contactName}} </div>
+              <div>{{deliveryRequest.contactPhone}} </div>
+              <div>{{deliveryRequest.address
+              + '-' + deliveryRequest.wardDisplay
+              + '-' + deliveryRequest.districtDisplay
+              + '-' + deliveryRequest.cityDisplay
+              + '-' + deliveryRequest.countryDisplay}}</div>
+              <div>{{deliveryRequest.totalPackage}} Kiện hàng / TT:
+                <span [innerHTML]="symbolsLocation=== '2' ? symbolsDisplay : ''"></span>
+                <span>{{deliveryRequest.missingAmount| currencyChina}}</span>
+                <span [innerHTML]="symbolsLocation === '1' ? symbolsDisplay : ''"></span>    
+              </div>
+            </div>
+            <div class="print-footer">
+              <div class="text-center">{{APP_NAME}} - Order </div>
+              <div class="text-center">Hotline: 03030203023 </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div id="print-section-form-vandon50">
+    <div class="print-container">
+      <!-- <div class="page">
+        <div class="subpage">
+          <div *ngFor="let shipDt of shipData" class="form-2">
+            <ngx-barcode [bc-value]="shipDt?.shipCode" bc-height="30" bc-font-size="15" bc-width="1.8" [bc-display-value]="true"></ngx-barcode>
+            <div class="text-center">Vận chuyển: <span>{{shipDt?.transporterName}}</span></div>
+          </div>
+        </div>
+      </div> -->
+      <div class="page50">
+        <div class="subpage">
+          <div class="form-3">
+            <div *ngFor="let shipDt of shipData" class="form-2">
+              <h1 class="text-center text-uppercase"> {{shipDt?.transporterName}} </h1>
+              <ngx-barcode 
+              [bc-value]="shipDt?.shipCode" 
+              bc-height="30" 
+              bc-font-size="15" 
+              bc-width="1.8" 
+              [bc-display-value]="true"
+              [bc-margin-top]="1" 
+              [bc-margin-bottom]="1">
+              </ngx-barcode>
+              <div class="infor50">
+                <div>{{shipDt?.contactName}} </div>
+                <div>{{shipDt?.contactPhone}} </div>
+                <div>{{shipDt?.address
+                  + '-' + shipDt?.wardDisplay
+                  + '-' + shipDt?.districtDisplay
+                  + '-' + shipDt?.cityDisplay
+                  + '-' + shipDt?.countryDisplay}}</div>
+                  <div>COD: 
+                    <span [innerHTML]="symbolsLocation === '2' ? symbolsDisplay : ''"></span>
+                    <span>{{shipDt?.codAmount| currencyChina}}</span>
+                    <span [innerHTML]="symbolsLocation === '1' ? symbolsDisplay : ''"></span>
+                    / Ship:
+                    <span [innerHTML]="symbolsLocation=== '2' ? symbolsDisplay : ''"></span>
+                    <span>{{shipDt?.totalAmount| currencyChina}}</span>
+                    <span [innerHTML]="symbolsLocation === '1' ? symbolsDisplay : ''"></span>    
+                  </div>
+              </div>
+              <div class="print-footer">
+                <div class="text-center">{{APP_NAME}} - Order </div>
+                <div class="text-center">Hotline: 03030203023 </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+  <button mat-button mat-dialog-close class="btn btn-secondary  mr-2">Hủy</button>
+</mat-dialog-actions>
+<div class="spinner-wrapper" [hidden]="!(loading['exp'] || loading['ship'] || loading['request'])">
+  <div class="spinner-container">
+    <mat-progress-spinner mode="indeterminate"></mat-progress-spinner>
+  </div>
+</div>

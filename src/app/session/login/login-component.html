@@ -1,0 +1,50 @@
+<div class="relative">
+    <div class="form-bg">
+
+        <div class="spinner-wrapper" [hidden]="!loading">
+            <div class="bg-spiner w100 h100" ></div>
+            <div class="spinner-container w100 h100">
+                <mat-progress-spinner mode="indeterminate"></mat-progress-spinner>
+            </div>
+        </div>
+
+        <div fxLayout="row" fxLayoutAlign="center start" class="pt-2">
+            <div class="login" fxLayout="column" fxFlex.xl="40" fxFlex.lg="40" fxFlex.md="50" fxFlex.sm="80" fxFlex.xs="90">
+                <mat-card class="login-session">
+                    <div>
+                        <h2 class="base-border">Đăng nhập</h2>
+                        <!-- <form #form="ngForm" (ngSubmit)="login()"> -->
+                            <p-messages [(value)]="msgs"(click)="clear()"></p-messages>
+                            <div fxLayout="column" fxLayoutAlign="start stretch">
+                                <mat-form-field style="width: 100%">
+                                    <input matInput placeholder="Tên đăng nhập" type="text" (keydown.enter)="login()"
+                                    name="username" required [(ngModel)]="username">
+                                </mat-form-field>
+                                <mat-form-field style="width: 100%" class="mb-1">
+                                    <input matInput placeholder="Mật khẩu" type="password" (keydown.enter)="login()"
+                                    name="password" required [(ngModel)]="password">
+                                </mat-form-field>
+
+                                <div class="content-info" fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="100" fxFlex.lg="100" fxFlex.xl="100">
+                                    <div class="column" fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="50" fxFlex.lg="50" fxFlex.xl="50">
+                                        <mat-checkbox >Ghi nhớ</mat-checkbox>
+                                    </div>
+                                 
+                                    <div class="column" fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="50" fxFlex.lg="50" fxFlex.xl="50">
+                                        <p class="mat-text-warn mb-0 forget">Quên mật khẩu</p>
+                                    </div>
+                                 </div >
+
+
+                                <button class="mat-green" (click)="login()" mat-raised-button>Đăng Nhập</button>
+                                <div class="form-group">
+                                    <p>Bạn chưa có tài khoản Babuvi? <a routerlink="/authentication/register" ng-reflect-router-link="/auth/register" href="/authentication/register">Đăng ký ngay</a> </p>
+                                    </div>
+                            </div>
+                        <!-- </form> -->
+                    </div>
+                </mat-card>
+            </div>
+        </div>
+    </div>
+</div>

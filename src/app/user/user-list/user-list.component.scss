@@ -1,0 +1,366 @@
+html {
+    background-color: #f4f4f4;
+  }
+  
+  :host ::ng-deep {
+    .ui-table .ui-table-tbody > tr:nth-child(even) {
+       background-color: #ffffff;
+    }
+    .ui-table .ui-table-thead > tr > th {
+       color: white;
+       background-color: rgba(228, 89, 38, 0.945);
+    }
+    .ui-table .ui-sortable-column .ui-sortable-column-icon {
+       color: white;
+    }
+    .ui-dialog .ui-dialog-titlebar {
+       background-color: rgba(228, 89, 38, 0.945);
+       color: white;
+    }
+    .ui-widget:disabled {
+       opacity: 1;
+       border: none;
+       border-bottom: solid 1px gray;
+       border-radius: 0px;
+    }
+    .ui-dialog .ui-dialog-titlebar .ui-dialog-titlebar-icon {
+       color: white;
+       outline: none;
+    }
+    .ui-button {
+       border: 1px solid rgba(228, 89, 38, 0.945);
+    }
+    .ui-button.ui-button-text-icon-left .ui-button-text {
+       background-color: rgba(228, 89, 38, 0.945);
+       outline: none;
+    }
+  }
+  @media screen and (max-width: 740px) {
+    .totalFunc {
+       padding: 0px;
+       text-align: center;
+    }
+    :host ::ng-deep .ui-table .ui-table-tbody > tr {
+       background-color: #ffffff;
+       border: 1px solid gray;
+    }
+    .func {
+       outline: none;
+       border: solid 1px #c7c7c7;
+       background-color: rgba(228, 89, 38, 0.945);
+       width: 80%;
+       margin-left: auto;
+       margin-right: auto;
+       color: white;
+       font-weight: bold;
+       margin-bottom: 10px;
+    }
+    .header-main {
+       padding: 0 0 10px 5px;
+    }
+  
+    .fieldAdd {
+       text-align: left;
+       padding: 5px;
+    }
+    .inputAdd {
+       width: 100%;
+       margin-left: 10px;
+    }
+    :host ::ng-deep .formAdd {
+       width: 100%;
+    }
+    .table-th {
+       text-align: left;
+    }
+    .table-tb {
+       text-align: left;
+    }
+    .dkloc {
+       width: 98%;
+       display: inline-block;
+       margin: 1%;
+    }
+    .btnSearch {
+       margin: 1%;
+    }
+    .displayBlockInMB {
+       display: block;
+    }
+    .spinner {
+       position: fixed;
+       top: 30%;
+       left: 30%;
+       text-align: center;
+       background-color: rgba(10, 10, 10, 0.87);
+       padding: 15px;
+       border-radius: 10px;
+    }
+    .canTrai{
+       padding-left: 25px;
+    }
+    .hideInMB{
+       display:none;
+    }
+  }
+  @media screen and (min-width: 740px) and (max-width: 820px) {
+    .totalFunc {
+       text-align: left;
+       margin: 1%;
+    }
+    .dkloc {
+       width: 98%;
+       display: inline-block;
+       margin: 1%;
+    }
+    .func {
+       margin-right: 15px;
+       outline: none;
+       border: solid 1px #c7c7c7;
+       background-color: rgba(228, 89, 38, 0.945);
+       width: 100px;
+       color: white;
+       font-weight: bold;
+    }
+    .header-main {
+       padding: 0 0 20px 20px;
+    }
+  
+    .fieldAdd {
+       text-align: right;
+       padding: 5px;
+    }
+    .inputAdd {
+       width: 65%;
+       margin-left: 10px;
+    }
+    :host ::ng-deep .formAdd {
+       width: 40%;
+    }
+  
+    .table-th {
+       text-align: center;
+    }
+    .table-tb {
+       text-align: center;
+    }
+    .btnSearch {
+       margin: 1%;
+    }
+    .spinner {
+       position: fixed;
+       top: 35%;
+       left: 40%;
+       text-align: center;
+       background-color: rgba(10, 10, 10, 0.87);
+       padding: 15px;
+       border-radius: 10px;
+    }
+  }
+  @media screen and (min-width: 820px) {
+    .totalFunc {
+       padding: 0 0 5px 20px;
+    }
+    .func {
+       margin-right: 15px;
+       outline: none;
+       border: solid 1px #c7c7c7;
+       background-color: rgba(228, 89, 38, 0.945);
+       width: 100px;
+       color: white;
+       font-weight: bold;
+    }
+    .header-main {
+       padding: 5px 0 5px 20px;
+    }
+  
+    .fieldAdd {
+       text-align: right;
+       padding: 5px;
+    }
+    .inputAdd {
+       width: 75%;
+       margin-left: 10px;
+    }
+    :host ::ng-deep .formAdd {
+       width: 40%;
+    }
+    .table-th {
+       text-align: center;
+    }
+    .table-tb {
+       text-align: center;
+       font-size: 12px;
+       font-weight: bold;
+    }
+    .table-tb-noidung{
+     text-align: left;
+     font-size: 12px;
+     font-weight: bold;
+    }
+    .totalLoc {
+       margin: 5px 5px 5px 5px;
+    }
+    .dkloc {
+       width: 32%;
+       display: inline-block;
+       margin: 5px;
+       padding: 4px;
+    }
+    .btnSearch {
+       margin: 5px 5px 0 5px;
+       padding: 0 25px 0 25px;
+    }
+    .btnGroup {
+       text-align: center;
+    }
+    .spinner {
+       position: fixed;
+       top: 35%;
+       left: 45%;
+       text-align: center;
+       background-color: rgba(10, 10, 10, 0.87);
+       padding: 15px;
+       border-radius: 10px;
+    }
+  }
+  
+  .sm-th-table {
+    background-color: #f4f4f4;
+  }
+  .lsDetailcss {
+    border-collapse: collapse;
+    width: 100%;
+    td,
+    th {
+       border: 1px solid rgb(201, 201, 201);
+       padding: 2px;
+    }
+  }
+  .classBold {
+    font-weight: bold;
+  }
+  .classOrange {
+    color: rgba(228, 89, 38, 0.945);
+  }
+  .classBlue {
+    color: #4267b2;
+  }
+  .statusDisplayStyle {
+    font-weight: bold;
+    background-color: rgb(1, 167, 70);
+    color: white;
+    padding: 2px 4px 2px 4px;
+    border-radius: 3px;
+  }
+  
+  //@extend
+  .ui-dropdown-label {
+    background-color: inherit !important;
+    border: solid 1px white;
+    color: white !important;
+    :hover {
+       border: solid 1px white;
+       outline: solid 1px white;
+    }
+  }
+  label.ng-tns-c3-0.ui-dropdown-label.ui-inputtext.ui-corner-all.ui-placeholder.ng-star-inserted {
+    color: white;
+    opacity: 0.85; /* Firefox */
+    padding: 4px;
+  }
+  .ui-dropdown .ui-dropdown-trigger {
+    background-color: inherit !important;
+    color: white !important;
+  }
+  .ui-dropdown-panel {
+    background-color: rgba(255, 255, 255, 0.98) !important;
+  }
+  .ui-dropdown:not(.ui-state-disabled) {
+    border-bottom: solid 1px white !important;
+    border-top: none !important;
+    border-right: none !important;
+    border-left: none !important;
+  }
+  .ui-dropdown:not(.ui-state-disabled).ui-state-focus {
+    border: solid 1px white !important;
+    border-top: none !important;
+    border-right: none !important;
+    border-left: none !important;
+  }
+  .ui-dropdown:not(.ui-state-disabled):hover {
+    border: solid 1px white !important;
+    border-top: none !important;
+    border-right: none !important;
+    border-left: none !important;
+  }
+  
+  .btnDatHang {
+    font-weight: bold;
+    color: white;
+    border-radius: 4px;
+    background-color: #4267b2;
+    padding: 3px 6px 3px 6px;
+    font-size: 11px;
+  }
+  .btnCSKH {
+    font-weight: bold;
+    color: white;
+    border-radius: 4px;
+    background-color: rgb(206, 0, 0);
+    padding: 3px 6px 3px 6px;
+    font-size: 11px;
+  }
+  .btnThanhToan {
+    font-weight: bold;
+    color: white;
+    border-radius: 4px;
+    background-color: rgb(223, 145, 0);
+    padding: 3px 6px 3px 6px;
+    font-size: 11px;
+  }
+  .btnKhieuNai {
+    font-weight: bold;
+    color: white;
+    border-radius: 4px;
+    background-color: rgb(206, 0, 0);
+    padding: 3px 6px 3px 6px;
+    font-size: 11px;
+  }
+  .btnTaoMoi {
+    color: rgb(0, 163, 0);
+  }
+  .btnDangthuchien {
+    color: #4267b2;
+  }
+  .btnHoanthanh {
+    color: turquoise;
+  }
+  .btnHuy {
+    color: orangered;
+  }
+  .paginator{
+    outline:none;
+    border:none;
+    color: black;
+    padding:3px 10px 3px 10px;
+    font-weight: bold;
+    border-radius: 4px;
+    font-size:15x;
+  }
+  .pageActive{
+    outline:none;
+    border:none;
+    color: white;
+    padding:3px 10px 3px 10px;
+    font-weight: bold;
+    border-radius: 4px;
+    background-color: rgba(228, 89, 38, 0.945);
+    font-size:15x;
+  }
+  
+  .normalFontDate{
+     font-size:11px;
+     color:gray;
+     font-weight: normal;
+  }

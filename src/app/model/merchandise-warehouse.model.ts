@@ -1,0 +1,29 @@
+export class MerchandiseWarehouse {
+    merchandiseWarehouseId;
+    merchandiseId;
+    parentId;
+    warehouseId;
+    impDate;
+    warehouseImpId;
+    shelfPosition;
+    netWeight;
+    chargedWeight;
+    paymentWeight;
+    length;
+    width;
+    height;
+    status;
+    paymentStatus;
+    paymentStatusDisplay;
+    merchandiseCode;
+    orderId;
+    orderCode;
+    warehouseName;
+    receiver;
+    phone;
+    cityId;
+    cityName;
+    districtId;
+    districtName;
+    address;
+}

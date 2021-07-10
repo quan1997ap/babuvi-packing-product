@@ -1,0 +1,222 @@
+p {
+  margin-bottom: 8px;
+}
+.header {
+  h1 {
+    margin-bottom: 12px;
+    color: #ee4c2e;
+    font-size: 16px;
+    border-bottom: 4px solid #ee4c2e;
+    padding-bottom: 8px;
+    width: fit-content;
+  }
+}
+
+.collaboration-list {
+  .collaboration-filter-section {
+    display: flex;
+    flex-direction: column;
+
+    .collaboration-filter {
+      display: flex;
+      justify-content: space-between;
+      width: 100%;
+      margin-bottom: 8px;
+      input,
+      p-dropdown,
+      p-calendar {
+        margin-right: 4px;
+        width: calc(25% - 4px);
+      }
+      ::ng-deep {
+        .ui-dropdown,
+        .ui-inputtext,
+        .ui-calendar {
+          width: 100%;
+        }
+      }
+    }
+    .tabs-user-status {
+      padding: 12px 0 8px 12px;
+      margin-bottom: 0px;
+      background: #fff;
+
+      ::ng-deep {
+        .ui-button {
+          background: transparent;
+          border-top: none;
+          border-left: none;
+          border-right: none;
+          border-bottom: none;
+          border-width: 4px;
+          padding: 0 12px;
+          &.ui-state-active {
+            border-bottom: 4px solid #ee4c2e !important;
+            color: #ee4c2e !important;
+            font-weight: bold;
+            background: #f2f4f8;
+          }
+        }
+      }
+    }
+  }
+  .collaboration-table-section {
+    display: flex;
+    flex-direction: column;
+    .collaboration-table {
+      flex: 1;
+      .collaboration-item {
+        display: flex;
+        margin-bottom: 8px;
+        background: #fff;
+        border-bottom: 1px solid #ddd;
+        padding: 12px;
+        .img-section {
+          width: 25%;
+          min-width: 200px;
+          background-size: cover;
+        }
+        .content {
+          flex: 1;
+          padding: 0 24px;
+          .fullname {
+            display: flex;
+            .status {
+              width: 100px;
+              white-space: nowrap;
+              text-overflow: ellipsis;
+              overflow: hidden;
+              margin-right: 20px;
+              margin-bottom: 0;
+              padding: 4px;
+              height: 24px;
+              font-size: 12px;
+              background: red;
+              display: block;
+              border-radius: 4px;
+              text-align: center;
+              color: #fff;
+            }
+            .name {
+              flex: 1;
+              white-space: nowrap;
+              text-overflow: ellipsis;
+              overflow: hidden;
+              font-size: 14px;
+              font-weight: bold;
+              color: #333;
+            }
+          }
+        }
+        .action {
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          justify-content: center;
+          button {
+            width: 120px;
+            &:first-child {
+              background: #fff;
+              color: #ee4c2e;
+              margin-bottom: 8px;
+            }
+            &:last-child {
+              background: #ee4c2e;
+              color: #fff;
+            }
+          }
+        }
+      }
+    }
+    .empty-section {
+      flex: 1;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: calc(100vh - 280px);
+      background: #fff;
+      font-size: 20px;
+      font-weight: bold;
+      color: #aba8a8;
+    }
+    .loading-table {
+      flex: 1;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: calc(100vh - 280px);
+      background: #fff;
+      font-size: 20px;
+      font-weight: bold;
+      color: #aba8a8;
+    }
+  }
+}
+
+@media only screen and (max-width: 600px) {
+  ::ng-deep {
+    .ui-button {
+      &:first-child{
+        background: #007ad9;
+        color: #fff;
+      }
+      border: none !important;
+    }
+    .action > button:first-child{
+      &.ui-button {
+        background: #007ad9 !important;
+        color: #fff !important;
+        margin-bottom: 0 !important;
+      }
+    }
+  }
+
+  .collaboration-filter {
+    flex-direction: column;
+    height: 200px;
+    input,
+    button,
+    p-dropdown,
+    p-calendar {
+      margin-right: 0px !important;
+      width: calc(100% - 8px) !important;
+    }
+    ::ng-deep {
+      .ui-dropdown,
+      .ui-inputtext,
+      .ui-calendar {
+        width: 100%;
+      }
+    }
+  }
+  .tabs-user-status {
+    ::ng-deep {
+      .ui-button {
+        width: 50%;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+    }
+  }
+  .collaboration-item {
+    flex-direction: column;
+    .img-section {
+      min-height: 200px;
+      margin-bottom: 16px;
+      width: 100% !important;
+    }
+    .content {
+      padding: 0 0 !important;
+    }
+    .action {
+      flex-direction: row !important;
+      justify-content: space-between !important;
+      padding-top: 20px;
+      padding-bottom: 20px;
+      button{
+        border-radius: 999px;
+      }
+    }
+  }
+}

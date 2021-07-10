@@ -1,0 +1,91 @@
+.user-infor {
+  min-height: 130px;
+  .summary-info {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    .name {
+      font-size: 16px;
+    }
+    .avatar {
+      display: flex;
+      justify-content: center;
+      margin: 10px auto 10px auto;
+      .avatar-img {
+        max-height: 60px;
+        border-radius: 50%;
+        box-shadow: 1px 2px 10px #999;
+        padding: 2px;
+      }
+    }
+  }
+}
+.rating {
+  display: flex;
+  align-items: center;
+  .rating-icon {
+    width: 30px;
+    font-size: 30px;
+    color: #707070;
+  }
+  .rating-number {
+    color: #f44335;
+  }
+  .deposit-btn {
+    padding: 0 8px;
+    border: 1px solid #c3c2c2;
+    border-radius: 3px;
+    background: #fcfcfc;
+    margin-left: 5px;
+    height: 30px;
+    line-height: 30px;
+  }
+}
+button:focus {
+  border: none !important;
+  outline: none !important;
+  box-shadow: none !important;
+}
+
+::ng-deep {
+  .mat-menu-panel {
+    max-width: 600px !important;
+    min-width: 400px !important;
+    .notification {
+      padding: 20px;
+      .notification-item {
+        display: flex;
+        margin-bottom: 8px;
+        padding-bottom: 8px;
+        border-bottom: 1px solid #ddd;
+        .type {
+          width: 90px;
+          white-space: nowrap;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          color: red;
+        }
+        .title {
+          flex: 1;
+          white-space: nowrap;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          padding-right: 12px;
+        }
+        .date {
+          width: 116px;
+          white-space: nowrap;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          text-align: center;
+        }
+      }
+      .checkbox {
+        display: flex;
+        justify-content: flex-end;
+        margin-top: 24px;
+      }
+    }
+  }
+}

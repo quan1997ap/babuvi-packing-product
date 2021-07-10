@@ -1,0 +1,171 @@
+<div class="main">
+  <div class="bg-sign-up padding">
+    <div class="sign-up">
+      <!-- Code của trường -->
+
+      <div class="formregister" *ngIf="true">
+        <h4 class="headerName">
+          <!-- <img src="assets/images/logoBabuvi.png"> -->
+          ĐĂNG KÝ TÀI KHOẢN
+        </h4>
+        <form #formSignUp="ngForm" (keyup)="handleKeyUp($event,formSignUp)" (click)="handleKeyUp($event,formSignUp)"
+          class="CSSform">
+          <div class="chiaDoiPage">
+            <span class="tenInput">Tên đăng nhập</span>
+            <div><input class="babuvi_signup_text" type="text" placeholder="Tên đăng nhập" name="acount" ngModel
+                required pattern="^[a-zA-Z0-9]*$" acount /></div>
+          </div>
+          <div class="chiaDoiPage">
+            <span class="tenInput">Số điện thoại</span>
+            <div><input class="babuvi_signup_text" type="text" placeholder="Vui lòng nhập số điện thoại" name="phone"
+                ngModel required /><br></div>
+          </div>
+          <div class="chiaDoiPage">
+            <span class="tenInput">Mật khẩu</span>
+            <div style="position: relative;">
+              <input class="babuvi_signup_text" type="{{newpw}}" placeholder="Mật khẩu ít nhất 6 kí tự" name="password"
+                ngModel required pattern="(?=.*\d)(?=.*[a-z]).{6,}" autocomplete="off" />
+              <i class="fa fa-eye-slash babuvi_show_pw" (click)="changeType(0)"></i>
+            </div>
+          </div>
+          <div class="chiaDoiPage">
+            <span class="tenInput">Nhập lại mật khẩu</span>
+            <div style="position: relative;">
+              <input class="babuvi_signup_text" type="{{renewpw}}" placeholder="Nhập lại mật khẩu" name="repassword" autocomplete="off"
+                ngModel required />
+              <i class="fa fa-eye-slash babuvi_show_pw" (click)="changeType(1)"></i>
+            </div>
+          </div>
+          <div class="chiaDoiPage">
+            <span class="tenInput">Email</span>
+            <div><input class="babuvi_signup_text" type="email" placeholder="Vui lòng nhập Email" name="email" ngModel
+                required email /></div>
+          </div>
+          <div class="chiaDoiPage">
+            <span class="tenInput">Kho nhận hàng</span>
+            <div>
+              <!-- <p-dropdown [options]="groupedCars" [(ngModel)]="selectedCar3" placeholder="--Select a Car--" [group]="true"
+            [style]="{'width':'100%','background':'inherit'}" name="WarehouseReceive" >
+              <ng-template let-group pTemplate="group">
+                <span style="margin-left:.25em">{{group.label}}</span>
+              </ng-template>
+            </p-dropdown> -->
+              <p-dropdown [options]="optionWarehouse" ngModel placeholder="-- Chọn kho hàng --" [virtualScroll]="true"
+                [itemSize]="31" [filter]="false" [style]="{'width':'100%','background':'inherit'}"
+                name="WarehouseReceive">
+              </p-dropdown><br>
+            </div>
+          </div>
+          <div class="chiaDoiPage marginReponsive">
+            <!-- <p-captcha siteKey="6LeBbrwZAAAAAMKgz2qfMM98hhaEtk3cQG-9bNY1" initCallback="loadCaptcha"
+             (onResponse)="showResponse($event)" (onExpire)="showExpire()"></p-captcha> -->
+             <input type="text" pInputText placeholder="Captcha Code" [(ngModel)]="captchaCode" [ngModelOptions]="{standalone: true}" />
+             <button pButton type="button" style="margin: 0 8px;" icon="pi pi-refresh" iconPos="left" (click)="getCaptcha()" pTooltip="Đổi Captcha" tooltipPosition="top" ></button>
+            <img *ngIf="captchaImg" [src]="captchaImg.imageLink" >
+          </div>
+
+          <div class="chiaDoiPage marginReponsive">
+            <p-checkbox name="read" [binary]="true" [(ngModel)]="readed" required></p-checkbox>
+            <span style="font-size: 11px;">
+              Tôi đã đọc và đồng ý với các
+              <a href="https://babuvi.com/order-taobao/quy-dinh-mua-hang/" target="_blank">Quy định và Chính sách</a>
+              của BABUVI.</span>
+            <div style="font-size:14px; color:red;" *ngIf="thongbaoloi">
+              <i class="fa fa-info-circle"></i> {{ thongbao }}
+            </div>
+          </div>
+
+        </form>
+
+        <div style="text-align: center;">
+          <button class="babuvi_login_btn btn btn-danger" (click)="signup(formSignUp);">
+            Đăng ký
+          </button>
+        </div>
+
+        <div style="margin-top:20px" class="btnDangNhap">Bạn đã có tài khoản?
+          <a routerLink="/authentication/login" ng-reflect-router-link="/auth/login">Đăng nhập</a>
+        </div>
+        <div class="btnQuenMatKhau marginReponsive">Quên mật khẩu?
+          <a routerLink="/authentication/forgot-password">Lấy lại mật khẩu</a>
+        </div>
+      </div>
+      <div class="notice" *ngIf="signUpSuccess">
+        <!--<img src="assets/images/icon_check.png"><br>-->
+        <span style="color:	#4be0a2;font-weight: bold;font-size: x-large;">Đăng kí thành công</span>
+      </div>
+      <!-- Hết code của trường  -->
+
+
+      <div class="su-title" *ngIf="false">
+        <h3>Đăng ký tài khoản</h3>
+      </div>
+      <div class="su-content" *ngIf="false">
+        <ul>
+          <li>
+            <mat-form-field class="full-width">
+              <input matInput placeholder="Vui Lòng Nhập Email" [formControl]="email" [(ngModel)]="emailValue" required>
+              <mat-error *ngIf="email.invalid">{{getErrorMessageEmail()}}</mat-error>
+            </mat-form-field>
+          </li>
+          <li>
+            <mat-form-field class="full-width">
+              <input matInput placeholder="Số điện thoại" [(ngModel)]="phoneValue" required>
+              <mat-icon matSuffix>phone</mat-icon>
+            </mat-form-field>
+          </li>
+          <li>
+            <mat-form-field class="full-width">
+              <input matInput placeholder="Mật khẩu ít nhất 6 ký tự" [type]="hidepass ? 'password' : 'text'"
+                [(ngModel)]="passwordValue" required>
+              <button mat-icon-button matSuffix (click)="hidepass = !hidepass" [attr.aria-label]="'Hide password'"
+                [attr.aria-pressed]="hide">
+                <mat-icon>{{hidepass ? 'visibility_off' : 'visibility'}}</mat-icon>
+              </button>
+            </mat-form-field>
+          </li>
+          <li>
+            <mat-form-field class="full-width">
+              <input matInput placeholder="Nhập lại mật khẩu" [type]="hidepassreturn ? 'password' : 'text'" required>
+              <button mat-icon-button matSuffix (click)="hidepassreturn = !hidepassreturn"
+                [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hide">
+                <mat-icon>{{hidepassreturn ? 'visibility_off' : 'visibility'}}</mat-icon>
+              </button>
+            </mat-form-field>
+          </li>
+          <li>
+            <mat-form-field class="full-width">
+              <input matInput placeholder="Nhập mã xác minh">
+            </mat-form-field>
+          </li>
+          <li>
+            <mat-form-field class="full-width">
+              <mat-label>Kho nhận hàng</mat-label>
+              <mat-select [(value)]="selectedWarehouse" required>
+                <mat-option *ngFor="let warehouse of lstWarehouse" [value]="warehouse">
+                  {{warehouse.name}}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+          </li>
+        </ul>
+        <div class="row">
+          <div class="col-md-12">
+            <mat-checkbox required>Tôi đã đọc và đồng ý với các <a
+                href="https://babuvi.com/order-taobao/quy-dinh-mua-hang/" target="_blank">Quy định và Chính sách</a> của
+              Babuvi.</mat-checkbox>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-12">
+            <div class="btn-regis">
+              <button mat-button (click)="onClickSave()">Đăng ký</button>
+            </div>
+          </div>
+        </div>
+        <div class="m-t-16">Bạn đã có tài khoản? <a routerlink="/auth/login" ng-reflect-router-link="/auth/login"
+            href="#/auth/login">Đăng nhập</a></div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,264 @@
+<div class="w100">
+    <p-messages [(value)]="msgs"(click)="clear()"></p-messages>
+</div>
+<div>
+    <form #formFilter="ngForm">
+       <input type="text" pInputText class="dkloc" ngModel name="OrderCode" placeholder="Mã đơn hàng">
+       <input type="text" pInputText class="dkloc" ngModel name="ShopName" placeholder="Tên shop">
+       <span class="dklocngay">
+          <p-calendar [(ngModel)]="StartDate" name="StartDate" ngModel placeholder="Từ ngày"
+             [style]="{'width':'100%'}" dateFormat="dd/mm/yy" [inputStyle]="{'width':'100%'}"
+             [showButtonBar]="true"></p-calendar>
+       </span>
+       <span class="dklocngay">
+          <p-calendar [(ngModel)]="EndDate" name="EndDate" ngModel placeholder="Đến ngày"
+             [style]="{'width':'100%'}" dateFormat="dd/mm/yy" [inputStyle]="{'width':'100%'}"
+             [showButtonBar]="true"></p-calendar>
+       </span>
+       <p-button icon="fa fa-search" label="Lọc" class="btnSearch" (click)="FuncLoc(formFilter)"></p-button>
+       <p-button icon="fa fa-refresh" label="Làm lại" class="btnSearch" (click)="ResetForm(formFilter)"></p-button>
+    </form>
+ </div>
+ <div>
+    <div class="hideInPC hideInPad" style="margin-bottom:15px;">
+         <p-dropdown [options]="listBtn" [(ngModel)]="dropdownStatus" optionLabel="statusDisplayMobile" [style]="{'width':'100%'}"
+         (onChange)="changeFilter()" [autoDisplayFirst]="true"></p-dropdown>
+    </div>
+    <div class="hideInMB">
+         <button *ngFor="let bton of listBtn"  [class]="currentStatus == bton.status?'btnChoose':'btnFilter'" 
+             (click)="filter(bton)">
+             {{bton.statusDisplay}} <span [class]="bton.count==0?'':'btonCount'">{{bton.count==0?'':bton.count}}</span>
+         </button>
+     </div>
+ </div>
+ <div style="padding-top:15px;padding-bottom:15px;margin-top:12px;font-size:14px;background-color: rgba(224, 224, 224, 0.8);">
+     <span class="boldGray">Số đơn hàng:</span><span class="boldOrange">{{dataItem.dataCount| currencyFormat}}</span> |
+     <span class="boldGray">Tổng giá trị đơn:</span><span class="boldOrange">{{dataItem.totalAmount| currencyFormat}}</span> |
+     <span class="boldGray">Tổng số tiền còn thiếu:</span><span class="boldOrange">{{dataItem.totalMissing| currencyFormat}}</span>
+ </div>
+<table class="w100 tg">
+    <thead>
+        <tr>
+            <th class="tg-0pky w45 txt-alignCen">
+                Thông tin đơn hàng
+            </th>
+            <th *ngIf="detectWidthLayout" class="tg-0lax w35 txt-alignCen">
+                Thông tin tài chính
+            </th>
+            <th *ngIf="detectWidthLayout" class="tg-0lax w20 txt-alignCen">
+                Thao tác
+            </th>
+        </tr>
+    </thead>
+    <ng-container *ngFor="let item of _shipOrders; let inx = index;">
+        <tbody>
+            <tr>
+                <td class="tg-0lax">
+                    <div class="w100 dp-inBlock">
+                        <img class="lazy w20 loaded bor-gray pad5 content-inline" alt="" src="{{item.orderImage}}" >
+                        <div class="content-inline tung w80">
+                            <div class="w100 dp-inBlock">
+                               <div class="content-inline w40 pad-l10 cur-point cor2b">
+                                    <a (mousedown)="redirectAtag(item)" target="_blank" href="{{returnLinkOrder}}">
+                                        {{item.orderCode}}
+                                     </a>
+                                </div>
+                                <div class="content-inline w60" >
+                                    <span style="padding: 5px 5px; border-radius: 4px;" [ngClass]=" item.status === '14' ?'bgF44335 corffffff':'bg2b corffffff'">
+                                        {{item.statusDisplay}}
+                                    </span>
+                                </div>
+                            </div>
+    
+                            <!-- shop  -->
+                            <div class="w100 dp-inBlock">
+                                <div class="content-inline w40 pad-l10">
+                                    Shop:
+                                </div>
+                                <div class="content-inline w60">
+                                    <a href="{{item.senderLink}}" target="_blank">
+                                        {{item.sender}}
+                                    </a>
+                                </div>
+                            </div>
+    
+                            <!-- số lượng  -->
+                            <div class="w100 dp-inBlock">
+                                <div class="content-inline w40 pad-l10">
+                                    Số lượng:
+                                </div>
+                                <div class="content-inline w60">
+                                    {{item.totalQuantityOrder ? item.totalQuantityOrder : 0}} /  
+                                    {{item.totalQuantityBuy ? item.totalQuantityBuy : 0}} / 
+                                    {{item.totalQuantityReceived ? item.totalQuantityReceived : 0}}
+                                </div>
+                            </div>
+    
+                            <div *ngIf="!detectWidthLayout" class="w100 dp-inBlock">
+                                <div class="content-inline w40 pad-l10">
+                                    Tổng giá trị đơn
+                                </div>
+                                <div class="content-inline w60 fw-7 corF44335">
+                                    {{item.amount| currencyFormat }} đ
+                                </div>
+                            </div>
+    
+                            <div *ngIf="!detectWidthLayout" class="w100 dp-inBlock">
+                                <div class="content-inline w40 pad-l10">
+                                    Đã thanh toán
+                                </div>
+                                <div class="content-inline w60 corOF fw-7">
+                                    {{item.paid| currencyFormat }} đ
+                                </div>
+                            </div>
+    
+                            <div *ngIf="!detectWidthLayout" class="w100 dp-inBlock">
+                                <div class="content-inline w40 pad-l10">
+                                    Còn thiếu
+                                </div>
+                                <div class="content-inline w60 fw-7 corF44335">
+                                    {{item.missing| currencyFormat }} đ
+                                </div>
+                            </div>
+    
+                        </div>
+                    </div>
+
+                    <div *ngIf="!detectWidthLayout" class="w100 ver-align-mid tung">
+                            <div class="content-inline bor txt-alignCen bor-ra3 bgf4 cor8D pb5 pt5 cur-point pad-l10 pad-r10 mar-l10" 
+                            (click)="redirect(item)">
+                                Chi tiết
+                            </div>
+                            <div class="content-inline bor txt-alignCen bor-ra3 pb5 pt5 cur-point bg2b corffffff pad-l10 pad-r10 mar-l10"
+                                *ngIf="item.paymentStatus === '1' && item.status !== '14'"
+                                (click)="paymentOrders(item.orderId)">
+                                Thanh toán
+                            </div>
+                            
+                            <div *ngIf="item.status === '10' && item.status !== '14'"
+                                    class="content-inline bor txt-alignCen bor-ra3 pb5 pt5 cur-point bg2b corffffff pad-l10 pad-r10 mar-l10">
+                                Yêu cầu giao hàng
+                            </div>
+                            
+                            <div  *ngIf="item.status === '2' || item.status === '1' && item.status !== '14'"
+                                    class="content-inline bor txt-alignCen bor-ra3 pb5 pt5 cur-point bgF44335 corffffff pad-l10 pad-r10 mar-l10"
+                                    (click)="cancelOrder(item, inx)">
+                                Hủy
+                            </div>
+                    </div>
+                </td>
+                <td *ngIf="detectWidthLayout" class="tg-0lax">
+                    <div class="w100 dp-inBlock pt5">
+                        <div class="content-inline w50 txt-alignRight">
+                            Tiền hàng
+                        </div>
+                        <div class="content-inline w30 txt-alignRight fw-7">
+                            {{item.totalPrice| currencyFormat }} đ
+                        </div>
+                    </div>
+                    <div *ngFor="let itemServices of item.lsService; let inx = index;">
+                        <div class="w100 dp-inBlock">
+                            <div class="content-inline w50 txt-alignRight">
+                                {{itemServices.shortDisplay}}
+                            </div>
+                            <div class="content-inline w30 txt-alignRight fw-7">
+                                {{itemServices.amount| currencyFormat }} đ
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="w100 dp-inBlock">
+                        <div class="content-inline w50 txt-alignRight">
+                            Tổng giá trị đơn
+                        </div>
+                        <div class="content-inline w30 txt-alignRight fw-7 corF44335">
+                            {{item.amount| currencyFormat }} đ
+                        </div>
+                    </div>
+
+                    <div class="w100 dp-inBlock bor-top pt5">
+                        <div class="content-inline w50 txt-alignRight">
+                            Đã thanh toán
+                        </div>
+                        <div class="content-inline w30 txt-alignRight corOF fw-7">
+                            {{item.paid| currencyFormat }} đ
+                        </div>
+                    </div>
+
+                    <div class="w100 dp-inBlock">
+                        <div class="content-inline w50 txt-alignRight">
+                            Khuyến mãi
+                        </div>
+                        <div class="content-inline w30 txt-alignRight fw-7 corF44335">
+                            {{item.promotion| currencyFormat }} đ
+                        </div>
+                    </div>
+
+                    <div class="w100 dp-inBlock pt5" *ngIf="item.status === '14'">
+                        <div class="content-inline w50 txt-alignRight">
+                            Babuvi trả lại
+                        </div>
+                        <div class="content-inline w30 txt-alignRight corOF fw-7">
+                            {{item.refundAmount| currencyFormat }} đ
+                        </div>
+                    </div>
+
+                    <div class="w100 dp-inBlock">
+                        <div class="content-inline w50 txt-alignRight">
+                            Còn thiếu
+                        </div>
+                        <div class="content-inline w30 txt-alignRight fw-7 corF44335">
+                            {{item.missing| currencyFormat }} đ
+                        </div>
+                    </div>
+
+                </td>
+                <td *ngIf="detectWidthLayout" class="tg-0lax ver-align-mid">
+                    <div class="w100 dp-inBlock">
+                        <div class="content-inline w80 bor txt-alignCen ml-per10 mr-per10 bor-ra3 bgf4 cor8D pb5 pt5 cur-point" (click)="redirect(item)">
+                            Chi tiết
+                        </div>
+                    </div>
+                    <div class="w100 dp-inBlock" *ngIf="item.paymentStatus === '1' && item.status !== '14'">
+                        <div class="content-inline w80 bor txt-alignCen ml-per10 mr-per10 bor-ra3 pb5 pt5 cur-point bg2b corffffff"
+                        (click)="paymentOrders(item.orderId)">
+                            Thanh toán
+                        </div>
+                    </div>
+
+                    <div class="w100 dp-inBlock" *ngIf="item.status === '10' && item.status !== '14'">
+                        <div class="content-inline w80 bor txt-alignCen ml-per10 mr-per10 bor-ra3 pb5 pt5 cur-point bg2b corffffff">
+                            Yêu cầu giao hàng
+                        </div>
+                    </div>
+
+                    <div class="w100 dp-inBlock" *ngIf="item.status === '2' || item.status === '1' && item.status !== '14'">
+                        <div class="content-inline w80 bor txt-alignCen ml-per10 mr-per10 bor-ra3 pb5 pt5 cur-point bgF44335 corffffff" (click)="cancelOrder(item, inx)">
+                            Hủy
+                        </div>
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </ng-container>
+</table>
+<div style="text-align:center;">
+    <button (click)="selectPage('f')" [disabled]="numbPage==1?true:false" class="paginator">
+       <i class="fa fa-step-backward"></i>
+    </button>
+    <button (click)="selectPage('p')" [disabled]="numbPage==1?true:false" class="paginator">
+       <i class="fa fa-caret-left"></i>
+    </button>
+    <button *ngFor="let page of pages" type="button" tabindex="-1" class="" (click)="selectPage(page)"
+       [class]="numbPage - page === 0 ?'pageActive paginator':'selectpage paginator'">{{ page }}</button>
+    <button (click)="selectPage('n')" [disabled]="numbPage==maxPage?true:false" class="paginator">
+       <i class="fa fa-caret-right"></i>
+    </button>
+    <button (click)="selectPage('l')" [disabled]="numbPage==maxPage?true:false" class="paginator">
+       <i class="fa fa-step-forward"></i>
+    </button>
+ </div>
+<!-- <mat-paginator #paginator showFirstLastButtons [length]="dataCount" [hidePageSize]="true" [pageSize]="5" (page)="pageEvent($event)" [pageSizeOptions]="[pageSize]"></mat-paginator> -->
+<p-dialog [showHeader]="false" [modal]="true" [(visible)]="isOpenLargeImg" appendTo="body" [dismissableMask]="true">
+   <img [src]="linkImg" style="text-align: center;" style="width:100%;min-width: 300px;">
+</p-dialog>

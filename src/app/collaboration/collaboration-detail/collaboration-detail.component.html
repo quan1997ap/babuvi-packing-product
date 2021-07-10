@@ -1,0 +1,107 @@
+<p-toast></p-toast>
+<div class="flip-container">
+  <div class="card" [ngClass]=" { 'flipped': viewBanner } ">
+    <!-- font -->
+    <div class="front" *ngIf="!viewBanner && currentCollaboration">
+      <div class="fullname">
+        <p class="name" pTooltip="{{ currentCollaboration.title }}" tooltipPosition="top">
+          {{currentCollaboration.title }} </p>
+      </div>
+      <div class="row" style="margin: 0 0;">
+        <div class="col-md-6 col-lg-6" style="padding: 4px;">
+          <div class="content">
+            <div class="img-section" [ngStyle]="{'background-image': 'url(' + currentCollaboration.thumbUrl + ')'}">
+              <p class="status" pTooltip="{{ currentCollaboration.statusDisplay }}" tooltipPosition="top"> {{
+                currentCollaboration.statusDisplay }}</p>
+            </div>
+            <div class="date">
+              <p>
+                Thời gian:
+                <strong>{{ currentCollaboration.startDate | date: 'dd/MM/yyyy h:mm' }}</strong> -
+                <strong>{{ currentCollaboration.endDate | date: 'dd/MM/yyyy h:mm' }}</strong>
+              </p>
+            </div>
+            <div class="desc">
+              <div style="color: red;margin-bottom: 8px;">
+                <i>{{ currentCollaboration.temp }}</i>
+              </div>
+              <div>
+                <i>{{ currentCollaboration.subTitle }}</i>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-6 col-lg-6" style="padding: 4px 4px 4px 12px;">
+          <div class="right-col">
+            <h5 class="title"> SHARE YOU LINK </h5>
+            <div class="copy-section">
+              <input #copyShareUrl class="copy-input" type="text" size="30" pInputText readonly
+                [(ngModel)]="currentCollaboration.shareUrl" />
+              <i class="pi pi-copy" pTooltip="Copy" tooltipPosition="top" ngxClipboard
+                [cbContent]="currentCollaboration.shareUrl" (click)="copy()"></i>
+            </div>
+          </div>
+          <div class="banner-section">
+            <div class="title">
+              Banner
+            </div>
+            <div class="ls-banner">
+              <button pButton pRipple type="button" *ngFor="let banner of currentCollaboration.lsBanner"
+                (click)="viewListBanner(banner)" label="{{banner.title}}" pTooltip="{{banner.title}}"
+                tooltipPosition="top" class="button"></button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- back -->
+    <div class="back" *ngIf="viewBanner">
+      <div class="detail-banner" *ngIf="!isLoading">
+        <div class="title">
+          <h5>Size : {{listBanner[0].size}} </h5>
+          <button pButton pRipple type="button" icon="pi pi-times"
+            class="p-button-rounded p-button-danger p-button-outlined" (click)="cancelViewBanner()"></button>
+        </div>
+        <div class="banner-imgs"  *ngIf="!listBanner || !listBanner.length">
+          Tìm thấy 0 banner
+        </div>
+        <div class="banner-imgs" *ngIf="listBanner && listBanner.length">
+          <div *ngFor="let banner of listBanner" class="img-section">
+            <img [src]="banner?.url" alt="{{banner.title}}" [ngClass]="{ 
+              'status-1': banner.type == '1',
+               'status-2' : banner.type == '2',
+               'status-3' : banner.type == '3' }" />
+            <div *ngIf="banner?.url" class="gr-btn">
+              <button pButton type="button" label="Copy link" class="ui-button-secondary" ngxClipboard
+                [cbContent]="banner?.url" (click)="copyImgUrl()"></button>
+              <button pButton type="button" label="Tải xuống" class="ui-button-secondary"
+                (click)="downloadImg(banner)"></button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div *ngIf="isLoading" class="loading-banner">
+        <div class="title">
+          <h5>Banner</h5>
+          <button pButton pRipple type="button" icon="pi pi-times"
+            class="p-button-rounded p-button-danger p-button-outlined" (click)="cancelViewBanner()"></button>
+        </div>
+        <div class="loading-content">
+          <p *ngIf="!loadBannerError">
+            <i class="pi pi-spin pi-spinner" style="font-size: 50px"></i>
+          </p>
+          <p class="text-loading" *ngIf="!loadBannerError">
+            Đang tải danh sách banner ...
+          </p>
+
+          <p class="text-loading" *ngIf="loadBannerError">
+            Không lấy được dữ liệu!
+          </p>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>

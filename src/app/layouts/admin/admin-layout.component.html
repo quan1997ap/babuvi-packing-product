@@ -1,0 +1,251 @@
+<div class="spinner-wrapper" *ngIf="loading" style="z-index: 1000;">
+   <div class="bg-spiner w100 h100"></div>
+   <div class="spinner-container w100 h100">
+      <mat-progress-spinner mode="indeterminate"></mat-progress-spinner>
+   </div>
+</div>
+
+<div class="app search-i" [dir]="layoutDir"
+   [ngClass]="[ menuLayout, selectedSidebarImage, selectedSidebarColor, selectedHeaderColor, collapsedClass]"
+   [class.app-dark]="dark" [class.boxed]="boxed" [class.collapsed-sidebar]="collapseSidebar"
+   [class.compact-sidebar]="compactSidebar" [class.bg-img-disable]="!sidebarBg">
+   <mat-sidenav-container class="app-inner">
+      <mat-sidenav #sidemenu class="sidebar-panel" id="sidebar-panel" [mode]="isOver() ? 'over' : 'side'"
+         [opened]="!isOver()" (mouseover)="menuMouseOver()" (mouseout)="menuMouseOut()">
+         <div class="opt-side relative ">
+            <div class="sidebar-container ">
+               <div class="branding text-center">
+                  <!-- <h2><i class="fa fa-superpowers" aria-hidden="true"></i> <span> Ricohc</span>
+               </h2> -->
+                  <img src="assets/babuvi.png" />
+               </div>
+               <div class="main-nav">
+                  <mat-nav-list appAccordion class="navigation relative">
+                     <mat-list-item appAccordionLink *ngFor="let menuitem of _menu">
+                        <a appAccordionToggle class="relative" mat-ripple *ngIf="menuitem.type === 'link'"
+                           [routerLink]="menuitem.state == null|| menuitem.state.indexOf('http') == 0 ?[]:'/'+menuitem.state"
+                           (click)="goToExternalUrl(menuitem.state)">
+                           <mat-icon>{{ menuitem.icon }}</mat-icon>
+                           <span>{{ menuitem.name | translate }}</span>
+                           <span fxFlex></span>
+                           <span class="menu-badge mat-{{ badge.type }}" *ngFor="let badge of menuitem.badge">{{
+                              badge.value }}</span>
+                        </a>
+
+                        <a appAccordionToggle class="relative" mat-ripple href="javascript:;"
+                           *ngIf="menuitem.type === 'sub'">
+                           <mat-icon>{{ menuitem.icon }}</mat-icon>
+                           <span>{{ menuitem.name | translate }}</span>
+                           <span fxFlex></span>
+                           <span class="menu-badge mat-{{ badge.type }}" *ngFor="let badge of menuitem.badge">{{
+                              badge.value }}</span>
+                           <mat-icon class="menu-caret">arrow_drop_down</mat-icon>
+                        </a>
+                        <mat-nav-list class="sub-menu" *ngIf="menuitem.type === 'sub'">
+                           <div *ngIf="menuitem.link">
+                              <mat-list-item outerLinkActive="open">
+                                 <a [routerLink]="['/', menuitem.state, menuitem.state]" class="relative" mat-ripple>{{
+                                    menuitem.name | translate }}</a>
+                              </mat-list-item>
+                           </div>
+                           <div *ngIf="!menuitem.link">
+                              <mat-list-item *ngFor="let childitem of menuitem.children" routerLinkActive="open">
+                                 <!-- Thẻ <a> bên dưới, check nếu pathFile là routerLink thì điều hướng như spa, 
+                                 nếu pathFile là Url web thì mở trang web trong tab mới -->
+                                 <a [routerLink]="childitem.state == null|| childitem.state.indexOf('http') == 0 ?[]:'/'+childitem.state"
+                                    (click)="goToExternalUrl(childitem.state)" class="relative" mat-ripple>
+                                    <mat-icon>{{ childitem.icon }}</mat-icon>{{ childitem.name | translate }}
+                                 </a>
+                                 <!-- <a *ngIf="!childitem.state" [routerLink]="['/', menuitem.state ]" class="relative" mat-ripple>{{ childitem.name | translate }}</a> -->
+                              </mat-list-item>
+                           </div>
+                        </mat-nav-list>
+                     </mat-list-item>
+                     <mat-divider></mat-divider>
+                  </mat-nav-list>
+               </div>
+            </div>
+         </div>
+         <div class="bg-overlay"></div>
+      </mat-sidenav>
+      <mat-toolbar class="main-header">
+         <div class="horizontal-top-bar w-100">
+            <div fxFlex.sm="100" fxFlex.xs="100" fxFlex.md="33.33" fxFlex.lg="33.33" fxFlex.xl="33.33" fxFlex="100">
+               <div class="search-bar" fxFlex>
+                  <form class="search-form">
+                     <mat-icon>search</mat-icon>
+                     <input type="text" placeholder="Search" autofocus="true" />
+                  </form>
+               </div>
+            </div>
+            <div fxFlex.sm="100" fxFlex.xs="100" fxFlex.md="33.33" fxFlex.lg="33.33" fxFlex.xl="33.33" fxFlex="100">
+               <div class="horizontal-logo">
+                  <div class="branding text-center">
+                     <h2><i class="fa fa-superpowers" aria-hidden="true"></i> <span> OPTIMA</span>
+                     </h2>
+                  </div>
+               </div>
+            </div>
+            <div fxFlex.sm="100" fxFlex.xs="100" fxFlex.md="33.33" fxFlex.lg="33.33" fxFlex.xl="33.33" fxFlex="100">
+               <div class="menu-links">
+                  <button appToggleFullscreen mat-icon-button>
+                     <mat-icon>fullscreen</mat-icon>
+                  </button>
+                  <button (click)="end.toggle()" mat-icon-button class="ml-xs overflow-visible">
+                     <mat-icon>notifications</mat-icon>
+                     <span class="notification-label">2</span>
+                  </button>
+                  <button [mat-menu-trigger-for]="user" mat-icon-button class="ml-xs">
+                     <mat-icon>person</mat-icon>
+                  </button>
+                  <mat-menu #user="matMenu" class="opt-menu" x-position="before">
+                     <button mat-menu-item (click)="logout()">
+                        <mat-icon>exit_to_app</mat-icon>
+                        Sign Out
+                     </button>
+                  </mat-menu>
+               </div>
+            </div>
+         </div>
+         <div class="vertical-menu w-100">
+            <button (click)="menuToggleFunc()" mat-icon-button class="lines-btn">
+               <mat-icon>menu</mat-icon>
+            </button>
+
+            <div class="search-bar" fxFlex>
+               <form class="search-form txt-size15">
+                  Tỷ giá:
+                  <span class="corF44335">{{rating| currencyFormat}}</span>
+               </form>
+            </div>
+
+            <span fxFlex></span>
+
+            <span class="ml-xs overflow-visible txt-size15 corF44335" fxShow="false" fxShow.gt-xs>
+               <span [innerHTML]="symbolsLocation=== '2' ? symbolsDisplay : ''"></span>
+               <span>
+                  {{balance| currencyChina}}
+               </span>
+               <span [innerHTML]="symbolsLocation === '1' ? symbolsDisplay : ''"></span>
+            </span>
+            <button (click)="moveToCart()" mat-icon-button class="ml-xs overflow-visible">
+               <mat-icon>shopping_cart</mat-icon>
+               <span *ngIf="showItemCart" class="notification-label">{{itemCartCount}}</span>
+            </button>
+            <mat-menu #user1="matMenu" class="opt-menu" x-position="before">
+               <div mat-menu-item class="head-menu grad-blue">
+                  User Menu
+               </div>
+               <button mat-menu-item>
+                  <mat-icon>show_chart</mat-icon>
+                  Charts
+               </button>
+               <button mat-menu-item>
+                  <mat-icon>navigation</mat-icon>
+                  Maps
+               </button>
+               <button mat-menu-item>
+                  <mat-icon>web</mat-icon>
+                  Calendar Settings
+               </button>
+            </mat-menu>
+            <button mat-icon-button class="ml-xs overflow-visible">
+               <mat-icon (click)="checkNotificationStatus(false)" [matMenuTriggerFor]="menuNotifications">notifications</mat-icon>
+               <span class="notification-label" [innerHTML]="lstNotification && lstNotification.length"></span>
+
+               <!-- <span *ngIf="showNotify" class="notification-label" [innerHTML]="notificationCount"></span> -->
+            </button>
+
+            <mat-menu #menuNotifications="matMenu">
+               <div class="notification">
+                  <div *ngFor="let notification of lstNotification" class="notification-item">
+                     <span class="type" tooltipPosition="bottom"  pTooltip="{{notification.typeDisplay}}" >( {{notification.typeDisplay}} )</span>
+                     <span class="title" tooltipPosition="bottom" pTooltip="{{notification.title}}">{{notification.title}}</span>
+                     <span class="date" tooltipPosition="bottom" pTooltip="{{notification.createdDate | date: 'dd/MM/yyyy h:mm' }}">{{notification.createdDate | date: 'dd/MM/yyyy h:mm' }} </span>
+                  </div>
+                  <div class="checkbox">
+                     <mat-checkbox [checked]="turnOffNotification" (change)="notificationSetting($event)" (click)="$event.stopPropagation()" >Không hiển thị lại đến khi có thông báo mới!</mat-checkbox>
+                  </div>
+               </div>
+            </mat-menu>
+
+
+            <div [mat-menu-trigger-for]="user" mat-icon-button class="ml-xs cur-point">
+               <mat-icon class="ver-align-mid">person</mat-icon>
+               <span class="txt-size15 cor5F6368">{{firstName}}</span>
+               <span>&nbsp;&nbsp;&nbsp;</span>
+            </div>
+
+            <mat-menu #user="matMenu" class="opt-menu" x-position="before">
+               <button mat-menu-item class="user-infor">
+                  <div class="summary-info">
+                     <div class="avatar">
+                        <img *ngIf="currentUser && currentUser.avatarUrl" [src]="currentUser.avatarUrl"
+                           class="avatar-img">
+                        <img *ngIf="!currentUser || !currentUser.avatarUrl" src="assets/images/default_avatar.png"
+                           class="avatar-img">
+
+                     </div>
+                     <span class="name">{{firstName}}</span>
+                  </div>
+               </button>
+               <button mat-menu-item>
+                  <div class="rating">
+                     <i class="rating-icon pi pi-money-bill"></i>
+                     <span>Số dư &nbsp;</span>
+                     <span class="rating-number"> {{balance | currencyChina }} </span>
+                     <span class="deposit-btn" (click)="moveToTopup()"> Nạp tiền </span>
+                  </div>
+               </button>
+               <button mat-menu-item routerLink="/user/userprofile">
+                  <mat-icon class="ver-align-mid">person</mat-icon>
+                  Thông tin cá nhân
+               </button>
+               <button mat-menu-item (click)="logout()">
+                  <mat-icon>exit_to_app</mat-icon>
+                  Thoát
+               </button>
+            </mat-menu>
+         </div>
+      </mat-toolbar>
+      <div class="horizontal-menu text-center">
+         <nav>
+            <ul class="main-h-list">
+               <li *ngFor="let menuitem of _menu">
+                  <a [routerLink]="['/'+menuitem.state]" *ngIf="menuitem.type === 'link'">
+                     <mat-icon>{{ menuitem.icon }}</mat-icon>
+                     <span>{{ menuitem.name | translate }}</span>
+                  </a>
+                  <a [routerLink]="['/'+menuitem.state]" *ngIf="menuitem.type === 'sub'">
+                     <mat-icon>{{ menuitem.icon }}</mat-icon>
+                     <span>{{ menuitem.name | translate }}</span>
+                  </a>
+                  <ul class="dropdown" *ngIf="menuitem.type === 'sub'">
+                     <li *ngFor="let childitem of menuitem.children">
+                        <a [routerLink]="['/'+childitem.state ]">{{ childitem.name | translate }}</a>
+                        <ul class="dropdown" *ngIf="childitem.type === 'super-sub'">
+                           <li *ngFor="let subchild of childitem.subchildren">
+                              <a [routerLink]="['/'+subchild.state ]">{{subchild.name | translate}}</a>
+                           </li>
+                        </ul>
+                     </li>
+                  </ul>
+               </li>
+            </ul>
+         </nav>
+      </div>
+      <div class="body-container">
+         <p-confirmDialog header="Xác nhận" icon="pi pi-exclamation-triangle" width="425" appendTo="body" #cd
+            [baseZIndex]="5000">
+            <p-footer>
+               <button type="button" class="ui-button-secondary" pButton icon="pi pi-times" label="NO"
+                  (click)="cd.reject()"></button>
+               <button type="button" pButton icon="pi pi-check" label="YES" (click)="cd.accept()"></button>
+            </p-footer>
+         </p-confirmDialog>
+         <router-outlet></router-outlet>
+      </div>
+
+   </mat-sidenav-container>
+   <!-- /Demo Purposes Only -->
+</div>

@@ -1,0 +1,179 @@
+<div fxLayout="row wrap" class="post-module">
+   <div class="header-title-account" fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="100" fxFlex.lg="100" fxFlex.xl="100">
+       <span>
+          Thông tin tài khoản
+       </span>
+    </div>
+
+   <div class="content-info" fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="100" fxFlex.lg="100" fxFlex.xl="100">
+      <div class="column" fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="50" fxFlex.lg="20" fxFlex.xl="20">
+         <div class="client-name">{{ clientProfile.username }}</div>
+         <div class="client-id">Mã khách hàng <span class="id">{{ clientProfile.userCode }}</span></div>
+      </div>
+   
+      <div class="column" fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="50" fxFlex.lg="53.33" fxFlex.xl="53.33">
+         <div class="post-meta">
+            <span class="timestamp"><i class="fa fa-clock-o info"></i>{{ clientProfile.phone }}</span>
+         </div>
+         <div class="post-meta">
+            <span class="comments"><i class="fa fa-comments info"></i><a href="#">{{ clientProfile.email }}</a></span>
+         </div>
+         <div class="post-meta bottom-meta">
+            <span class="timestamp"><i class="fa fa-clock-o info"></i>{{ clientProfile.address }}</span>
+         </div>
+      </div>
+   
+      <div class="column" fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="50" fxFlex.lg="33.33" fxFlex.xl="33.33">
+         <div >
+            <span class="timestamp"><i class="fa fa-clock-o note"></i>Ghi chú</span>
+            <div>các thông báo</div>
+         </div>
+      </div>
+   </div >
+
+</div>
+
+<div fxLayout="row wrap" class="account-money">
+   <div fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="100" fxFlex.lg="100" fxFlex.xl="100"> 
+      <span class="txt-account-bank">Chọn ví </span>
+      <span class="select-account-bank">
+         <mat-form-field>
+            <select matNativeControl required [(ngModel)]="walletId"(change)="onFoodSelection2()">
+               <option  *ngFor="let wallet of lstWalletByUserId" [value]="wallet.walletId">
+                  {{wallet.walletName}}
+               </option>
+             </select>
+         </mat-form-field>
+      </span>
+   </div>
+
+   <div fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="100" fxFlex.lg="100" fxFlex.xl="100">
+      Thông tin số dư tài khoản
+   </div>
+
+   <div class="content-info" fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="100" fxFlex.lg="100" fxFlex.xl="100">
+      <div class="column" fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="50" fxFlex.lg="25" fxFlex.xl="25">
+         
+      </div>
+   
+      <div class="column" fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="50" fxFlex.lg="50" fxFlex.xl="50">
+
+         <div class="content-info" fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="100" fxFlex.lg="100" fxFlex.xl="100">
+            <div class="example-container mat-elevation-z8">
+               <mat-table #table [dataSource]="dataSource">
+             
+                 <!-- Position Column -->
+                 <ng-container matColumnDef="TotalAmount">
+                   <mat-header-cell class="header" *matHeaderCellDef> 
+                       <div  class="tbTitle">Số dư tài khoản </div>
+                   </mat-header-cell>
+                   <mat-cell *matCellDef="let element"> {{element.totalAmount}} </mat-cell>
+                 </ng-container>
+             
+                 <!-- Name Column -->
+                 <ng-container matColumnDef="BlockedAmount">
+                   <mat-header-cell class="header" *matHeaderCellDef>
+                       <div  class="tbTitle">Số dư đóng băng</div>
+                   </mat-header-cell>
+                   <mat-cell *matCellDef="let element"> {{element.blockedAmount}} </mat-cell>
+                 </ng-container>
+             
+                 <!-- Weight Column -->
+                 <ng-container matColumnDef="AvailableAmount">
+                   <mat-header-cell class="header" *matHeaderCellDef>
+                       <div  class="tbTitle">Số dư khả dụng</div>
+                   </mat-header-cell>
+                   <mat-cell *matCellDef="let element"> {{element.availableAmount}} </mat-cell>
+                 </ng-container>
+             
+                 <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+                 <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+               </mat-table>
+             </div>
+         </div >
+      </div>
+   
+      <div class="column" fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="50" fxFlex.lg="25" fxFlex.xl="25">
+         
+      </div>
+   </div >
+
+</div>
+
+
+<!-- search data -->
+<div fxLayout="row wrap" class="account-money">
+
+   <div fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="100" fxFlex.lg="100" fxFlex.xl="100">
+      Thông tin Giao dịch
+   </div>
+
+   <div class="content-info" fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="100" fxFlex.lg="100" fxFlex.xl="100">
+      <div class="column" fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="50" fxFlex.lg="33.33" fxFlex.xl="33.33">
+         <mat-form-field class="example-full-width">
+            <input matInput placeholder="Mã giao dịch">
+          </mat-form-field>
+      </div>
+   
+      <div class="column" fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="50" fxFlex.lg="33.33" fxFlex.xl="33.33">
+         <mat-form-field class="example-full-width">
+            <input matInput placeholder="Mã đơn hàng">
+          </mat-form-field>
+      </div>
+   
+      <div class="column" fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="50" fxFlex.lg="33.33" fxFlex.xl="33.33">
+         <mat-form-field>
+            <select matNativeControl required>
+              <option value="volvo">Volvo</option>
+              <option value="saab">Saab</option>
+              <option value="mercedes">Mercedes</option>
+              <option value="audi">Audi</option>
+            </select>
+          </mat-form-field>
+      </div>
+   </div >
+
+   <div class="content-info" fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="100" fxFlex.lg="100" fxFlex.xl="100">
+      <div class="column" fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="50" fxFlex.lg="33.33" fxFlex.xl="33.33">
+         <mat-form-field>
+            <input matInput [matDatepicker]="picker" placeholder="Choose a date">
+            <mat-datepicker-toggle matSuffix [for]="FromDate"></mat-datepicker-toggle>
+            <mat-datepicker #FromDate></mat-datepicker>
+          </mat-form-field>
+      </div>
+   
+      <div class="column" fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="50" fxFlex.lg="33.33" fxFlex.xl="33.33">
+         <mat-form-field>
+            <input matInput [matDatepicker]="picker" placeholder="Choose a date">
+            <mat-datepicker-toggle matSuffix [for]="ToDate"></mat-datepicker-toggle>
+            <mat-datepicker #ToDate></mat-datepicker>
+          </mat-form-field>
+      </div>
+   
+      <div class="column" fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="50" fxFlex.lg="33.33" fxFlex.xl="33.33">
+         <mat-form-field>
+            <select matNativeControl required>
+              <option value="volvo">Volvo</option>
+              <option value="saab">Saab</option>
+              <option value="mercedes">Mercedes</option>
+              <option value="audi">Audi</option>
+            </select>
+          </mat-form-field>
+      </div>
+   </div >
+
+   <div class="content-info" fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="100" fxFlex.lg="100" fxFlex.xl="100">
+      <div class="column" fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="50" fxFlex.lg="33.33" fxFlex.xl="33.33">
+         
+      </div>
+   
+      <div class="column" fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="50" fxFlex.lg="33.33" fxFlex.xl="33.33">
+      </div>
+   
+      <div class="column" fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="50" fxFlex.lg="33.33" fxFlex.xl="33.33">
+         <button mat-raised-button color="primary">Primary</button>
+      </div>
+   </div >
+
+</div>
+

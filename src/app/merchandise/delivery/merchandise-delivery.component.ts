@@ -72,7 +72,7 @@ export class MerchandiseDeliveryComponent implements OnInit {
       .toPromise()
       .then((res) => {
         this.loading = false;
-        console.log(res);
+        // console.log(res);
         if (res.result.success) {
           this.deliveryRequest = res.result.data;
           if (
@@ -98,7 +98,7 @@ export class MerchandiseDeliveryComponent implements OnInit {
           this.showMessage("alert-danger", res.result.message);
         }
 
-        console.log(this.deliveryRequest);
+        // console.log(this.deliveryRequest);
         this.configPacking();
       })
       .catch((error) => {

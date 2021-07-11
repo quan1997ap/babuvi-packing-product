@@ -1,5 +1,6 @@
 <p-toast></p-toast>
-<p-confirmDialog header="Confirmation" [autoZIndex]="false" [baseZIndex]="50001" icon="pi pi-exclamation-triangle"></p-confirmDialog>
+<p-confirmDialog header="Confirmation" [autoZIndex]="false" [baseZIndex]="50001" icon="pi pi-exclamation-triangle">
+</p-confirmDialog>
 
 <div mat-dialog-title>
   <mat-toolbar class="dialog-header">
@@ -20,8 +21,9 @@
             <div
               style=" display: flex; width: 100%; align-items: center; justify-content: space-between; margin-bottom: 12px;">
               <span>Đang chọn {{selectedProducts.length}} / {{products.length}} sản phẩm</span>
-              <p-button iconPos="right" icon="pi pi-angle-double-right" label="Thêm vào kiện đang chọn  "
-                (click)="addProductToPackage()"></p-button>
+              <p-button [disabled]="selectedProducts && selectedProducts.length == 0" iconPos="right"
+                icon="pi pi-angle-double-right" label="Thêm vào kiện đang chọn  " (click)="addProductToPackage()">
+              </p-button>
             </div>
             <div style=" display: flex; width: 100%; align-items: center;">
               <i class="fa fa-search" style="margin: 4px 9px 0 0; font-size: 20px;"></i>
@@ -71,11 +73,17 @@
             </div>
           </div>
           <div class="gr-btn">
-            <button pButton pRipple type="button" icon="pi pi-save"
-              (click)="saveGr(i)" pTooltip="Lưu nhóm" tooltipPosition="top"></button>
+            <button pButton pRipple type="button" icon="pi pi-save" (click)="saveGr(i)"
+              *ngIf="!packages.merchandiseWarehouseId && packages['products'] && packages['products'].length"
+              matTooltip="Lưu nhóm" matTooltipPosition="above"></button>
             &nbsp;
-            <button pButton pRipple type="button" icon="pi pi-trash"
-              class="ui-button-danger" (click)="removeGr(i)"  pTooltip="Xóa nhóm" tooltipPosition="top"></button>
+            <button pButton pRipple type="button" icon="pi pi-print" (click)="printGr(i)"
+              *ngIf="!packages.merchandiseWarehouseId && packages['products'] && packages['products'].length"
+              matTooltip="Lưu nhóm" matTooltipPosition="above"></button>
+            &nbsp;
+            <button pButton pRipple type="button" icon="pi pi-trash" class="ui-button-danger"
+              *ngIf="packages.merchandiseWarehouseId" (click)="removeGr(i)" matTooltip="Xóa nhóm"
+              matTooltipPosition="above"></button>
           </div>
         </div>
 

@@ -15,9 +15,9 @@ export class PackingProductsComponent implements OnInit {
   products = [];
 
   defaultPackage = {
-    packageName: null,
     sumNetWeight: 0,
     products: [],
+    merchandiseWarehouseId: null // id
   };
   productGrouped = [];
 
@@ -37,7 +37,6 @@ export class PackingProductsComponent implements OnInit {
     private confirmationService: ConfirmationService
   ) {
     console.log(this.data);
-    this.products = JSON.parse(JSON.stringify(this.data.lsDetail));
   }
 
   close() {
@@ -45,12 +44,34 @@ export class PackingProductsComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.productGrouped = [JSON.parse(JSON.stringify(this.defaultPackage))];
-    this.packageIndexSelected = 0;
-  }
+    if(this.data && this.data.lsParentDetail){
+      this.products = this.data.lsDetail.filter( product => product.parentId == null)
+      let lsParentDetail = this.data.lsParentDetail.sort( (a, b) => {
+        if( a.merchandiseWarehouseId == null){
+          return -99999;
+        } else {
+          return 0;
+        }
+      } )
+      this.productGrouped = lsParentDetail
+      .map( parent => {
+        let defaultParent = JSON.parse(JSON.stringify(this.defaultPackage));
+        if(this.data && this.data.lsDetail && parent.merchandiseWarehouseId != null){
+          defaultParent.products = this.data.lsDetail.filter( product => product.parentId == parent.merchandiseWarehouseId)
+        } else if(parent.merchandiseWarehouseId == null) {
+          defaultParent.products = [];
+        }
+        if(parent.merchandiseWarehouseId == null){
+          return defaultParent;
+        } else {
+          return { ...defaultParent, ...parent }
+        }
+      })
+      this.checkSumNetWeight();
 
-  createPackage() {
-    // this.merchandiseServices.createPackage()
+      console.log( this.productGrouped )
+    }
+    this.packageIndexSelected = 0;
   }
 
   addProductToPackage() {
@@ -76,16 +97,20 @@ export class PackingProductsComponent implements OnInit {
 
   saveGr(i: number) {
     let saveParams = {
-      lsId: this.productGrouped[i].products.map((item) => item.merchandiseId),
+      lsId: this.productGrouped[i].products.map((item) => item.merchandiseWarehouseId),
     };
     this.merchandiseServices.createPackage(saveParams).subscribe(
       (res) => {
         console.log(res);
-        this.checkSumNetWeight();
-        if(this.products && this.products.length){
-          this.addGroup();
+        if(res && res.result && res.result.success){
+          this.checkSumNetWeight();
+          if(this.products && this.products.length){
+            this.addGroup();
+          }
+          this.showMessage("success", "Lưu nhóm", res.result.message);
+        } else {
+          this.showMessage("error", "Lưu nhóm", res.result.message);          
         }
-        this.showMessage("success", "Lưu nhóm", res.result.message);
       },
       (error) => {
         this.showMessage("error", "Lưu nhóm", "Bạn chưa lưu được nhóm");
@@ -94,23 +119,32 @@ export class PackingProductsComponent implements OnInit {
 
   }
 
+  printGr(i){
+
+  }
+
   removeGr(i) {
     this.confirmationService.confirm({
       message: "Bạn có chắc muốn xóa gói?",
       accept: () => {
-        this.merchandiseServices.deletePackage({}).subscribe(
+        this.merchandiseServices.deletePackage({
+          DeliveryRequestId : this.data.deliveryRequestId,
+          ParentMerchandiseId :  this.productGrouped[i].merchandiseWarehouseId
+        }).subscribe(
           (res) => {
             console.log(res);
-            this.products = this.products.concat(
-              this.productGrouped[i].products
-            );
-            this.productGrouped[i].products = [];
-            this.showMessage(
-              "success",
-              "Xóa nhóm",
-              "Bạn đã xóa nhóm thành công"
-            );
-            this.checkSumNetWeight();
+            if(res && res.result && res.result.success){
+              this.productGrouped.splice( i, 1 )
+              this.showMessage(
+                "success",
+                "Xóa nhóm",
+                "Bạn đã xóa nhóm thành công"
+              );
+              this.checkSumNetWeight();
+              // this.showMessage("success", "Xóa nhóm", res.result.message);
+            } else {
+              this.showMessage("error", "Xóa nhóm", res.result.message);          
+            }
           },
           (error) => {
             this.showMessage("error", "Lưu nhóm", "Bạn chưa lưu được nhóm");

@@ -39,8 +39,7 @@ import { PackingProductsComponent } from "./delivery/packing-products/packing-pr
 import { RadioButtonModule } from "primeng/radiobutton";
 import { MessagesModule } from "primeng/messages";
 import { MessageModule } from "primeng/message";
-import { TooltipModule } from "primeng/tooltip";
-
+import { MatTooltipModule } from "@angular/material/tooltip";
 @NgModule({
   imports: [
     CommonModule,
@@ -69,6 +68,7 @@ import { TooltipModule } from "primeng/tooltip";
     InputTextModule,
     RadioButtonModule,
     MessagesModule,
+    MatTooltipModule
   ],
   declarations: [
     MerchandiseDeliveryComponent,

@@ -21,7 +21,7 @@ import { DataTable } from 'primeng/primeng';
 })
 export class MerchandiseDeliveryComponent implements OnInit {
   @ViewChild("dt") private dataTable: DataTable;
-  expandedRows = [];
+  expandedRows = { }; // { "id": 1 }
 
   isDisable = false;
   merchandiseList: any[];
@@ -51,6 +51,7 @@ export class MerchandiseDeliveryComponent implements OnInit {
   ];
   dataSource = {
     rows: [],
+    rowsFilter: [],
     rowGroupMetadata: {},
     grByField: 'parentId'
   };
@@ -73,14 +74,13 @@ export class MerchandiseDeliveryComponent implements OnInit {
    * Get delivery data by code
    * @param code
    */
-  getDeliveryRequestByCode(code) {
+  getDeliveryRequestByCode(code, showDialog: boolean) {
     this.loading = true;
     this.merchandiseServices
       .getDeliveryRequestByCode(code)
       .toPromise()
       .then((res) => {
         this.loading = false;
-        // console.log(res);
         if (res.result.success) {
           this.deliveryRequest = res.result.data;
           if (
@@ -105,9 +105,10 @@ export class MerchandiseDeliveryComponent implements OnInit {
           this.deliveryRequest = new DeliveryRequest();
           this.showMessage("alert-danger", res.result.message);
         }
-
-        // console.log(this.deliveryRequest);
-        this.configPacking();
+        if(showDialog){
+          this.configPacking();
+        }
+        this.expandAllTable();
       })
       .catch((error) => {
         this.loading = false;
@@ -121,10 +122,9 @@ export class MerchandiseDeliveryComponent implements OnInit {
 
 
   expandAllTable(){
-    console.log(this.dataTable.value)
-    for (let data of this.dataTable.value) {
-      this.expandedRows[data.locationDescription] = true;
-    }
+    Object.keys(this.dataSource.rowGroupMetadata).forEach( key => {
+      this.expandedRows[key] = true;
+    });
   }
   configPacking() {
     const dialogRef = this.dialog.open(PackingProductsComponent, {
@@ -137,7 +137,7 @@ export class MerchandiseDeliveryComponent implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe((result) => {
-      this.expandAllTable();
+      this.getDeliveryRequestByCode(this.deliveryRequestCode, false);
       console.log(`Dialog result: ${result}`); // Pizza!
     });
   }
@@ -176,25 +176,30 @@ export class MerchandiseDeliveryComponent implements OnInit {
         (e) => e.parentId === p.merchandiseWarehouseId
       );
       if (merchandiseLsByParentId.length > 0) {
-        if (p.merchandiseWarehouseId === null) {
-          this.merchandiseList = [
-            ...this.merchandiseList,
-            ...merchandiseLsByParentId,
-          ];
-        } else {
-          this.merchandiseList = [
-            ...this.merchandiseList,
-            p,
-            ...merchandiseLsByParentId,
-          ];
-        }
+        this.merchandiseList = [
+          ...this.merchandiseList,
+          ...merchandiseLsByParentId,
+        ];
       }
     }
 
-    this.dataSource.rows = this.merchandiseList;
+    this.dataSource.rows = JSON.parse(JSON.stringify(this.merchandiseList));
+    this.dataSource.rowsFilter = JSON.parse(JSON.stringify(this.merchandiseList));
+    console.log(this.dataSource)
+    // make group rows
     this.updateRowGroupMetaData();
   }
 
+  
+  getMerchandiseCode(list, merchandiseId){
+    // deliveryRequest.lsParentDetail
+    let merchandiseFound = list.find( item => item.merchandiseWarehouseId === merchandiseId);
+    if(merchandiseFound){
+      return merchandiseFound.merchandiseCode;
+    } else {
+      return '___'
+    }
+  }
   /**
    * Fill merchandise list by parent merchandise code
    * @param value
@@ -209,7 +214,7 @@ export class MerchandiseDeliveryComponent implements OnInit {
         const parent = this.deliveryRequest.lsParentDetail.find(
           (p) => p.merchandiseCode === value
         );
-        console.log(parent, value, this.deliveryRequest.lsDetail);
+
         let result = [];
         if (parent) {
           result = this.deliveryRequest.lsDetail.filter(
@@ -220,8 +225,8 @@ export class MerchandiseDeliveryComponent implements OnInit {
             (e) => e.merchandiseCode == value
           );
         }
-        console.log(result);
-        this.dataSource.rows = result;
+
+        this.dataSource.rowsFilter = result;
       } else {
         this.sortMerchandiseLsAndMergeParent();
       }
@@ -238,7 +243,7 @@ export class MerchandiseDeliveryComponent implements OnInit {
       for (let i = 0; i < this.dataSource.rows.length; i++) {
         let rowData = this.dataSource.rows[i];
         let grFieldData = rowData[grByField];
-        console.log(grFieldData)
+
         if (i == 0) {
           this.dataSource.rowGroupMetadata[grFieldData] = { index: 0, size: 1 };
         } else {
@@ -252,8 +257,12 @@ export class MerchandiseDeliveryComponent implements OnInit {
       }
     }
 
-    console.log(this.dataSource.rowGroupMetadata )
+    // Expand Rows https://stackblitz.com/edit/primeng-turbo-table-u53rsg?file=app%2Fprovider-search%2Fprovider-search.component.ts
+    Object.keys(this.dataSource.rowGroupMetadata).forEach( key => {
+      this.expandedRows[key] = true;
+    });
 
+    console.log(this.dataSource.rowGroupMetadata);
   }
 
   /**
@@ -429,7 +438,6 @@ export class MerchandiseDeliveryComponent implements OnInit {
    * Print bill
    */
   printExpBill() {
-    console.log(this.deliveryRequest.deliveryRequestId);
     const printData = {
       expCode:
         this.deliveryRequest && this.deliveryRequest.warehouseExp
@@ -473,7 +481,6 @@ export class MerchandiseDeliveryComponent implements OnInit {
       .then((res) => {
         if (res.result.success) {
           this.lsTransporter = res.result.data;
-          console.log(this.lsTransporter);
           //đặt giá trị mặc định cho đơn vị vận chuyển
           //hiện tại đang fix 1 yêu cầu giao chỉ có một mã vận đơn --> sau này sẽ edit code
           this.deliveryRequest.shipment[0].transporterId =

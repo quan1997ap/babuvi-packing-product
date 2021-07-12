@@ -148,3 +148,18 @@ td.mat-cell:last-of-type, td.mat-footer-cell:last-of-type, th.mat-header-cell:la
     margin-left: 10px;
   }
 }
+
+::ng-deep{
+  .group-header{
+    background: #f44336 !important;
+    color: #fff;
+    i{
+      margin-top: 4px;
+      margin-right: 8px;
+    }
+    a,span{
+      color: #fff !important;
+      text-decoration: none !important; 
+    }
+  }
+}

@@ -11,6 +11,7 @@ import { ConfirmationService } from "primeng/api";
   styleUrls: ["./packing-products.component.scss"],
 })
 export class PackingProductsComponent implements OnInit {
+  isLoading = false;
   selectedProducts = [];
   products = [];
 
@@ -45,7 +46,7 @@ export class PackingProductsComponent implements OnInit {
 
   ngOnInit() {
     if(this.data && this.data.lsParentDetail){
-      this.products = this.data.lsDetail.filter( product => product.parentId == null)
+      this.products = this.data.lsDetail.filter( product => product.parentId == null);
       let lsParentDetail = this.data.lsParentDetail.sort( (a, b) => {
         if( a.merchandiseWarehouseId == null){
           return -99999;
@@ -53,6 +54,10 @@ export class PackingProductsComponent implements OnInit {
           return 0;
         }
       } )
+      if(this.products && this.products.length == 0){
+        lsParentDetail = lsParentDetail.filter( parent => parent.merchandiseWarehouseId != null)
+      }
+      console.log(lsParentDetail)
       this.productGrouped = lsParentDetail
       .map( parent => {
         let defaultParent = JSON.parse(JSON.stringify(this.defaultPackage));
@@ -99,20 +104,23 @@ export class PackingProductsComponent implements OnInit {
     let saveParams = {
       lsId: this.productGrouped[i].products.map((item) => item.merchandiseWarehouseId),
     };
+    this.isLoading = true;
     this.merchandiseServices.createPackage(saveParams).subscribe(
       (res) => {
-        console.log(res);
         if(res && res.result && res.result.success){
+          this.productGrouped[i].merchandiseWarehouseId = res.result.data.lsChild[0].parentId;
           this.checkSumNetWeight();
           if(this.products && this.products.length){
             this.addGroup();
           }
-          this.showMessage("success", "Lưu nhóm", res.result.message);
+          this.showMessage("success", "Lưu nhóm", "Bạn đã lưu nhóm thành công");
         } else {
-          this.showMessage("error", "Lưu nhóm", res.result.message);          
+          this.showMessage("error", "Lưu nhóm", "Bạn đã lưu nhóm không thành công");          
         }
+        this.isLoading = false;
       },
       (error) => {
+        this.isLoading = false;
         this.showMessage("error", "Lưu nhóm", "Bạn chưa lưu được nhóm");
       }
     );
@@ -120,13 +128,14 @@ export class PackingProductsComponent implements OnInit {
   }
 
   printGr(i){
-
+    this.isLoading = false;
   }
 
   removeGr(i) {
     this.confirmationService.confirm({
       message: "Bạn có chắc muốn xóa gói?",
       accept: () => {
+        this.isLoading = true;
         this.merchandiseServices.deletePackage({
           DeliveryRequestId : this.data.deliveryRequestId,
           ParentMerchandiseWarehouseId :  this.productGrouped[i].merchandiseWarehouseId
@@ -134,19 +143,29 @@ export class PackingProductsComponent implements OnInit {
           (res) => {
             console.log(res);
             if(res && res.result && res.result.success){
-              this.productGrouped.splice( i, 1 )
+              this.products = this.products.concat(this.productGrouped[i].products);
+              this.productGrouped.splice( i, 1 );
+              if(this.productGrouped && this.productGrouped.length == 0){
+                this.addGroup();
+              }
+              else if(
+                this.productGrouped.filter( item => item.merchandiseWarehouseId == null).length == 0
+              ){
+                this.addGroup();
+              }
+              this.checkSumNetWeight();
               this.showMessage(
                 "success",
                 "Xóa nhóm",
                 "Bạn đã xóa nhóm thành công"
-              );
-              this.checkSumNetWeight();
-              // this.showMessage("success", "Xóa nhóm", res.result.message);
+              );;
             } else {
               this.showMessage("error", "Xóa nhóm", res.result.message);          
             }
+            this.isLoading = false;
           },
           (error) => {
+            this.isLoading = false;
             this.showMessage("error", "Lưu nhóm", "Bạn chưa lưu được nhóm");
           }
         );

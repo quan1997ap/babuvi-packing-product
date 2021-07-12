@@ -1,4 +1,16 @@
+.loading{
+  cursor: progress !important;
+  button,a, ul,li{
+    cursor: progress !important;
+  }
+}
 ::ng-deep {
+  .ui-confirmdialog {
+    z-index: 5001 !important;
+  }
+  .ui-widget-overlay.ui-dialog-mask{
+    z-index: 5000 !important;
+  }
   .mat-dialog-container {
     padding: 0 0 !important;
   }

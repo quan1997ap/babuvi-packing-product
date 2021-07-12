@@ -102,8 +102,43 @@
                 </div>
                 <div class="merchandise-table-container">
                     <div class="table-wrapper">
-                        <table mat-table [dataSource]="dataSource" class="w-100 merchandise-table">
-                            <!-- Position Column -->
+                        <!-- rowExpandMode="single" -->
+                        <p-table [value]="dataSource.rows" [dataKey]="dataSource.grByField" [expandedRowKeys]="expandedRows">
+                            <ng-template pTemplate="header">
+                                <tr>
+                                    <th>Mã kiện</th>
+                                    <th>Cân nặng</th>
+                                    <th>Thể tích</th>
+                                </tr>
+                            </ng-template>
+                            <ng-template pTemplate="body" #dt let-rowData let-rowIndex="rowIndex" let-expanded="expanded"  let-columns="columns" >
+                                <tr class="ui-widget-header" *ngIf="dataSource.rowGroupMetadata[rowData[dataSource.grByField]].index === rowIndex">
+                                    <td colspan="3">
+                                        <a href="#" [pRowToggler]="rowData">
+                                            <i
+                                                [ngClass]="expanded ? 'fa fa-fw fa-chevron-circle-down' : 'fa fa-fw fa-chevron-circle-right'"></i>
+                                            <span>Kiện số <strong>{{rowIndex}}</strong>: 
+                                            <span *ngIf="rowData[dataSource.grByField] != null; else nullParent">{{rowData[dataSource.grByField]}}</span>
+                                            <ng-template #nullParent>
+                                                Các kiện chưa thuộc gói nào
+                                            </ng-template>
+                                            </span>
+                                        </a>
+                                    </td>
+                                </tr>
+                            </ng-template>
+                            <ng-template pTemplate="rowexpansion" let-rowData let-rowIndex="rowIndex">
+                                <tr>
+                                    <td>{{rowData.merchandiseCode}}</td>
+                                    <td> {{rowData.netWeight}} kg</td>
+                                    <td> {{rowData.width}} x {{rowData.width}}
+                                        x {{rowData.height}}</td>
+                                </tr>
+                            </ng-template>
+                        </p-table>
+
+
+                        <!-- <table mat-table [dataSource]="dataSource" class="w-100 merchandise-table">
                             <ng-container matColumnDef="orderCode">
                                 <th class="merchandise-code text-center" mat-header-cell *matHeaderCellDef>
                                     <span>Mã đơn hàng</span>
@@ -152,8 +187,9 @@
                             </ng-container>
                             <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
                             <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-                        </table>
-                        <div *ngIf="dataSource.data.length === 0" class="text-center p-2">Không có dữ liệu</div>
+                        </table> -->
+
+                        <div *ngIf="dataSource.rows.length === 0" class="text-center p-2">Không có dữ liệu</div>
                         <mat-paginator class="mb-2" [pageSize]="10" showFirstLastButtons></mat-paginator>
                     </div>
                 </div>

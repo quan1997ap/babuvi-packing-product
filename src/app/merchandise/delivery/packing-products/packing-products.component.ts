@@ -129,7 +129,7 @@ export class PackingProductsComponent implements OnInit {
       accept: () => {
         this.merchandiseServices.deletePackage({
           DeliveryRequestId : this.data.deliveryRequestId,
-          ParentMerchandiseId :  this.productGrouped[i].merchandiseWarehouseId
+          ParentMerchandiseWarehouseId :  this.productGrouped[i].merchandiseWarehouseId
         }).subscribe(
           (res) => {
             console.log(res);

@@ -21,10 +21,19 @@
     max-height: unset;
   }
 }
-:host{
+:host {
   height: 100%;
   display: flex;
   flex-direction: column;
+}
+.p-margin-20px {
+  margin-bottom: 20px;
+}
+
+.title {
+  font-size: 20px;
+  font-weight: bold;
+  margin-bottom: 16px;
 }
 
 .package-config {
@@ -36,23 +45,23 @@
     border: 1px solid #a6a6a6;
     width: 100%;
     justify-content: space-between;
-    &:active{
-        background: #9fcbfb !important;
+    &:active {
+      background: #9fcbfb !important;
     }
-    .option{
-        width: 46px;
-        text-align: center;
+    .option {
+      width: 46px;
+      text-align: center;
     }
     .package-infor {
       display: flex;
       flex: 1;
     }
-    .gr-btn{
-      transform: scale(0.7);
+    .gr-btn {
+      transform: scale(0.8);
     }
   }
 
-  .empty-section{
+  .empty-section {
     height: 50px;
     line-height: 50px;
     padding-left: 12px;
@@ -60,11 +69,10 @@
     border-top: none;
   }
 
-  .p-bottom-20px{
-    padding-bottom: 20px;
+  .table-grouped {
+    margin-bottom: 20px;
   }
-
-  .table-grouped, .empty-section{
-    padding-bottom: 20px;
+  .empty-section {
+    margin-bottom: 20px;
   }
 }

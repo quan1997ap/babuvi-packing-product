@@ -11,6 +11,7 @@ import { MatDialog } from "@angular/material/dialog";
 import { PrintBillComponent } from "./print-bill/print-bill.component";
 import { TransporterViewModel } from "app/model/transporter.model";
 import { MessageService, ConfirmationService } from "primeng/api";
+import { DataTable } from 'primeng/primeng';
 
 @Component({
   selector: "app-merchandise-delivery",
@@ -19,6 +20,9 @@ import { MessageService, ConfirmationService } from "primeng/api";
   providers: [],
 })
 export class MerchandiseDeliveryComponent implements OnInit {
+  @ViewChild("dt") private dataTable: DataTable;
+  expandedRows = [];
+
   isDisable = false;
   merchandiseList: any[];
   messages: any[];
@@ -45,7 +49,11 @@ export class MerchandiseDeliveryComponent implements OnInit {
     "capacity",
     "chargedWeight",
   ];
-  dataSource = new MatTableDataSource<any>();
+  dataSource = {
+    rows: [],
+    rowGroupMetadata: {},
+    grByField: 'parentId'
+  };
   @ViewChild(MatPaginator) paginator: MatPaginator;
 
   constructor(
@@ -111,6 +119,13 @@ export class MerchandiseDeliveryComponent implements OnInit {
       });
   }
 
+
+  expandAllTable(){
+    console.log(this.dataTable.value)
+    for (let data of this.dataTable.value) {
+      this.expandedRows[data.locationDescription] = true;
+    }
+  }
   configPacking() {
     const dialogRef = this.dialog.open(PackingProductsComponent, {
       width: "96%",
@@ -122,6 +137,7 @@ export class MerchandiseDeliveryComponent implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe((result) => {
+      this.expandAllTable();
       console.log(`Dialog result: ${result}`); // Pizza!
     });
   }
@@ -175,8 +191,8 @@ export class MerchandiseDeliveryComponent implements OnInit {
       }
     }
 
-    this.dataSource.data = this.merchandiseList;
-    this.dataSource.paginator = this.paginator;
+    this.dataSource.rows = this.merchandiseList;
+    this.updateRowGroupMetaData();
   }
 
   /**
@@ -193,18 +209,51 @@ export class MerchandiseDeliveryComponent implements OnInit {
         const parent = this.deliveryRequest.lsParentDetail.find(
           (p) => p.merchandiseCode === value
         );
+        console.log(parent, value, this.deliveryRequest.lsDetail);
         let result = [];
         if (parent) {
           result = this.deliveryRequest.lsDetail.filter(
-            (e) => e.parentId === parent.merchandiseId
+            (e) => e.parentId === parent.merchandiseWarehouseId
+          );
+        } else {
+          result = this.deliveryRequest.lsDetail.filter(
+            (e) => e.merchandiseCode == value
           );
         }
-        this.dataSource.data = result;
-        this.dataSource.paginator = this.paginator;
+        console.log(result);
+        this.dataSource.rows = result;
       } else {
         this.sortMerchandiseLsAndMergeParent();
       }
     }
+  }
+
+  /**
+   *
+   */
+  updateRowGroupMetaData() {
+    let grByField = this.dataSource.grByField;
+    this.dataSource.rowGroupMetadata = {};
+    if (this.dataSource.rows) {
+      for (let i = 0; i < this.dataSource.rows.length; i++) {
+        let rowData = this.dataSource.rows[i];
+        let grFieldData = rowData[grByField];
+        console.log(grFieldData)
+        if (i == 0) {
+          this.dataSource.rowGroupMetadata[grFieldData] = { index: 0, size: 1 };
+        } else {
+          let previousRowData = this.dataSource.rows[i - 1];
+          let previousRowGroup = previousRowData[grByField];
+          if (grFieldData == previousRowGroup) {
+            this.dataSource.rowGroupMetadata[grFieldData].size++;
+          }
+          else this.dataSource.rowGroupMetadata[grFieldData] = { index: i, size: 1 };
+        }
+      }
+    }
+
+    console.log(this.dataSource.rowGroupMetadata )
+
   }
 
   /**

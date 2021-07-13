@@ -12,6 +12,13 @@ export class MerchandiseServices extends ApiService {
         super(ApiApplication.merchandise.controller, http, _router);
     }
 
+    addOrUpdateShipment(data){
+        return this.post(
+            this.apiBaseController + ApiApplication.merchandise.addOrUpdateShipment,
+            data
+          );
+    }
+
     getMerchandiseViewModel(orderCode: string, perPage, page) {
         const param = '?orderCode=' + orderCode + '&perPage=' + perPage + '&page=' + page;
         return this.get(this.apiBaseController + ApiApplication.merchandise.getMerchandiseViewModel + param);

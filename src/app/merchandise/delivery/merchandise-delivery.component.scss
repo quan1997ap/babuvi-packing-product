@@ -26,6 +26,21 @@ $col-left-md-width: 40%;
   display: table;
 }
 
+.search-form{
+  display: flex;
+  margin-bottom: 12px;
+  justify-content: space-between;
+  align-items: flex-end;
+  .input-search{
+    flex: 1;
+    input{
+      width: 100%;
+    }
+    button{
+      margin-left: 20px;
+    }
+  }
+}
 @media (min-width: 768px) {
   .col-left {
     width: $col-left-md-width;

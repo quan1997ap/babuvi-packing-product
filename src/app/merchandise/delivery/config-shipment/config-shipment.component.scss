@@ -1,6 +1,9 @@
-.loading{
+.loading {
   cursor: progress !important;
-  button,a, ul,li{
+  button,
+  a,
+  ul,
+  li {
     cursor: progress !important;
   }
 }
@@ -10,10 +13,13 @@
   flex-direction: column;
 }
 
-::ng-deep {
-  .ui-confirmdialog {
-    z-index: 5001 !important;
+.label {
+  color: #333;
+  .required {
+    color: red;
   }
+}
+::ng-deep {
   .mat-dialog-actions {
     margin-bottom: 0 !important;
     display: flex;
@@ -21,7 +27,10 @@
     padding: 8px 12px;
     background: whitesmoke;
   }
-  .ui-widget-overlay.ui-dialog-mask{
+  .ui-confirmdialog {
+    z-index: 5001 !important;
+  }
+  .ui-widget-overlay.ui-dialog-mask {
     z-index: 5000 !important;
   }
   .mat-dialog-container {
@@ -44,6 +53,14 @@
     margin: 0 0;
     flex: 1;
     max-height: unset;
+    .shipment-form{
+        .control{
+            margin-bottom: 12px;
+            input{
+                width: 100%;
+            }
+        }
+    }
   }
 }
 :host {
@@ -59,45 +76,4 @@
   font-size: 20px;
   font-weight: bold;
   margin-bottom: 16px;
-}
-
-.package-config {
-  .package-header {
-    display: flex;
-    align-items: center;
-    height: 40px;
-    background: whitesmoke;
-    border: 1px solid #a6a6a6;
-    width: 100%;
-    justify-content: space-between;
-    &:active {
-      background: #9fcbfb !important;
-    }
-    .option {
-      width: 46px;
-      text-align: center;
-    }
-    .package-infor {
-      display: flex;
-      flex: 1;
-    }
-    .gr-btn {
-      transform: scale(0.8);
-    }
-  }
-
-  .empty-section {
-    height: 50px;
-    line-height: 50px;
-    padding-left: 12px;
-    border: 1px solid #a6a6a6;
-    border-top: none;
-  }
-
-  .table-grouped {
-    margin-bottom: 20px;
-  }
-  .empty-section {
-    margin-bottom: 20px;
-  }
 }

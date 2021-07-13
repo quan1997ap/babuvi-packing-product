@@ -1,0 +1,47 @@
+<div [ngClass]="{ 'loading': isLoading}" class="wrap-dialog">
+  <p-toast></p-toast>
+  <p-confirmDialog appendTo="body" header="Confirmation" [autoZIndex]="false" [baseZIndex]="5000"
+    icon="pi pi-exclamation-triangle">
+  </p-confirmDialog>
+
+  <div mat-dialog-title>
+    <mat-toolbar class="dialog-header">
+      <span> Đóng gói kiện hàng </span>
+      <span class="fx-spacer"></span>
+      <button mat-icon-button (click)="close()">
+        <mat-icon mat-list-icon>close</mat-icon>
+      </button>
+    </mat-toolbar>
+  </div>
+
+  <div mat-dialog-content>
+    <div [formGroup]="shipmentForm" class="shipment-form">
+
+      <div class="control">
+        <div class="label">Đơn vị vận chuyển: <span class="required"> * </span></div>
+        <input pInputText type="text" formControlName="ParentMerchandiseWarehouseId">
+      </div>
+
+      <div class="control">
+        <div class="label">Mã vận đơn: <span class="required"> * </span></div>
+        <input pInputText type="text" formControlName="CodAmount">
+      </div>
+
+      <div class="control">
+        <div class="label">Tiền code: <span class="required"> * </span></div>
+        <input pInputText type="text" formControlName="CodAmount">
+      </div>
+
+      <div class="control">
+        <div class="label">Tiền ship: <span class="required"> * </span></div>
+        <input pInputText type="text" formControlName="TotalAmount">
+      </div>
+
+    </div>
+
+  </div>
+
+  <div mat-dialog-actions>
+    <button pButton (click)="close()" label="Hoàn tất" ></button>
+  </div>
+</div>

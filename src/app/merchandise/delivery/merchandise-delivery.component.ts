@@ -1,3 +1,4 @@
+import { ConfigShipmentComponent } from './config-shipment/config-shipment.component';
 import { PackingProductsComponent } from "./packing-products/packing-products.component";
 import { Shipment } from "./../../model/shipment.model";
 import { Component, OnInit, ViewChild } from "@angular/core";
@@ -11,7 +12,7 @@ import { MatDialog } from "@angular/material/dialog";
 import { PrintBillComponent } from "./print-bill/print-bill.component";
 import { TransporterViewModel } from "app/model/transporter.model";
 import { MessageService, ConfirmationService } from "primeng/api";
-import { DataTable } from 'primeng/primeng';
+import { DataTable } from "primeng/primeng";
 
 @Component({
   selector: "app-merchandise-delivery",
@@ -21,7 +22,7 @@ import { DataTable } from 'primeng/primeng';
 })
 export class MerchandiseDeliveryComponent implements OnInit {
   @ViewChild("dt") private dataTable: DataTable;
-  expandedRows = { }; // { "id": 1 }
+  expandedRows = {}; // { "id": 1 }
 
   isDisable = false;
   merchandiseList: any[];
@@ -53,7 +54,7 @@ export class MerchandiseDeliveryComponent implements OnInit {
     rows: [],
     rowsFilter: [],
     rowGroupMetadata: {},
-    grByField: 'parentId'
+    grByField: "parentId",
   };
   @ViewChild(MatPaginator) paginator: MatPaginator;
 
@@ -70,11 +71,39 @@ export class MerchandiseDeliveryComponent implements OnInit {
     this.getLsTransporter();
   }
 
+
+  /**
+   *
+   * @param addOrUpdateShipment
+   */
+
+  addOrUpdateShipment(rowData) {
+    let ParentMerchandiseWarehouseId = rowData[this.dataSource.grByField];
+    let ParentMerchandise = this.deliveryRequest.lsParentDetail.find(
+      (item) => item.merchandiseWarehouseId === ParentMerchandiseWarehouseId
+    );
+
+    const dialogRef = this.dialog.open(ConfigShipmentComponent, {
+      width: "96%",
+      height: "96%",
+      maxWidth: "400px",
+      maxHeight: "500px",
+      disableClose: true,
+      data: {
+        ParentMerchandiseWarehouse: ParentMerchandise
+      }
+    });
+
+    dialogRef.afterClosed().subscribe((result) => {
+    });
+
+  }
+
   /**
    * Get delivery data by code
    * @param code
    */
-  getDeliveryRequestByCode(code, showDialog: boolean) {
+  getDeliveryRequestByCode(code, showDialog?: boolean) {
     this.loading = true;
     this.merchandiseServices
       .getDeliveryRequestByCode(code)
@@ -105,8 +134,8 @@ export class MerchandiseDeliveryComponent implements OnInit {
           this.deliveryRequest = new DeliveryRequest();
           this.showMessage("alert-danger", res.result.message);
         }
-        if(showDialog){
-          this.configPacking();
+        if (showDialog) {
+          // this.configPacking();
         }
         this.expandAllTable();
       })
@@ -120,12 +149,12 @@ export class MerchandiseDeliveryComponent implements OnInit {
       });
   }
 
-
-  expandAllTable(){
-    Object.keys(this.dataSource.rowGroupMetadata).forEach( key => {
+  expandAllTable() {
+    Object.keys(this.dataSource.rowGroupMetadata).forEach((key) => {
       this.expandedRows[key] = true;
     });
   }
+
   configPacking() {
     const dialogRef = this.dialog.open(PackingProductsComponent, {
       width: "96%",
@@ -184,22 +213,31 @@ export class MerchandiseDeliveryComponent implements OnInit {
     }
 
     this.dataSource.rows = JSON.parse(JSON.stringify(this.merchandiseList));
-    this.dataSource.rowsFilter = JSON.parse(JSON.stringify(this.merchandiseList));
-    console.log(this.dataSource)
+    this.dataSource.rowsFilter = JSON.parse(
+      JSON.stringify(this.merchandiseList)
+    );
+    console.log(this.dataSource);
     // make group rows
     this.updateRowGroupMetaData();
   }
 
-  
-  getMerchandiseCode(list, merchandiseId){
+  getMerchandiseInfor(list, merchandiseId) {
     // deliveryRequest.lsParentDetail
-    let merchandiseFound = list.find( item => item.merchandiseWarehouseId === merchandiseId);
-    if(merchandiseFound){
-      return merchandiseFound.merchandiseCode;
+    let merchandiseFound = list.find(
+      (item) => item.merchandiseWarehouseId === merchandiseId
+    );
+    if (merchandiseFound) {
+      return merchandiseFound;
     } else {
-      return '___'
+      return {
+        merchandiseCode: null,
+        netWeight: null,
+        paymentWeight: null
+      }
     }
   }
+
+
   /**
    * Fill merchandise list by parent merchandise code
    * @param value
@@ -251,14 +289,17 @@ export class MerchandiseDeliveryComponent implements OnInit {
           let previousRowGroup = previousRowData[grByField];
           if (grFieldData == previousRowGroup) {
             this.dataSource.rowGroupMetadata[grFieldData].size++;
-          }
-          else this.dataSource.rowGroupMetadata[grFieldData] = { index: i, size: 1 };
+          } else
+            this.dataSource.rowGroupMetadata[grFieldData] = {
+              index: i,
+              size: 1,
+            };
         }
       }
     }
 
     // Expand Rows https://stackblitz.com/edit/primeng-turbo-table-u53rsg?file=app%2Fprovider-search%2Fprovider-search.component.ts
-    Object.keys(this.dataSource.rowGroupMetadata).forEach( key => {
+    Object.keys(this.dataSource.rowGroupMetadata).forEach((key) => {
       this.expandedRows[key] = true;
     });
 

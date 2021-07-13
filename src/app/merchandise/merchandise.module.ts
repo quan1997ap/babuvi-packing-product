@@ -40,6 +40,7 @@ import { RadioButtonModule } from "primeng/radiobutton";
 import { MessagesModule } from "primeng/messages";
 import { MessageModule } from "primeng/message";
 import { MatTooltipModule } from "@angular/material/tooltip";
+import { ConfigShipmentComponent } from './delivery/config-shipment/config-shipment.component';
 @NgModule({
   imports: [
     CommonModule,
@@ -74,6 +75,7 @@ import { MatTooltipModule } from "@angular/material/tooltip";
     MerchandiseDeliveryComponent,
     PrintBillComponent,
     PackingProductsComponent,
+    ConfigShipmentComponent,
   ],
   providers: [
     MerchandiseServices,
@@ -84,6 +86,6 @@ import { MatTooltipModule } from "@angular/material/tooltip";
     MessageService,
     MessageModule,
   ],
-  entryComponents: [PackingProductsComponent, PrintBillComponent],
+  entryComponents: [PackingProductsComponent, PrintBillComponent, ConfigShipmentComponent],
 })
 export class MerchandiseModule {}

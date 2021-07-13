@@ -1,5 +1,5 @@
-<div *ngFor="let message of messages" class="message alert {{message.messageClass}}"
-     role="alert">{{message.detail}}</div>
+<div *ngFor="let message of messages" class="message alert {{message.messageClass}}" role="alert">{{message.detail}}
+</div>
 
 <div class="btn-dashboard mb-2 p-2">
     <span class="top-feature">
@@ -30,17 +30,16 @@
 
                 <div class="form-group">
                     <label for="deliveryRequestCd">Mã phiếu yêu cầu xuất hàng</label>
-                    <input type="text" class="form-control" id="deliveryRequestCd" name="deliveryRequestCd"
-                           required #deliveryRequestCd="ngModel" ngModel
-                           [(ngModel)]="deliveryRequestCode"
-                           (keydown.enter)="getDeliveryRequestByCode(deliveryRequestCd.value, true)">
+                    <input type="text" class="form-control" id="deliveryRequestCd" name="deliveryRequestCd" required
+                        #deliveryRequestCd="ngModel" ngModel [(ngModel)]="deliveryRequestCode"
+                        (keydown.enter)="getDeliveryRequestByCode(deliveryRequestCd.value, true)">
                 </div>
-                <p><span
-                    class="font-weight-bold">Ngày tạo: </span>{{deliveryRequest.createdDate | date: 'dd/MM/yyyy hh:mm:ss' }}
+                <p><span class="font-weight-bold">Ngày tạo: </span>{{deliveryRequest.createdDate | date: 'dd/MM/yyyy
+                    hh:mm:ss' }}
                 </p>
                 <p>Hình thức giao: <span class="font-weight-bold">{{ deliveryRequest.typeDisplay }}</span></p>
                 <p>Kho: <span class="font-italic">[{{ deliveryRequest.warehouseId }}
-                    ] {{ deliveryRequest.warehouseName }}</span></p>
+                        ] {{ deliveryRequest.warehouseName }}</span></p>
             </div>
         </div>
 
@@ -50,40 +49,42 @@
                 <p>Người nhận: <span>{{ deliveryRequest.contactName }} - {{ deliveryRequest.userCode }}</span></p>
                 <p>Điện thoại: <span>{{ deliveryRequest.contactPhone }}</span></p>
                 <p>Địa chỉ: <span>{{ deliveryRequest.address }} -
-                    {{deliveryRequest.wardDisplay }} -
-                    {{deliveryRequest.districtDisplay }} -
-                    {{deliveryRequest.cityDisplay }} -
-                    {{deliveryRequest.countryDisplay }}</span></p>
+                        {{deliveryRequest.wardDisplay }} -
+                        {{deliveryRequest.districtDisplay }} -
+                        {{deliveryRequest.cityDisplay }} -
+                        {{deliveryRequest.countryDisplay }}</span></p>
                 <p>Tên nhà xe: <span>{{ deliveryRequest.vehicleName }}</span></p>
                 <p>Điện thoại nhà xe: <span>{{ deliveryRequest.vehiclePhone }}</span></p>
                 <p>Địa chỉ nhà xe: <span>{{ deliveryRequest.vehicleAddress }}</span></p>
                 <p>Ghi chú:
-                    <span>{{ deliveryRequest.description ? deliveryRequest.description : 'Chưa có ghi chú' }}</span></p>
+                    <span>{{ deliveryRequest.description ? deliveryRequest.description : 'Chưa có ghi chú' }}</span>
+                </p>
             </div>
         </div>
 
         <div class="block">
             <div class="block-title text-uppercase p-2 font-weight-bold">Thông tin phiếu xuất hàng</div>
             <div class="block-content p-3">
-                <p>Mã phiếu xuất: <span
-                        class="font-weight-bold">{{ deliveryRequest?.warehouseExp?.warehouseExpCode }}</span></p>
+                <p>Mã phiếu xuất: <span class="font-weight-bold">{{ deliveryRequest?.warehouseExp?.warehouseExpCode
+                        }}</span></p>
                 <p>Ngày xuất: <span>{{ deliveryRequest?.warehouseExp?.expDate | date: 'dd/mm/yyy' }}</span></p>
                 <p>Người xuất:
-                    <span>{{ deliveryRequest?.warehouseExp?.storekeeperFirstName }} {{deliveryRequest?.warehouseExp?.storekeeperLastName}}</span>
+                    <span>{{ deliveryRequest?.warehouseExp?.storekeeperFirstName }}
+                        {{deliveryRequest?.warehouseExp?.storekeeperLastName}}</span>
                 </p>
                 <p>Mã vận đơn: <span class="font-weight-bold text-info">
-                    {{ transporterPackageNumber }}
-                </span>
-                <!-- <span (click)="openDeliveryAddressForm()" class="edit-delivery-address">
+                        {{ transporterPackageNumber }}
+                    </span>
+                    <!-- <span (click)="openDeliveryAddressForm()" class="edit-delivery-address">
                     <i class="fa fa-edit"></i>
                 </span> -->
-                <span class="edit-transporterPackageNumber" (click)="editTransporter = true;" >
-                    <i class="fa fa-edit"></i>
-                </span>
+                    <span class="edit-transporterPackageNumber" (click)="editTransporter = true;">
+                        <i class="fa fa-edit"></i>
+                    </span>
                 </p>
                 <p>Đơn vị vận chuyển: <span class="font-weight-bold text-info">
-                    {{ transporterName }}
-                </span>
+                        {{ transporterName }}
+                    </span>
                 </p>
                 <p>Trạng thái: <span class="font-weight-bold">{{ deliveryRequest?.warehouseExp?.statusDisplay }}</span>
                 </p>
@@ -94,38 +95,66 @@
         <div class="block">
             <div class="block-title text-uppercase p-2 font-weight-bold">Danh sách kiện hàng</div>
             <div class="block-content p-3">
-                <div class="form-group">
-                    <label for="parentMerchandiseCd">Mã đơn hàng</label>
-                    <input type="text" class="form-control" id="parentMerchandiseCd" name="parentMerchandiseCd" ngModel
-                           #parentMerchandiseCd="ngModel"
-                           [(ngModel)]="parentMerchandiseCode" (keydown.enter)="applyFilter(parentMerchandiseCd.value)">
+
+                <div class="search-form" >
+                    <div class="input-search" >
+                        <label for="parentMerchandiseCd">Mã đơn / Mã kiện</label>
+                        <input type="text" class="form-control" id="parentMerchandiseCd" name="parentMerchandiseCd"
+                            ngModel #parentMerchandiseCd="ngModel" [(ngModel)]="parentMerchandiseCode"
+                            (keydown.enter)="applyFilter(parentMerchandiseCd.value)">
+                    </div>
+                    <p-button style="margin-left: 20px;" icon="pi pi-pencil" iconPos="right" label="Sửa kiện hàng"  *ngIf="deliveryRequestCode && dataSource.rows && dataSource.rows.length "
+                        (click)="configPacking()"></p-button>
                 </div>
                 <div class="merchandise-table-container">
                     <div class="table-wrapper">
                         <!-- rowExpandMode="single" -->
-                        <p-table [value]="dataSource.rowsFilter" [dataKey]="dataSource.grByField" [expandedRowKeys]="expandedRows">
+                        <p-table [value]="dataSource.rowsFilter" [dataKey]="dataSource.grByField"
+                            [expandedRowKeys]="expandedRows">
                             <ng-template pTemplate="header">
                                 <tr>
-                                    <th  style="min-width: 200px;">Mã kiện</th>
+                                    <th style="min-width: 200px;">Mã kiện</th>
                                     <th>Cân nặng</th>
                                     <th>Thể tích</th>
                                     <th>Quy đổi</th>
                                 </tr>
                             </ng-template>
-                            <ng-template pTemplate="body" #dt let-rowData let-rowIndex="rowIndex" let-expanded="expanded"  let-columns="columns" >
-                                <tr class="ui-widget-header" *ngIf="dataSource.rowGroupMetadata[rowData[dataSource.grByField]].index === rowIndex">
+                            <ng-template pTemplate="body" #dt let-rowData let-rowIndex="rowIndex"
+                                let-expanded="expanded" let-columns="columns">
+                                <tr class="ui-widget-header"
+                                    *ngIf="dataSource.rowGroupMetadata[rowData[dataSource.grByField]].index === rowIndex">
                                     <td colspan="4" class="group-header">
-                                        <a href="#" [pRowToggler]="rowData">
-                                            <i [ngClass]="expanded ? 'pi pi-caret-down' : 'pi pi-caret-right' "></i>
-                                            
+                                        <span style="cursor: pointer;">
+                                            <i [pRowToggler]="rowData"
+                                                [ngClass]="expanded ? 'pi pi-caret-down' : 'pi pi-caret-right' "></i>
+
                                             <span *ngIf="rowData[dataSource.grByField] != null; else nullParent">
-                                                <span>Kiện số <strong>{{rowIndex}}</strong> - Mã: </span>  {{ getMerchandiseCode(deliveryRequest.lsParentDetail,  rowData[dataSource.grByField])  }}
+                                                <span [pRowToggler]="rowData">
+                                                    Kiện số <strong>{{rowIndex}}</strong> -
+                                                    Mã: {{ getMerchandiseInfor(deliveryRequest.lsParentDetail,
+                                                    rowData[dataSource.grByField]).merchandiseCode }} -
+                                                    {{ getMerchandiseInfor(deliveryRequest.lsParentDetail,
+                                                    rowData[dataSource.grByField]).paymentWeight }} kg
+                                                </span>
+
+                                                
+                                                <i class="pi pi-times-circle" matTooltip="Hủy giao hàng"
+                                                    matTooltipPosition="above"
+                                                    style="font-size: 2em; float: right; margin-right: 12px;"
+                                                    (click)="addOrUpdateShipment(rowData)"></i>
+                                                    
+                                                <i class="pi pi-shopping-cart" matTooltip="Giao hàng"
+                                                    matTooltipPosition="above"
+                                                    style="font-size: 2em; float: right; margin-right: 12px;"
+                                                    (click)="addOrUpdateShipment(rowData)"></i>
+
+                                                   
                                             </span>
                                             <ng-template #nullParent>
-                                                Các kiện chưa thuộc gói nào
+                                                <span [pRowToggler]="rowData">Các kiện chưa thuộc gói nào</span>
                                             </ng-template>
-                                            
-                                        </a>
+
+                                        </span>
                                     </td>
                                 </tr>
                             </ng-template>
@@ -197,7 +226,7 @@
                     </div>
                 </div>
                 <div class="missing-amount">
-                    <div class="font-weight-bold mb-2">Cần thanh toán: 
+                    <div class="font-weight-bold mb-2">Cần thanh toán:
                         <!-- <span
                             class="text-danger">{{deliveryRequest.missingAmount| currencyFormat}}</span> -->
                         <span class="corF44335" [innerHTML]="symbolsLocation=== '2' ? symbolsDisplay : ''"></span>
@@ -206,7 +235,7 @@
                         </span>
                         <span class="corF44335" [innerHTML]="symbolsLocation === '1' ? symbolsDisplay : ''"></span>
                     </div>
-                    <div class="font-weight-bold mb-2">Số tiền trong ví: 
+                    <div class="font-weight-bold mb-2">Số tiền trong ví:
                         <!-- <span
                                 class="text-danger">{{deliveryRequest.walletAmount| currencyFormat}}</span> -->
                         <span class="corF44335" [innerHTML]="symbolsLocation=== '2' ? symbolsDisplay : ''"></span>
@@ -215,18 +244,18 @@
                         </span>
                         <span class="corF44335" [innerHTML]="symbolsLocation === '1' ? symbolsDisplay : ''"></span>
                     </div>
-                    <div class="font-weight-bold mb-2">Số tiền còn thiếu: 
+                    <div class="font-weight-bold mb-2">Số tiền còn thiếu:
                         <!-- <span
                                     class="text-danger">{{deliveryRequest.needTopupAmount| currencyFormat}}</span> -->
                         <span class="corF44335" [innerHTML]="symbolsLocation=== '2' ? symbolsDisplay : ''"></span>
                         <span class="corF44335">
                             {{deliveryRequest.needTopupAmount| currencyChina}}
                         </span>
-                        <span class="corF44335" [innerHTML]="symbolsLocation === '1' ? symbolsDisplay : ''"></span>       
+                        <span class="corF44335" [innerHTML]="symbolsLocation === '1' ? symbolsDisplay : ''"></span>
                     </div>
                     <div class="form-group">
                         <button (click)="paymentOrders()" [disabled]="!(deliveryRequest.missingAmount > 0)"
-                                class="btn btn-sm btn-danger mr-1">
+                            class="btn btn-sm btn-danger mr-1">
                             Thanh toán
                         </button>
                         <button (click)="chargeWallet()" class="btn btn-sm btn-info mr-1">
@@ -245,56 +274,54 @@
 </div>
 
 <p-dialog header="SỬA VẬN ĐƠN" [(visible)]="editTransporter" [modal]="true" appendTo="body">
-        <div class="form-group col-sm">
-            <div>Đơn vị vận chuyển(<span class="required">*</span>)</div>
-            <select class="form-control" id="lsTransporter" name="Transporter" ngModel
+    <div class="form-group col-sm">
+        <div>Đơn vị vận chuyển(<span class="required">*</span>)</div>
+        <select class="form-control" id="lsTransporter" name="Transporter" ngModel
             [(ngModel)]="deliveryRequest.shipment[0].transporterId">
-                <option *ngFor="let item of lsTransporter" [ngValue]="item.transporterId"
-                        data-status="">{{item.name}}</option>
-            </select>
+            <option *ngFor="let item of lsTransporter" [ngValue]="item.transporterId" data-status="">{{item.name}}
+            </option>
+        </select>
+    </div>
+    <div class="form-group col-sm">
+        <label for="editTransporterPackageNumber">Mã vận đơn
+            <span class="alert-no-bg"
+                [style.visibility]="deliveryRequest.shipment[0].TransporterId != 1 ? 'visible' : 'hidden'">*</span></label>
+        <input type="text" class="form-control" id="editTransporterPackageNumber" name="editTransporterPackageNumber"
+            [required]="deliveryRequest.shipment[0].transporterId != 1"
+            [readonly]="deliveryRequest.shipment[0].transporterId === 1" #editTransporterPackageNumber="ngModel" ngModel
+            placeholder="Mã vận đơn" [(ngModel)]="deliveryRequest.shipment[0].transporterPackageNumber">
+        <div *ngIf="editTransporterPackageNumber.invalid && ((editTransporterPackageNumber.dirty || editTransporterPackageNumber.touched))"
+            class="alert-no-bg">
+            <small *ngIf="editTransporterPackageNumber.errors.required" role="alert">Trường "Mã vận đơn"
+                không
+                được để trống</small>
         </div>
-        <div class="form-group col-sm">
-            <label for="editTransporterPackageNumber">Mã vận đơn 
-                <span class="alert-no-bg" 
-                [style.visibility]="deliveryRequest.shipment[0].TransporterId != 1 ? 'visible' : 'hidden'" >*</span></label>
-            <input type="text" class="form-control" id="editTransporterPackageNumber"
-                   name="editTransporterPackageNumber"
-                    [required]="deliveryRequest.shipment[0].transporterId != 1" 
-                    [readonly]= "deliveryRequest.shipment[0].transporterId === 1"
-                    #editTransporterPackageNumber="ngModel" ngModel placeholder="Mã vận đơn"
-                   [(ngModel)]="deliveryRequest.shipment[0].transporterPackageNumber">
-            <div *ngIf="editTransporterPackageNumber.invalid && ((editTransporterPackageNumber.dirty || editTransporterPackageNumber.touched))"
-                 class="alert-no-bg">
-                 <small *ngIf="editTransporterPackageNumber.errors.required" role="alert">Trường "Mã vận đơn"
-                    không
-                    được để trống</small>
-            </div>
+    </div>
+    <div class="form-group col-sm">
+        <div style="display:flex; justify-content: space-between;">
+            <label for="codAmount">Tiền COD
+                <span class="alert-no-bg">*</span>
+            </label>
+            <span
+                style="font-weight: 400;text-align: right;">{{money_format(deliveryRequest.shipment[0].codAmount,'','1')}}
+                đ</span>
         </div>
-        <div class="form-group col-sm">
-            <div style="display:flex; justify-content: space-between;">
-                <label for="codAmount">Tiền COD
-                    <span class="alert-no-bg">*</span>
-                </label>
-                <span style="font-weight: 400;text-align: right;">{{money_format(deliveryRequest.shipment[0].codAmount,'','1')}} đ</span>
-            </div>
-            <input type="number" step=".001" class="form-control" id="codAmount"
-                   name="codAmount"
-                    #codAmount="ngModel" ngModel placeholder="Tiền COD"
-                   [(ngModel)]="deliveryRequest.shipment[0].codAmount">
+        <input type="number" step=".001" class="form-control" id="codAmount" name="codAmount" #codAmount="ngModel"
+            ngModel placeholder="Tiền COD" [(ngModel)]="deliveryRequest.shipment[0].codAmount">
+    </div>
+    <div class="form-group col-sm">
+        <div style="display:flex; justify-content: space-between;">
+            <label for="codAmount">Tiền Ship
+                <span class="alert-no-bg">*</span>
+            </label>
+            <span
+                style="font-weight: 400;text-align: right;">{{money_format(deliveryRequest.shipment[0].totalAmount,'','1')}}
+                đ</span>
         </div>
-        <div class="form-group col-sm">
-            <div style="display:flex; justify-content: space-between;">
-                 <label for="codAmount">Tiền Ship
-                    <span class="alert-no-bg">*</span>
-                </label>
-                <span style="font-weight: 400;text-align: right;">{{money_format(deliveryRequest.shipment[0].totalAmount,'','1')}} đ</span>
-            </div>
-            <input type="number" step=".001" class="form-control" id="shipAmount"
-                   name="shipAmount"
-                    #shipAmount="ngModel" ngModel placeholder="Tiền COD"
-                   [(ngModel)]="deliveryRequest.shipment[0].totalAmount">
-        </div>
-        <div class="form-group col-sm">
-            <button class="classBtn classBtnHover" (click)="changeTransporter()">Cập nhật</button>
-        </div>
+        <input type="number" step=".001" class="form-control" id="shipAmount" name="shipAmount" #shipAmount="ngModel"
+            ngModel placeholder="Tiền COD" [(ngModel)]="deliveryRequest.shipment[0].totalAmount">
+    </div>
+    <div class="form-group col-sm">
+        <button class="classBtn classBtnHover" (click)="changeTransporter()">Cập nhật</button>
+    </div>
 </p-dialog>

@@ -1,7 +1,7 @@
 <div *ngFor="let message of messages" class="message alert {{message.messageClass}}" role="alert">{{message.detail}}
 </div>
-<p-confirmDialog header="Xác nhận"  [autoZIndex]="false" [baseZIndex]="10000"
-icon="pi pi-exclamation-triangle"  global="false">
+<p-confirmDialog appendTo="body" header="Xác nhận"
+icon="pi pi-exclamation-triangle">
 </p-confirmDialog>
 
 <div class="btn-dashboard mb-2 p-2">

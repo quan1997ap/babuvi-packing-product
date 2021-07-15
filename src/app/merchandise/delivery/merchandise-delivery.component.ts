@@ -1,4 +1,4 @@
-import { ConfigShipmentComponent } from './config-shipment/config-shipment.component';
+import { ConfigShipmentComponent } from "./config-shipment/config-shipment.component";
 import { PackingProductsComponent } from "./packing-products/packing-products.component";
 import { Shipment } from "./../../model/shipment.model";
 import { Component, OnInit, ViewChild } from "@angular/core";
@@ -18,7 +18,7 @@ import { DataTable } from "primeng/primeng";
   selector: "app-merchandise-delivery",
   templateUrl: "./merchandise-delivery.component.html",
   styleUrls: ["./merchandise-delivery.component.scss"],
-  providers: [],
+  providers: [ConfirmationService],
 })
 export class MerchandiseDeliveryComponent implements OnInit {
   @ViewChild("dt") private dataTable: DataTable;
@@ -62,7 +62,8 @@ export class MerchandiseDeliveryComponent implements OnInit {
     private merchandiseServices: MerchandiseServices,
     private warehouseExpService: WarehouseExpService,
     private messageService: MessageService,
-    public dialog: MatDialog
+    public dialog: MatDialog,
+    public confirmationService: ConfirmationService
   ) {}
 
   ngOnInit() {
@@ -71,13 +72,13 @@ export class MerchandiseDeliveryComponent implements OnInit {
     this.getLsTransporter();
   }
 
-
   /**
    *
    * @param addOrUpdateShipment
    */
 
   addOrUpdateShipment(rowData) {
+    console.log(rowData);
     let ParentMerchandiseWarehouseId = rowData[this.dataSource.grByField];
     let ParentMerchandise = this.deliveryRequest.lsParentDetail.find(
       (item) => item.merchandiseWarehouseId === ParentMerchandiseWarehouseId
@@ -90,13 +91,40 @@ export class MerchandiseDeliveryComponent implements OnInit {
       maxHeight: "500px",
       disableClose: true,
       data: {
-        ParentMerchandiseWarehouse: ParentMerchandise
-      }
+        ParentMerchandiseWarehouse: ParentMerchandise,
+        lsTransporter: this.lsTransporter,
+      },
     });
 
-    dialogRef.afterClosed().subscribe((result) => {
-    });
+    dialogRef.afterClosed().subscribe((result) => {});
+  }
 
+  cancelShipment() {
+    this.confirmationService.confirm({
+      message: "Bạn có chắc muốn hủy giao hàng gói?",
+      accept: () => {
+        this.loading = false;
+        this.merchandiseServices
+          .deleteShipment({
+            
+          })
+          .subscribe(
+            (res) => {
+              console.log(res);
+              if (res && res.result && res.result.success) {
+                this.showMessage("alert-success", "Hủy giao hàng thành công");
+              } else {
+                this.showMessage("alert-danger", res.result.message);
+              }
+              this.loading = false;
+            },
+            (error) => {
+              this.showMessage("alert-danger", "Hủy giao hàng không thành công");
+              this.loading = false;
+            }
+          );
+      },
+    });
   }
 
   /**
@@ -232,11 +260,10 @@ export class MerchandiseDeliveryComponent implements OnInit {
       return {
         merchandiseCode: null,
         netWeight: null,
-        paymentWeight: null
-      }
+        paymentWeight: null,
+      };
     }
   }
-
 
   /**
    * Fill merchandise list by parent merchandise code
@@ -522,7 +549,7 @@ export class MerchandiseDeliveryComponent implements OnInit {
       .then((res) => {
         if (res.result.success) {
           this.lsTransporter = res.result.data;
-          //đặt giá trị mặc định cho đơn vị vận chuyển
+          // đặt giá trị mặc định cho đơn vị vận chuyển
           //hiện tại đang fix 1 yêu cầu giao chỉ có một mã vận đơn --> sau này sẽ edit code
           this.deliveryRequest.shipment[0].transporterId =
             res.result.data[0].transporterId;

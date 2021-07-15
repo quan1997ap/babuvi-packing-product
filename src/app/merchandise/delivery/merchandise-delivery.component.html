@@ -1,9 +1,13 @@
 <div *ngFor="let message of messages" class="message alert {{message.messageClass}}" role="alert">{{message.detail}}
 </div>
+<p-confirmDialog header="Xác nhận"  [autoZIndex]="false" [baseZIndex]="10000"
+icon="pi pi-exclamation-triangle"  global="false">
+</p-confirmDialog>
 
 <div class="btn-dashboard mb-2 p-2">
     <span class="top-feature">
-        <button mat-raised-button color="warn" (click)="createPackage()">Đóng gói</button>
+        <!-- (click)="createPackage()" -->
+        <button mat-raised-button color="warn" (click)="configPacking()">Đóng gói</button>
     </span>
     <span class="top-feature">
         <button mat-raised-button color="warn" (click)="sendDelivery()">Giao hàng</button>
@@ -96,15 +100,13 @@
             <div class="block-title text-uppercase p-2 font-weight-bold">Danh sách kiện hàng</div>
             <div class="block-content p-3">
 
-                <div class="search-form" >
-                    <div class="input-search" >
+                <div class="search-form">
+                    <div class="input-search">
                         <label for="parentMerchandiseCd">Mã đơn / Mã kiện</label>
                         <input type="text" class="form-control" id="parentMerchandiseCd" name="parentMerchandiseCd"
                             ngModel #parentMerchandiseCd="ngModel" [(ngModel)]="parentMerchandiseCode"
                             (keydown.enter)="applyFilter(parentMerchandiseCd.value)">
                     </div>
-                    <p-button style="margin-left: 20px;" icon="pi pi-pencil" iconPos="right" label="Sửa kiện hàng"  *ngIf="deliveryRequestCode && dataSource.rows && dataSource.rows.length "
-                        (click)="configPacking()"></p-button>
                 </div>
                 <div class="merchandise-table-container">
                     <div class="table-wrapper">
@@ -131,24 +133,33 @@
                                             <span *ngIf="rowData[dataSource.grByField] != null; else nullParent">
                                                 <span [pRowToggler]="rowData">
                                                     Kiện số <strong>{{rowIndex}}</strong> -
-                                                    Mã: {{ getMerchandiseInfor(deliveryRequest.lsParentDetail,
-                                                    rowData[dataSource.grByField]).merchandiseCode }} -
-                                                    {{ getMerchandiseInfor(deliveryRequest.lsParentDetail,
-                                                    rowData[dataSource.grByField]).paymentWeight }} kg
+                                                    <strong>
+                                                        {{
+                                                        getMerchandiseInfor(deliveryRequest.lsParentDetail,rowData[dataSource.grByField]).merchandiseCode
+                                                        }}
+                                                    </strong> -
+                                                    <strong> {{dataSource.rowGroupMetadata[rowData.parentId].size}}
+                                                    </strong> mã -
+                                                    <strong>{{ getMerchandiseInfor(deliveryRequest.lsParentDetail,
+                                                        rowData[dataSource.grByField]).paymentWeight }}</strong> kg
                                                 </span>
 
-                                                
+
+
                                                 <i class="pi pi-times-circle" matTooltip="Hủy giao hàng"
                                                     matTooltipPosition="above"
                                                     style="font-size: 2em; float: right; margin-right: 12px;"
-                                                    (click)="addOrUpdateShipment(rowData)"></i>
-                                                    
+                                                    (click)="cancelShipment(rowData)"></i>
+
                                                 <i class="pi pi-shopping-cart" matTooltip="Giao hàng"
                                                     matTooltipPosition="above"
                                                     style="font-size: 2em; float: right; margin-right: 12px;"
                                                     (click)="addOrUpdateShipment(rowData)"></i>
+                                                
+                                                <i class="pi pi-print" matTooltip="In phiếu" matTooltipPosition="above"
+                                                    style="font-size: 2em; float: right; margin-right: 12px;"
+                                                    (click)="printExpBill()"></i>
 
-                                                   
                                             </span>
                                             <ng-template #nullParent>
                                                 <span [pRowToggler]="rowData">Các kiện chưa thuộc gói nào</span>

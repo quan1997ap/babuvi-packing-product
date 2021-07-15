@@ -9,6 +9,7 @@ import { ConfirmationService } from "primeng/api";
   selector: "app-packing-products",
   templateUrl: "./packing-products.component.html",
   styleUrls: ["./packing-products.component.scss"],
+  providers: [ConfirmationService]
 })
 export class PackingProductsComponent implements OnInit {
   isLoading = false;

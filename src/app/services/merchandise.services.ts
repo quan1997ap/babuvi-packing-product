@@ -12,10 +12,16 @@ export class MerchandiseServices extends ApiService {
         super(ApiApplication.merchandise.controller, http, _router);
     }
 
-    addOrUpdateShipment(data){
+    deleteShipment(shipmentData){
+        return this.post(
+            this.apiBaseController + ApiApplication.merchandise.deleteShipment,
+            shipmentData
+          );
+    }
+    addOrUpdateShipment(shipmentData){
         return this.post(
             this.apiBaseController + ApiApplication.merchandise.addOrUpdateShipment,
-            data
+            shipmentData
           );
     }
 

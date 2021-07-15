@@ -1,8 +1,6 @@
+<p-toast key="shipment"></p-toast>
 <div [ngClass]="{ 'loading': isLoading}" class="wrap-dialog">
   <p-toast></p-toast>
-  <p-confirmDialog appendTo="body" header="Confirmation" [autoZIndex]="false" [baseZIndex]="5000"
-    icon="pi pi-exclamation-triangle">
-  </p-confirmDialog>
 
   <div mat-dialog-title>
     <mat-toolbar class="dialog-header">
@@ -15,16 +13,25 @@
   </div>
 
   <div mat-dialog-content>
-    <div [formGroup]="shipmentForm" class="shipment-form">
+    <form [formGroup]="shipmentForm" class="shipment-form">
 
       <div class="control">
         <div class="label">Đơn vị vận chuyển: <span class="required"> * </span></div>
-        <input pInputText type="text" formControlName="ParentMerchandiseWarehouseId">
+        <p-dropdown [style]="{'width':'100%'}" [options]="lsTransporter" optionLabel="name" formControlName="transporterId"></p-dropdown>
+      </div>
+      <div class="col alert alert-danger" role="alert" *ngIf="shipmentForm.controls.transporterId?.errors?.required
+         && shipmentForm.controls.transporterId?.touched">
+        Đơn vị vận chuyển là bắt buộc nhập
       </div>
 
       <div class="control">
         <div class="label">Mã vận đơn: <span class="required"> * </span></div>
-        <input pInputText type="text" formControlName="CodAmount">
+        <input pInputText type="text" formControlName="ParentMerchandiseWarehouseId">
+      </div>
+
+      <div class="col alert alert-danger" role="alert" *ngIf="shipmentForm.controls.ParentMerchandiseWarehouseId?.errors?.required
+      && shipmentForm.controls.ParentMerchandiseWarehouseId?.touched">
+        Mã vận đơn là bắt buộc nhập
       </div>
 
       <div class="control">
@@ -32,16 +39,25 @@
         <input pInputText type="text" formControlName="CodAmount">
       </div>
 
+      <div class="col alert alert-danger" role="alert" *ngIf="shipmentForm.controls.CodAmount?.errors?.required
+      && shipmentForm.controls.CodAmount?.touched">
+        Tiền code là bắt buộc nhập
+      </div>
+
       <div class="control">
         <div class="label">Tiền ship: <span class="required"> * </span></div>
         <input pInputText type="text" formControlName="TotalAmount">
       </div>
 
-    </div>
+      <div class="col alert alert-danger" role="alert" *ngIf="shipmentForm.controls.TotalAmount?.errors?.required
+         && shipmentForm.controls.TotalAmount?.touched">
+        Tiền ship là bắt buộc nhập
+      </div>
+    </form>
 
   </div>
 
   <div mat-dialog-actions>
-    <button pButton (click)="close()" label="Hoàn tất" ></button>
+    <button pButton (click)="addOrUpdateShipment()" [disabled]="shipmentForm.invalid" label="Hoàn tất"></button>
   </div>
 </div>

@@ -219,7 +219,8 @@ export const ApiApplication = {
         changeStatusDeliveryRequestDetail: "/changeStatusDeliveryRequestDetail",
         getLsTransporter:"/getLsTransporter",
         updateShipment:"updateShipment",
-        addOrUpdateShipment: "/addOrUpdateShipment"
+        addOrUpdateShipment: "/addOrUpdateShipment",
+        deleteShipment: "/deleteShipment"
     },
     paymentRequest: {
         controller: ApiBaseUrl + "paymentRequest",

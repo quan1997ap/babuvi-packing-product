@@ -1,0 +1,23 @@
+<div id="print-ycgh-50-50-{{printBillData.index}}" style="display: none;">
+  <div class="page"  >
+    <h1 style="text-align: center;"> GÓI HÀNG {{printBillData.index}} / {{printBillData.numOfBill}} </h1>
+    <div class="arcode-section" style="text-align: center;">
+      <ngx-barcode [bc-value]="printBillData.merchandiseCode" bc-height="30" bc-font-size="15" bc-width="1.8"
+        [bc-display-value]="true" [bc-margin-top]="1" [bc-margin-bottom]="1">
+      </ngx-barcode>
+    </div>
+    <div class="delivery-request" style="text-align: center;">
+      <div>{{printBillData.deliveryRequest.contactName}} </div>
+      <div>{{printBillData.deliveryRequest.contactPhone}} </div>
+      <div>{{printBillData.deliveryRequest.address
+        + '-' + printBillData.deliveryRequest.wardDisplay
+        + '-' + printBillData.deliveryRequest.districtDisplay
+        + '-' + printBillData.deliveryRequest.cityDisplay
+        + '-' + printBillData.deliveryRequest.countryDisplay}}</div>
+    </div>
+    <div class="print-footer" style="text-align: center;">
+      <div class="text-center">{{APP_NAME}} - Order </div>
+      <div class="text-center">Hotline: 03030203023 </div>
+    </div>
+  </div>
+</div>

@@ -1,7 +1,7 @@
 <div [ngClass]="{ 'loading': isLoading}" class="wrap-dialog">
   <p-toast></p-toast>
   <p-confirmDialog appendTo="body" header="Confirmation" [autoZIndex]="false" [baseZIndex]="5000"
-    icon="pi pi-exclamation-triangle"  global="false">
+    icon="pi pi-exclamation-triangle" global="false">
   </p-confirmDialog>
 
   <div mat-dialog-title>
@@ -74,9 +74,10 @@
               </div>
               <div>
                 <span> Kiện số <strong>{{ i + 1 }}</strong> </span>
+                <strong *ngIf="packages['merchandiseCode']" > - {{packages['merchandiseCode']}} </strong>
                 <span *ngIf="packages['products'] && packages['products'].length;">
                   - <strong> {{packages['products'].length}} </strong> mã -
-                  Cân nặng <strong>{{packages['sumNetWeight']}} kg</strong>
+                  <strong>{{packages['sumNetWeight']}} kg</strong>
                 </span>
               </div>
             </div>
@@ -85,12 +86,24 @@
                 *ngIf="!packages.merchandiseWarehouseId && packages['products'] && packages['products'].length"
                 matTooltip="Lưu nhóm" matTooltipPosition="above"></button>
               &nbsp;
-              <button pButton pRipple type="button" icon="pi pi-print" class="ui-button-success" (click)="printGr(i)"
-                matTooltip="In hóa đơn" matTooltipPosition="above"></button>
+              <button pButton pRipple type="button" icon="pi pi-print" class="ui-button-success" (click)="printGr(i)" *ngIf="packages['merchandiseCode']"
+                matTooltip="In hóa đơn" matTooltipPosition="above" styleSheetFile="{{styleSheetFile}}" ngxPrint
+                printSectionId="print-ycgh-50-50-{{i}}"></button>
               &nbsp;
               <button pButton pRipple type="button" icon="pi pi-trash" class="ui-button-danger"
                 *ngIf="packages.merchandiseWarehouseId" (click)="removeGr(i)" matTooltip="Xóa nhóm"
                 matTooltipPosition="above"></button>
+
+
+              <!-- bill print -->
+              <app-packing-product-bill [printBillData]="{
+                  index: i,
+                  numOfBill: productGrouped.length,
+                  merchandiseCode : packages.merchandiseCode,
+                  deliveryRequest: data
+                }">
+              </app-packing-product-bill>
+
             </div>
           </div>
 
@@ -124,6 +137,6 @@
   </div>
 
   <div mat-dialog-actions>
-    <button pButton  (click)="close()" label="Hoàn tất" ></button>
+    <button pButton (click)="close()" label="Hoàn tất"></button>
   </div>
 </div>

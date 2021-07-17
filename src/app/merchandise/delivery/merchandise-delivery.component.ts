@@ -78,7 +78,7 @@ export class MerchandiseDeliveryComponent implements OnInit {
    */
 
   addOrUpdateShipment(rowData) {
-    console.log(rowData);
+
     let ParentMerchandiseWarehouseId = rowData[this.dataSource.grByField];
     let ParentMerchandise = this.deliveryRequest.lsParentDetail.find(
       (item) => item.merchandiseWarehouseId === ParentMerchandiseWarehouseId
@@ -87,39 +87,78 @@ export class MerchandiseDeliveryComponent implements OnInit {
     const dialogRef = this.dialog.open(ConfigShipmentComponent, {
       width: "96%",
       height: "96%",
-      maxWidth: "400px",
+      maxWidth: "450px",
       maxHeight: "500px",
       disableClose: true,
       data: {
         ParentMerchandiseWarehouse: ParentMerchandise,
         lsTransporter: this.lsTransporter,
+        deliveryRequest: this.deliveryRequest
       },
     });
 
-    dialogRef.afterClosed().subscribe((result) => {});
+    dialogRef.afterClosed().subscribe((resultUpdateShipment) => {
+      if(resultUpdateShipment){
+        console.log(resultUpdateShipment)
+        this.messageService.add({
+          severity: "success",
+          summary: "Thông báo",
+          detail: "Giao hàng thành công!",
+        });
+      }
+    });
   }
 
-  cancelShipment() {
+  cancelShipment(rowData) {
+    console.log(      this.getMerchandiseInfor(this.deliveryRequest.lsParentDetail,rowData[this.dataSource.grByField])
+    )
+    let parentMerchandiseWarehouseId = rowData[this.dataSource.grByField];
+
+    let shipmentId = null;
+    let deliveryRequestId = null;
+    let totalAmount = 0;
+    let codAmount = 0;
+    let transporterId = 0;
+    let transporterPackageNumber = null;
+    if(this.deliveryRequest){
+      if(this.deliveryRequest.shipment.length){
+        shipmentId = this.deliveryRequest.shipment[0].shipmentId;
+        totalAmount = this.deliveryRequest.shipment[0].totalAmount;
+        codAmount = this.deliveryRequest.shipment[0].codAmount;
+        transporterId = this.deliveryRequest.shipment[0].transporterId;
+        deliveryRequestId = this.deliveryRequest.shipment[0].deliveryRequestId;
+        transporterPackageNumber = this.deliveryRequest.shipment[0].transporterPackageNumber;
+      }
+    }
+
+    let cancelShipmentParams = {
+      arentMerchandiseWarehouseId: parentMerchandiseWarehouseId,
+      TransporterPackageNumber: transporterPackageNumber,
+      transporterId: transporterId,
+      deliveryRequestId: deliveryRequestId,
+      shipmentId: shipmentId,
+      CodAmount: codAmount,
+      TotalAmount: totalAmount
+    }
+
     this.confirmationService.confirm({
       message: "Bạn có chắc muốn hủy giao hàng gói?",
       accept: () => {
         this.loading = false;
         this.merchandiseServices
-          .deleteShipment({
-            
-          })
+          .deleteShipment(cancelShipmentParams)
           .subscribe(
             (res) => {
-              console.log(res);
               if (res && res.result && res.result.success) {
-                this.showMessage("alert-success", "Hủy giao hàng thành công");
+                this.messageService.add({severity:'success', summary:'Hủy giao hàng', detail:'Hủy giao hàng thành công'});
               } else {
-                this.showMessage("alert-danger", res.result.message);
+                this.messageService.add({severity:'error', summary:'Hủy giao hàng', detail:  res.result.message });
+
               }
               this.loading = false;
             },
             (error) => {
-              this.showMessage("alert-danger", "Hủy giao hàng không thành công");
+              this.messageService.add({severity:'error', summary:'Hủy giao hàng', detail:  "Hủy giao hàng không thành công" });
               this.loading = false;
             }
           );
@@ -329,8 +368,6 @@ export class MerchandiseDeliveryComponent implements OnInit {
     Object.keys(this.dataSource.rowGroupMetadata).forEach((key) => {
       this.expandedRows[key] = true;
     });
-
-    console.log(this.dataSource.rowGroupMetadata);
   }
 
   /**

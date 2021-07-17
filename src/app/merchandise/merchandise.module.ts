@@ -41,8 +41,17 @@ import { MessagesModule } from "primeng/messages";
 import { MessageModule } from "primeng/message";
 import { MatTooltipModule } from "@angular/material/tooltip";
 import { ConfigShipmentComponent } from './delivery/config-shipment/config-shipment.component';
+import { NgxMaskModule, IConfig } from 'ngx-mask';
+import { NgxSpinnerModule } from "ngx-spinner";
+import { PackingProductBillComponent } from './delivery/print-bill/packing-product-bill/packing-product-bill.component';
+import { PackingProductShipmentBillComponent } from './delivery/print-bill/packing-product-shipment-bill/packing-product-shipment-bill.component';
+import { DeliveryBillComponent } from './delivery/print-bill/delivery-bill/delivery-bill.component';
+import { RequestDeliveryBillComponent } from './delivery/print-bill/request-delivery-bill/request-delivery-bill.component';
+
 @NgModule({
   imports: [
+    NgxSpinnerModule,
+    NgxMaskModule.forRoot(),
     CommonModule,
     FormsModule,
     ReactiveFormsModule,
@@ -76,6 +85,10 @@ import { ConfigShipmentComponent } from './delivery/config-shipment/config-shipm
     PrintBillComponent,
     PackingProductsComponent,
     ConfigShipmentComponent,
+    PackingProductBillComponent,
+    PackingProductShipmentBillComponent,
+    DeliveryBillComponent,
+    RequestDeliveryBillComponent,
   ],
   providers: [
     MerchandiseServices,

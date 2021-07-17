@@ -6,6 +6,7 @@ import { MessageService } from "primeng/api";
 import { ConfirmationService } from "primeng/api";
 import { FormBuilder, FormGroup } from "@angular/forms";
 import { Validators } from "@angular/forms";
+import { NgxSpinnerService } from "ngx-spinner";
 
 @Component({
   selector: "app-config-shipment",
@@ -23,13 +24,9 @@ export class ConfigShipmentComponent implements OnInit {
     public cdr: ChangeDetectorRef,
     private messageService: MessageService,
     private confirmationService: ConfirmationService,
-    private fb: FormBuilder
+    private fb: FormBuilder,
+    private spinner: NgxSpinnerService
   ) {
-    console.log(this.data);
-    this.lsTransporter = this.data.lsTransporter.map(
-     transporter => ({ name: transporter.name , value: transporter.transporterId }) 
-    );
-    console.log( this.lsTransporter )
     this.initForm();
   }
 
@@ -45,15 +42,43 @@ export class ConfigShipmentComponent implements OnInit {
       CouponCode: ParentMerchandise.CouponCode,
       TotalAmount: ParentMerchandise.CouponCode
      */
+
+    this.lsTransporter = this.data.lsTransporter.map((transporter) => ({
+      label: transporter.name,
+      value: transporter.transporterId,
+    }));
+
+    let shipmentId = null;
+    let deliveryRequestId = null;
+    let totalAmount = 0;
+    let codAmount = 0;
+    let transporterId = null;
+    let parentMerchandiseWarehouseId = null;
+    let transporterPackageNumber = null;
+
+    if (this.data.ParentMerchandiseWarehouse.merchandiseWarehouseId) {
+      parentMerchandiseWarehouseId =
+        this.data.ParentMerchandiseWarehouse.merchandiseWarehouseId;
+      let shipment = this.data.ParentMerchandiseWarehouse.shipment;
+      deliveryRequestId = shipment.deliveryRequestId;
+      shipmentId = shipment.shipmentId;
+      totalAmount = shipment.totalAmount;
+      codAmount = shipment.codAmount;
+      transporterId = shipment.transporterId;
+      transporterPackageNumber = shipment.transporterPackageNumber;
+    }
+
     this.shipmentForm = this.fb.group({
       ParentMerchandiseWarehouseId: [
-        this.data.ParentMerchandiseWarehouse.merchandiseWarehouseId,
+        parentMerchandiseWarehouseId,
         Validators.required,
       ],
-      transporterId: [this.lsTransporter[0].value, Validators.required],
-      // deliveryRequestId: [null],
-      CodAmount: [null, Validators.required],
-      TotalAmount: [null, Validators.required],
+      TransporterPackageNumber: [transporterPackageNumber],
+      TransporterId: [transporterId, Validators.required],
+      deliveryRequestId: [deliveryRequestId],
+      shipmentId: [shipmentId],
+      CodAmount: [codAmount],
+      TotalAmount: [totalAmount],
     });
 
   }
@@ -64,17 +89,12 @@ export class ConfigShipmentComponent implements OnInit {
     let shipmentInfor = this.shipmentForm.value;
     shipmentInfor.CodAmount = Number(shipmentInfor.CodAmount);
     shipmentInfor.TotalAmount = Number(shipmentInfor.TotalAmount);
-
+    this.spinner.show();
     this.merchandiseServices.addOrUpdateShipment(shipmentInfor).subscribe(
       (res) => {
-        console.log(res);
         if (res.result.success) {
-          this.messageService.add({
-            key: "shipment",
-            severity: "success",
-            summary: "Thông báo",
-            detail: "Giao hàng thành công!",
-          });
+          this.spinner.hide();
+          this.dialogRef.close(res.result.data);
         } else {
           this.messageService.add({
             key: "shipment",
@@ -82,6 +102,7 @@ export class ConfigShipmentComponent implements OnInit {
             summary: "Thông báo",
             detail: res.result.message,
           });
+          this.spinner.hide();
         }
       },
       (err) => {
@@ -91,6 +112,7 @@ export class ConfigShipmentComponent implements OnInit {
           summary: "Thông báo",
           detail: "Giao hàng không thành công!",
         });
+        this.spinner.hide();
       }
     );
   }

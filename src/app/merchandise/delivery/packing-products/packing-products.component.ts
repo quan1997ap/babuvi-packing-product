@@ -4,6 +4,7 @@ import { Component, OnInit, Inject, ChangeDetectorRef } from "@angular/core";
 import { MAT_DIALOG_DATA } from "@angular/material/dialog";
 import { MessageService } from "primeng/api";
 import { ConfirmationService } from "primeng/api";
+import { PackingProductBillDataModel } from "../print-bill/packing-product-bill/packing-product-bill.component";
 
 @Component({
   selector: "app-packing-products",
@@ -12,6 +13,9 @@ import { ConfirmationService } from "primeng/api";
   providers: [ConfirmationService]
 })
 export class PackingProductsComponent implements OnInit {
+
+  styleSheetFile = "assets/styles/css/print-ycgh-50-50.css";
+  
   isLoading = false;
   selectedProducts = [];
   products = [];
@@ -19,7 +23,8 @@ export class PackingProductsComponent implements OnInit {
   defaultPackage = {
     sumNetWeight: 0,
     products: [],
-    merchandiseWarehouseId: null // id
+    merchandiseWarehouseId: null, // id
+    merchandiseCode: null
   };
   productGrouped = [];
 
@@ -58,7 +63,7 @@ export class PackingProductsComponent implements OnInit {
       if(this.products && this.products.length == 0){
         lsParentDetail = lsParentDetail.filter( parent => parent.merchandiseWarehouseId != null)
       }
-      console.log(lsParentDetail)
+  
       this.productGrouped = lsParentDetail
       .map( parent => {
         let defaultParent = JSON.parse(JSON.stringify(this.defaultPackage));
@@ -75,7 +80,6 @@ export class PackingProductsComponent implements OnInit {
       })
       this.checkSumNetWeight();
 
-      console.log( this.productGrouped )
     }
     this.packageIndexSelected = 0;
   }
@@ -109,7 +113,9 @@ export class PackingProductsComponent implements OnInit {
     this.merchandiseServices.createPackage(saveParams).subscribe(
       (res) => {
         if(res && res.result && res.result.success){
-          this.productGrouped[i].merchandiseWarehouseId = res.result.data.lsChild[0].parentId;
+          this.productGrouped[i].merchandiseWarehouseId = res.result.data.merchandiseWarehouseId;
+          this.productGrouped[i].merchandiseCode = res.result.data.merchandiseCode;
+          this.productGrouped[i].merchandiseId = res.result.data.merchandiseId;
           this.checkSumNetWeight();
           if(this.products && this.products.length){
             this.addGroup();

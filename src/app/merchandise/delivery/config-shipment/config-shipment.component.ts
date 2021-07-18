@@ -4,7 +4,7 @@ import { Component, OnInit, Inject, ChangeDetectorRef } from "@angular/core";
 import { MAT_DIALOG_DATA } from "@angular/material/dialog";
 import { MessageService } from "primeng/api";
 import { ConfirmationService } from "primeng/api";
-import { FormBuilder, FormGroup } from "@angular/forms";
+import { FormBuilder, FormGroup, FormControl } from "@angular/forms";
 import { Validators } from "@angular/forms";
 import { NgxSpinnerService } from "ngx-spinner";
 
@@ -16,7 +16,7 @@ import { NgxSpinnerService } from "ngx-spinner";
 export class ConfigShipmentComponent implements OnInit {
   isLoading = false;
   shipmentForm: FormGroup;
-  lsTransporter: any[] = [];
+  transporters: any[] = [];
   constructor(
     public dialogRef: MatDialogRef<ConfigShipmentComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any,
@@ -27,6 +27,11 @@ export class ConfigShipmentComponent implements OnInit {
     private fb: FormBuilder,
     private spinner: NgxSpinnerService
   ) {
+    this.transporters = this.data.lsTransporter.map((transporter) => ({
+      label: transporter.name,
+      value: transporter.transporterId,
+    }));
+
     this.initForm();
   }
 
@@ -43,10 +48,7 @@ export class ConfigShipmentComponent implements OnInit {
       TotalAmount: ParentMerchandise.CouponCode
      */
 
-    this.lsTransporter = this.data.lsTransporter.map((transporter) => ({
-      label: transporter.name,
-      value: transporter.transporterId,
-    }));
+    console.log(this.transporters);
 
     let shipmentId = null;
     let deliveryRequestId = null;
@@ -56,10 +58,11 @@ export class ConfigShipmentComponent implements OnInit {
     let parentMerchandiseWarehouseId = null;
     let transporterPackageNumber = null;
 
+    console.log(this.data)
     if (this.data.ParentMerchandiseWarehouse.merchandiseWarehouseId) {
-      parentMerchandiseWarehouseId =
-        this.data.ParentMerchandiseWarehouse.merchandiseWarehouseId;
+      parentMerchandiseWarehouseId = this.data.ParentMerchandiseWarehouse.merchandiseWarehouseId;
       let shipment = this.data.ParentMerchandiseWarehouse.shipment;
+      console.log(shipment)
       if(shipment){
         deliveryRequestId = shipment.deliveryRequestId;
         shipmentId = shipment.shipmentId;
@@ -67,23 +70,33 @@ export class ConfigShipmentComponent implements OnInit {
         codAmount = shipment.codAmount;
         transporterId = shipment.transporterId;
         transporterPackageNumber = shipment.transporterPackageNumber;
+      } else {
+        transporterId = this.transporters[0].value;
       }
     }
 
-    console.log(parentMerchandiseWarehouseId)
-    this.shipmentForm = this.fb.group({
-      ParentMerchandiseWarehouseId: [
-        parentMerchandiseWarehouseId ? parentMerchandiseWarehouseId : null,
-        Validators.required,
-      ],
-      TransporterPackageNumber: [transporterPackageNumber],
-      TransporterId: [transporterId, Validators.required],
-      deliveryRequestId: [deliveryRequestId],
-      shipmentId: [shipmentId],
-      CodAmount: [codAmount],
-      TotalAmount: [totalAmount],
+    this.shipmentForm = new FormGroup({
+      ParentMerchandiseWarehouseId: new FormControl( null, Validators.required),
+      TransporterPackageNumber: new FormControl(null),
+      TransporterId: new FormControl(null, Validators.required),
+      DeliveryRequestId: new FormControl(null),
+      ShipmentId: new FormControl(null),
+      CodAmount: new FormControl(null),
+      TotalAmount: new FormControl(null),
     });
 
+    this.shipmentForm.patchValue(
+      {
+         ParentMerchandiseWarehouseId: parentMerchandiseWarehouseId,
+         DeliveryRequestId: deliveryRequestId,
+         TransporterId : transporterId,
+         TransporterPackageNumber: transporterPackageNumber,
+         ShipmentId: shipmentId,
+         CodAmount: codAmount,
+         TotalAmount: totalAmount
+       }
+    )
+    console.log( this.shipmentForm.getRawValue() )
   }
 
   ngOnInit() {}

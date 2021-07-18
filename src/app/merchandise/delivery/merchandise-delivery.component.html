@@ -1,7 +1,6 @@
 <div *ngFor="let message of messages" class="message alert {{message.messageClass}}" role="alert">{{message.detail}}
 </div>
-<p-confirmDialog appendTo="body" header="Xác nhận"
-icon="pi pi-exclamation-triangle">
+<p-confirmDialog appendTo="body" header="Xác nhận" icon="pi pi-exclamation-triangle">
 </p-confirmDialog>
 <p-toast></p-toast>
 
@@ -145,23 +144,32 @@ icon="pi pi-exclamation-triangle">
                                                         rowData[dataSource.grByField]).paymentWeight }}</strong> kg
                                                 </span>
 
-
-                                                <i class="pi pi-shopping-cart" matTooltip="Giao hàng"
-                                                    matTooltipPosition="above"
-                                                    style="font-size: 2em; float: right; margin-right: 12px;"
-                                                    *ngIf="this.getMerchandiseInfor(this.deliveryRequest.lsParentDetail,rowData[this.dataSource.grByField]).shipment; else hasShipment"
-                                                    (click)="addOrUpdateShipment(rowData)"></i>
-
                                                 <ng-template #hasShipment>
-                                                    <i class="pi pi-times-circle" matTooltip="Hủy giao hàng"
-                                                    matTooltipPosition="above"
-                                                    style="font-size: 2em; float: right; margin-right: 12px;"
-                                                    (click)="cancelShipment(rowData)"></i>
+                                                    <i class="pi pi-shopping-cart" matTooltip="Giao hàng"
+                                                        matTooltipPosition="above"
+                                                        style="font-size: 2em; float: right; margin-right: 12px;"
+                                                        (click)="addOrUpdateShipment(rowData)"></i>
                                                 </ng-template>
 
-                                                <i class="pi pi-print" matTooltip="In phiếu" matTooltipPosition="above"
+                                                <i class="pi pi-times-circle" matTooltip="Hủy giao hàng"
+                                                    matTooltipPosition="above"
+                                                    *ngIf="this.getMerchandiseInfor(this.deliveryRequest.lsParentDetail,rowData[this.dataSource.grByField]).shipment; else hasShipment"
                                                     style="font-size: 2em; float: right; margin-right: 12px;"
-                                                    (click)="printExpBill()"></i>
+                                                    (click)="cancelShipment(rowData)">
+                                                </i>
+                                                <button styleSheetFile="{{styleSheetFile}}" class="button-print" ngxPrint printSectionId="print-ycgh-50-50-{{rowIndex}}">
+                                                    <i class="pi pi-print" matTooltip="In phiếu" matTooltipPosition="above"
+                                                    style="font-size: 2em; float: right; margin-right: 12px;" 
+                                                   ></i>
+                                                </button>
+
+
+                                                <app-delivery-request-bill [printBillData]="{
+                                                    index: rowIndex,
+                                                    shipment: getMerchandiseInfor(this.deliveryRequest.lsParentDetail,rowData[dataSource.grByField]).shipment
+                                                    }">
+                                                </app-delivery-request-bill>
+
 
                                             </span>
                                             <ng-template #nullParent>

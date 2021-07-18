@@ -1,19 +1,17 @@
 $c_primary-color: #f15922;
 $c_alert:#d90000;
 
+button:focus{
+  outline: none;
+}
 /deep/ {
   .print-bill-dialog {
-    width: 50vw;
-  }
-  @media screen and (max-width: 768px) {
-    .print-bill-dialog {
-      width: 80vw;
-
-      .mat-dialog-container {
-        .mat-dialog-content {
-          padding: 10px;
-        }
-      }
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    .mat-dialog-content {
+      flex: 1;
+      max-height: unset !important;
     }
   }
 
@@ -23,7 +21,8 @@ $c_alert:#d90000;
     color: $c_alert;
   }
 
-  .print-container {
-    display: none;
+  .header{
+    display: flex;
+    justify-content: space-between;
   }
 }

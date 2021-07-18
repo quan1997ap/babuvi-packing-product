@@ -1,0 +1,133 @@
+@page {
+  margin: 0;
+}
+
+@media print {
+  html,
+  body,
+  .subpage {
+    width: 180mm;
+    padding: 1mm;
+  }
+
+  .header-print {
+    position: relative;
+    text-align: center;
+  }
+  .header-print h1 {
+    font-size: 13px;
+    font-weight: bold;
+  }
+  .header-print p {
+    font-size: 13px;
+    margin-bottom: 4px !important;
+  }
+  .header-print .bc {
+    position: absolute;
+    right: 0;
+    top: 0;
+  }
+  .no-border {
+    border: 0;
+  }
+
+  .text-center {
+    text-align: center;
+  }
+
+  .text-uppercase {
+    text-transform: uppercase;
+  }
+
+  table {
+    margin-top: 5px;
+    border-collapse: collapse;
+    width: 100%;
+  }
+
+  table,
+  th,
+  td {
+    text-align: center;
+    border: 1px solid #333;
+    font-size: 12px;
+  }
+  table td {
+    padding: 1mm;
+    word-break: break-all;
+  }
+
+  .print-footer {
+    margin-top: 2mm;
+    padding-top: 2mm;
+    border-top: 1px dashed #000;
+  }
+
+  .no-border {
+    border: 0;
+  }
+}
+
+html,
+body,
+.subpage {
+  width: 180mm;
+  padding: 1mm;
+}
+
+.header-print {
+  position: relative;
+  text-align: center;
+}
+.header-print h1 {
+  font-size: 13px;
+  font-weight: bold;
+}
+.header-print p {
+  font-size: 13px;
+  margin-bottom: 4px !important;
+}
+.header-print .bc {
+  position: absolute;
+  right: 0;
+  top: 0;
+}
+.no-border {
+  border: 0;
+}
+
+.text-center {
+  text-align: center;
+}
+
+.text-uppercase {
+  text-transform: uppercase;
+}
+
+table {
+  margin-top: 5px;
+  border-collapse: collapse;
+  width: 100%;
+}
+
+table,
+th,
+td {
+  text-align: center;
+  font-size: 12px;
+  border: 1px solid #333;
+}
+table td {
+  padding: 1mm;
+  word-break: break-all;
+}
+
+.print-footer {
+  margin-top: 2mm;
+  padding-top: 2mm;
+  border-top: 1px dashed #000;
+}
+
+.no-border {
+  border: 0;
+}

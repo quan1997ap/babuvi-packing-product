@@ -1,4 +1,4 @@
-<div id="print-ycgh-50-50-{{printBillData.index}}" style="display: none;">
+<div id="print-ycgh-50-50-{{printBillData.index}}" [ngStyle]= "{'display': printBillData.visible ? 'block' : 'none' }">
   <div class="page"  >
     <h1 style="text-align: center;"> GÓI HÀNG {{printBillData.index}} / {{printBillData.numOfBill}} </h1>
     <div class="arcode-section" style="text-align: center;">
@@ -6,7 +6,10 @@
         [bc-display-value]="true" [bc-margin-top]="1" [bc-margin-bottom]="1">
       </ngx-barcode>
     </div>
-    <div class="delivery-request" style="text-align: center;">
+    <div *ngIf="printBillData.shipment && printBillData.shipment.transporterPackageNumber">
+      <strong> {{printBillData.shipment.transporterPackageNumber}}  </strong>
+    </div>
+    <div class="delivery-request" >
       <div>{{printBillData.deliveryRequest.contactName}} </div>
       <div>{{printBillData.deliveryRequest.contactPhone}} </div>
       <div>{{printBillData.deliveryRequest.address
@@ -14,10 +17,6 @@
         + '-' + printBillData.deliveryRequest.districtDisplay
         + '-' + printBillData.deliveryRequest.cityDisplay
         + '-' + printBillData.deliveryRequest.countryDisplay}}</div>
-    </div>
-    <div class="print-footer" style="text-align: center;">
-      <div class="text-center">{{APP_NAME}} - Order </div>
-      <div class="text-center">Hotline: 03030203023 </div>
     </div>
   </div>
 </div>

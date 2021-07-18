@@ -65,7 +65,7 @@
         <div class="title">
           Danh sách gói kiện hàng
         </div>
-        <div *ngFor="let packages of productGrouped; let i = index;" class="package-config">
+        <div *ngFor="let package of productGrouped; let i = index;" class="package-config">
           <div class="package-header" [ngClass]="{ 'active':  packageIndexSelected == i }">
             <div class="package-infor">
               <div class="option">
@@ -74,24 +74,24 @@
               </div>
               <div>
                 <span> Kiện số <strong>{{ i + 1 }}</strong> </span>
-                <strong *ngIf="packages['merchandiseCode']" > - {{packages['merchandiseCode']}} </strong>
-                <span *ngIf="packages['products'] && packages['products'].length;">
-                  - <strong> {{packages['products'].length}} </strong> mã -
-                  <strong>{{packages['sumNetWeight']}} kg</strong>
+                <strong *ngIf="package['merchandiseCode']" > - {{package['merchandiseCode']}} </strong>
+                <span *ngIf="package['products'] && package['products'].length;">
+                  - <strong> {{package['products'].length}} </strong> mã -
+                  <strong>{{package['sumNetWeight']}} kg</strong>
                 </span>
               </div>
             </div>
             <div class="gr-btn">
               <button pButton pRipple type="button" icon="pi pi-save" (click)="saveGr(i)"
-                *ngIf="!packages.merchandiseWarehouseId && packages['products'] && packages['products'].length"
+                *ngIf="!package.merchandiseWarehouseId && package['products'] && package['products'].length"
                 matTooltip="Lưu nhóm" matTooltipPosition="above"></button>
               &nbsp;
-              <button pButton pRipple type="button" icon="pi pi-print" class="ui-button-success" (click)="printGr(i)" *ngIf="packages['merchandiseCode']"
+              <button pButton pRipple type="button" icon="pi pi-print" class="ui-button-success" (click)="printGr(i)" *ngIf="package['merchandiseCode']"
                 matTooltip="In hóa đơn" matTooltipPosition="above" styleSheetFile="{{styleSheetFile}}" ngxPrint
                 printSectionId="print-ycgh-50-50-{{i}}"></button>
               &nbsp;
               <button pButton pRipple type="button" icon="pi pi-trash" class="ui-button-danger"
-                *ngIf="packages.merchandiseWarehouseId" (click)="removeGr(i)" matTooltip="Xóa nhóm"
+                *ngIf="package.merchandiseWarehouseId" (click)="removeGr(i)" matTooltip="Xóa nhóm"
                 matTooltipPosition="above"></button>
 
 
@@ -99,7 +99,9 @@
               <app-packing-product-bill [printBillData]="{
                   index: i,
                   numOfBill: productGrouped.length,
-                  merchandiseCode : packages.merchandiseCode,
+                  merchandiseCode : package.merchandiseCode,
+                  package: package,
+                  shipment: package.shipment,
                   deliveryRequest: data
                 }">
               </app-packing-product-bill>
@@ -107,8 +109,8 @@
             </div>
           </div>
 
-          <div *ngIf="packages['products'] && packages['products'].length; else grEmpty;" class="table-grouped">
-            <p-table [columns]="colSelectedTables" [value]="packages['products']" dataKey="merchandiseCode">
+          <div *ngIf="package['products'] && package['products'].length; else grEmpty;" class="table-grouped">
+            <p-table [columns]="colSelectedTables" [value]="package['products']" dataKey="merchandiseCode">
               <ng-template pTemplate="header" let-columns>
                 <tr>
                   <th *ngFor="let col of columns">

@@ -1,26 +1,23 @@
+
+
 import { APP_NAME } from './../../../../config/app.config';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 import { DeliveryRequest } from './../../../../model/delivery-request.model';
 import { Component, OnInit, Inject, Input } from '@angular/core';
 
-export class PackingProductBillDataModel{
+export class DeliveryRequestBillDataModel{
   index: number;
-  numOfBill: number;
-  deliveryRequest: DeliveryRequest;
-  merchandiseCode: string;
-  package: any;
   shipment: any;
-  visible?: boolean;
 
 }
 @Component({
-  selector: 'app-packing-product-bill',
-  templateUrl: './packing-product-bill.component.html',
-  styleUrls: ['./packing-product-bill.component.scss']
+  selector: 'app-delivery-request-bill',
+  templateUrl: './delivery-request-bill.component.html',
+  styleUrls: ['./delivery-request-bill.component.scss']
 })
-export class PackingProductBillComponent implements OnInit {
+export class DeliveryRequestBillComponent implements OnInit {
   APP_NAME = APP_NAME;
-  @Input() printBillData: PackingProductBillDataModel;
+  @Input() printBillData: DeliveryRequestBillDataModel;
   
   constructor(
   ) {

@@ -47,6 +47,7 @@ import { PackingProductBillComponent } from './delivery/print-bill/packing-produ
 import { PackingProductShipmentBillComponent } from './delivery/print-bill/packing-product-shipment-bill/packing-product-shipment-bill.component';
 import { DeliveryBillComponent } from './delivery/print-bill/delivery-bill/delivery-bill.component';
 import { RequestDeliveryBillComponent } from './delivery/print-bill/request-delivery-bill/request-delivery-bill.component';
+import { DeliveryRequestBillComponent } from './delivery/print-bill/delivery-request-bill/delivery-request-bill.component';
 
 @NgModule({
   imports: [
@@ -89,6 +90,7 @@ import { RequestDeliveryBillComponent } from './delivery/print-bill/request-deli
     PackingProductShipmentBillComponent,
     DeliveryBillComponent,
     RequestDeliveryBillComponent,
+    DeliveryRequestBillComponent,
   ],
   providers: [
     MerchandiseServices,

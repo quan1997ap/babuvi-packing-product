@@ -1,35 +1,35 @@
-<div id="request-delivery-bill">
-  <div class="print-container">
+<div id="request-delivery-bill-{{printData.size}}">
+  <div class="print-container" [ngStyle]= "{'display': printData.visible ? 'block' : 'none' }">
     <div class="page">
-      <div class="subpage">
-        <div class="form-3">
-          <h1 class="text-center text-uppercase"> Phiếu yêu cầu giao hàng </h1>
-          <ngx-barcode [bc-value]="printData.deliveryRequestCode" bc-height="30" bc-font-size="15" bc-width="1.8" [bc-display-value]="true"></ngx-barcode>
-          <div class="info">
-            <div><strong>Loại:</strong> {{printData.deliveryRequest.typeDisplay}} </div>
-            <div><strong>Khách hàng:</strong> {{printData.deliveryRequest.contactName}} </div>
-            <div><strong>Điện thoại:</strong> {{printData.deliveryRequest.contactPhone}} </div>
-            <div><strong>Địa chỉ:</strong> {{printData.deliveryRequest.address
+      <div class="subpage" *ngIf="printData.size=='full-size'">
+        <h1 class="text-center text-uppercase"> Phiếu yêu cầu giao hàng </h1>
+        <ngx-barcode [bc-value]="printData.deliveryRequestCode" bc-height="30" bc-font-size="15" bc-width="1.8"
+          [bc-display-value]="true"></ngx-barcode>
+        <div class="info" >
+          <div><strong>Loại:</strong> {{printData.deliveryRequest.typeDisplay}} </div>
+          <div><strong>Khách hàng:</strong> {{printData.deliveryRequest.contactName}} </div>
+          <div><strong>Điện thoại:</strong> {{printData.deliveryRequest.contactPhone}} </div>
+          <div><strong>Địa chỉ:</strong> {{printData.deliveryRequest.address
             + '-' + printData.deliveryRequest.wardDisplay
             + '-' + printData.deliveryRequest.districtDisplay
             + '-' + printData.deliveryRequest.cityDisplay
             + '-' + printData.deliveryRequest.countryDisplay}}</div>
-            <div class="text-center">**************</div>
-            <div><strong>Nhà xe:</strong> {{printData.deliveryRequest.vehicleName}} </div>
-            <div><strong>Điện thoại:</strong> {{printData.deliveryRequest.vehiclePhone}}</div>
-            <div><strong>Địa chỉ:</strong> {{printData.deliveryRequest.vehicleAddress}}</div>
-            <div class="text-center">**************</div>
-          </div>
-          <div class="list">
-            <table>
-              <thead>
+          <div class="text-center">**************</div>
+          <div><strong>Nhà xe:</strong> {{printData.deliveryRequest.vehicleName}} </div>
+          <div><strong>Điện thoại:</strong> {{printData.deliveryRequest.vehiclePhone}}</div>
+          <div><strong>Địa chỉ:</strong> {{printData.deliveryRequest.vehicleAddress}}</div>
+          <div class="text-center">**************</div>
+        </div>
+        <div class="list">
+          <table>
+            <thead>
               <tr>
                 <th>Mã hàng</th>
                 <th>Vị trí</th>
                 <th>Trọng lượng</th>
               </tr>
-              </thead>
-              <tbody>
+            </thead>
+            <tbody>
               <tr *ngFor="let mer of printData.deliveryRequest.lsDetail">
                 <td>{{mer.merchandiseCode}}</td>
                 <td>{{mer.shelfPosition}}</td>
@@ -40,8 +40,41 @@
                 <td class="no-border"></td>
                 <td class="no-border">{{printData.sumRequestWeight}} kg</td>
               </tr>
-              </tbody>
-            </table>
+            </tbody>
+          </table>
+        </div>
+        <div class="print-footer">
+          <div class="text-center">{{APP_NAME}} - Order </div>
+          <div class="text-center">Hotline: 03030203023 </div>
+        </div>
+      </div>
+
+
+      <div class="subpage" *ngIf="printData.size=='50x50'" >
+        <div class="form-3">
+          <h1 class="text-center text-uppercase"> Yêu cầu giao hàng </h1>
+          <ngx-barcode 
+          [bc-value]="printData.deliveryRequestCode" 
+          bc-height="30" 
+          bc-font-size="15" 
+          bc-width="1.8" 
+          [bc-display-value]="true"
+          [bc-margin-top]="1" 
+          [bc-margin-bottom]="1"
+          >
+         </ngx-barcode>
+          <div class="infor50">
+            <div>{{printData.deliveryRequest.contactName}} </div>
+            <div>{{printData.deliveryRequest.contactPhone}} </div>
+            <div>{{ printData.deliveryRequest.address
+            + '-' + printData.deliveryRequest.wardDisplay
+            + '-' + printData.deliveryRequest.districtDisplay
+            + '-' + printData.deliveryRequest.cityDisplay
+            + '-' + printData.deliveryRequest.countryDisplay}}</div>
+            <div>
+              {{printData.deliveryRequest.lsDetail?.length}} Kiện hàng / TT:
+              <span>{{printData.deliveryRequest.missingAmount| currencyChina}}</span>  
+            </div>
           </div>
           <div class="print-footer">
             <div class="text-center">{{APP_NAME}} - Order </div>
@@ -49,6 +82,7 @@
           </div>
         </div>
       </div>
+
     </div>
   </div>
 </div>

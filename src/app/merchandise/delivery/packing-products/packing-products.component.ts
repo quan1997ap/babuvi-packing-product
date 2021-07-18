@@ -43,7 +43,7 @@ export class PackingProductsComponent implements OnInit {
     private messageService: MessageService,
     private confirmationService: ConfirmationService
   ) {
-    console.log(this.data);
+    // console.log(this.data);
   }
 
   close() {

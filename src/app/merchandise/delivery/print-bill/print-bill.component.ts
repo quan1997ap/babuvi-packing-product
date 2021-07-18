@@ -1,3 +1,4 @@
+import { MerchandiseServices } from 'app/services/merchandise.services';
 import {Component, Inject, OnInit} from '@angular/core';
 import {MAT_DIALOG_DATA} from "@angular/material/dialog";
 import {DeliveryRequest} from "app/model/delivery-request.model";
@@ -25,11 +26,23 @@ export class PrintBillComponent implements OnInit {
   sumRequestWeight: number = 0;
   symbolsLocation: string = '1';
   symbolsDisplay: string = 'đ';
+
+  printTypes = [
+    {label:'In phiếu xuất hàng', value: 1},
+    {label:'In phiếu yêu cầu giao hàng', value: 2},
+    {label:'In phiếu yêu cầu giao hàng 50x50', value: 3},
+  ]
+  billSelected = this.printTypes[0].value;
+
   styleSheetFiles = "/assets/styles/css/print-bill.css";
+  styleRequestDeliveryBillFile = "/assets/styles/css/request-delivery-bill.css";
+  styleDeliveryBillFile = "/assets/styles/css/delivery-bill.css";
+
   printDelay = 0;
   constructor(
       @Inject(MAT_DIALOG_DATA) private dialogData: any,
       private printService: PrintService,
+      public merchandiseServices: MerchandiseServices
       ) {
   }
 
@@ -104,8 +117,6 @@ export class PrintBillComponent implements OnInit {
           this.loading['ship'] = false;
           if (res.result.success) {
             this.shipData = res.result.data;
-            console.log("this.shipData");
-            console.log(this.shipData);
           } else {
             this.isDisable['ship'] = true;
             this.showMessage('alert-danger', res.result.message);
@@ -124,8 +135,10 @@ export class PrintBillComponent implements OnInit {
    */
   printDeliveryRequest(deliveryCode) {
     this.loading['request'] = true;
-    this.printService.printDeliveryRequest(deliveryCode).toPromise()
+    this.merchandiseServices
+      .getDeliveryRequestByCode(deliveryCode).toPromise()
         .then(res => {
+          console.log(res)
           this.loading['request'] = false;
           if (res.result.success) {
             this.deliveryRequest = res.result.data;
@@ -164,4 +177,5 @@ export class PrintBillComponent implements OnInit {
       return 0;
     }
   }
+
 }

@@ -26,6 +26,19 @@ $col-left-md-width: 40%;
   display: table;
 }
 
+.button-print{
+  background: transparent;
+  border: none;
+  text-align: center;
+  width: 40px;
+  padding: 0 0;
+  color: #fff;
+  float: right;
+  &:focus{
+    outline: none !important;
+    border: none !important;
+  }
+}
 .search-form{
   display: flex;
   margin-bottom: 12px;

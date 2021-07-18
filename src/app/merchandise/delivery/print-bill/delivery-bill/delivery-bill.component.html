@@ -1,3 +1,119 @@
-<p>
-  delivery-bill works!
-</p>
+<div id="delivery-bill-grouped">
+  <div class="print-container" [ngStyle]="{'display': printData.visible ? 'block' : 'none' }">
+    <div class="page">
+      <div class="subpage">
+        <div class="header-print">
+          <h1 class="text-center text-uppercase"> Phiếu xuất hàng </h1>
+          <p>
+            Ngày xuất : {{ currentTime | date: 'dd/MM/yyyy hh:mm a' }}
+          </p>
+          <div class="bc">
+            <ngx-barcode [bc-value]="printData.deliveryRequestCode" bc-height="20" bc-font-size="13" bc-width="1.8"
+              [bc-display-value]="true"></ngx-barcode>
+          </div>
+        </div>
+        <br/>
+        <div class="info">
+          <div  style="margin-bottom: 8px;">
+            <strong>Phiếu y/c:</strong> {{printData.deliveryRequestCode}} -
+            <strong>Ngày y/c:</strong> {{printData.deliveryRequest.createdDate | date: 'dd/MM/yyyy hh:mm a'}}
+            - <strong>{{printData.deliveryRequest.typeDisplay}}</strong>
+          </div>
+          <div style="margin-bottom: 8px;">
+            <strong>Người nhận:</strong> {{printData.deliveryRequest.contactName}}
+            <span> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+            <strong>Điện thoại:</strong> {{printData.deliveryRequest.contactPhone}}
+          </div>
+          <div  style="margin-bottom: 8px;" ><strong>Địa chỉ:</strong> {{printData.deliveryRequest.address
+            + '-' + printData.deliveryRequest.wardDisplay
+            + '-' + printData.deliveryRequest.districtDisplay
+            + '-' + printData.deliveryRequest.cityDisplay
+            + '-' + printData.deliveryRequest.countryDisplay}}</div>
+          <br />
+          <div class="text-center">****************************************</div>
+          <br/>
+        </div>
+        <div class="list">
+          <table>
+            <thead>
+              <td *ngFor="let col of colSelectedTables"  [style.minWidth.%]="minWidth">
+                {{col.name}}
+              </td>
+            </thead>
+            <tbody>
+              <ng-container *ngFor="let package of productGrouped; let i=index;">
+                <tr>
+                  <td style="text-align: left;" [colSpan]="colSelectedTables.length"><span> Kiện số <strong>{{ i + 1 }}</strong> </span>
+                    <strong *ngIf="package['merchandiseCode']" > - {{package['merchandiseCode']}} </strong>
+                    <span *ngIf="package['products'] && package['products'].length;">
+                      - <strong> {{package['products'].length}} </strong> mã -
+                      <strong>{{package['sumNetWeight']}} kg</strong>
+                    </span> 
+                  </td>
+                </tr>
+                <tr *ngFor="let product of package.products" >
+                  <td *ngFor="let col of colSelectedTables" [style.minWidth.%]="minWidth" >
+                    <span *ngIf=" !['tt'].includes(col.id)">
+                      {{product[col.id]}}
+                    </span>
+
+                    <span *ngIf="col.id == 'tt'" >
+                      {{product.length}} x {{product.width}}
+                      x {{product.height}}
+                    </span>
+                  </td>
+                </tr>
+              </ng-container>
+
+              <tr > 
+                <td [colSpan]="colSelectedTables.length" style="text-align: left;">
+                  <div>
+                    <strong>Tổng cộng: </strong> {{printData.deliveryRequest.lsDetail?.length}} kiện hàng
+                  </div>
+                  <div>
+                    <strong>Trọng lượng: </strong> {{printData.sumRequestWeight}} kg
+                  </div>
+                  <div>
+                    <strong>Tổng tiền cần thanh toán: </strong> {{printData.deliveryRequest.missingAmount }} 
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <br/>
+        <div style="display: flex; justify-content: space-between;"> 
+         
+          <div style="text-align: center;">
+            <div>
+              <strong>
+                Người nhận
+              </strong>
+            </div>
+            <div>
+              ( kí, ghi rõ họ tên)
+            </div>
+          </div>
+
+          <div style="text-align: center;">
+            <div>
+              Ngày ....  tháng .... năm ....
+            </div>
+            <div>
+              <strong>
+                Người lập phiếu
+              </strong>
+            </div>
+            <div>
+              ( kí, ghi rõ họ tên)
+            </div>
+          </div>
+        </div>
+
+        <br/><br/>
+
+      </div>
+    </div>
+  </div>
+</div>

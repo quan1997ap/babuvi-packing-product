@@ -21,6 +21,9 @@ import { DataTable } from "primeng/primeng";
   providers: [ConfirmationService],
 })
 export class MerchandiseDeliveryComponent implements OnInit {
+
+  styleSheetFile = "assets/styles/css/print-gh-50-50.css";
+
   @ViewChild("dt") private dataTable: DataTable;
   expandedRows = {}; // { "id": 1 }
 
@@ -132,7 +135,7 @@ export class MerchandiseDeliveryComponent implements OnInit {
     }
 
     let cancelShipmentParams = {
-      arentMerchandiseWarehouseId: parentMerchandiseWarehouseId,
+      parentMerchandiseWarehouseId: parentMerchandiseWarehouseId,
       TransporterPackageNumber: transporterPackageNumber,
       transporterId: transporterId,
       deliveryRequestId: deliveryRequestId,
@@ -554,6 +557,8 @@ export class MerchandiseDeliveryComponent implements OnInit {
     this.dialog.open(PrintBillComponent, {
       data: printData,
       panelClass: "print-bill-dialog",
+      width: "99%",
+      height: "90%"
     });
   }
 

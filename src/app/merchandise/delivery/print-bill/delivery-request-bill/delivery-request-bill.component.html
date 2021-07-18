@@ -1,12 +1,12 @@
-<div id="print-ycgh-50-50-{{printBillData.index}}" style="display: none;">
+<div id="print-ycgh-50-50-{{printBillData.index}}" style="display: none;" *ngIf="printBillData.shipment">
   <div class="page"  >
     <h1 style="text-align: center;"> GHN </h1>
-    <div class="arcode-section" style="text-align: center;">
+    <div class="arcode-section" style="text-align: center;" *ngIf="printBillData.shipment.transporterPackageNumber">
       <ngx-barcode [bc-value]="printBillData.shipment.transporterPackageNumber" bc-height="30" bc-font-size="15" bc-width="1.8"
         [bc-display-value]="true" [bc-margin-top]="1" [bc-margin-bottom]="1">
       </ngx-barcode>
     </div>
-    <div *ngIf="printBillData.shipment && printBillData.shipment.transporterPackageNumber">
+    <div *ngIf="printBillData.shipment.transporterPackageNumber">
       <strong> {{printBillData.shipment.transporterPackageNumber}}  </strong>
     </div>
     <div class="delivery-request" >

@@ -113,8 +113,7 @@ export class MerchandiseDeliveryComponent implements OnInit {
   }
 
   cancelShipment(rowData) {
-    console.log(      this.getMerchandiseInfor(this.deliveryRequest.lsParentDetail,rowData[this.dataSource.grByField])
-    )
+
     let parentMerchandiseWarehouseId = rowData[this.dataSource.grByField];
 
     let shipmentId = null;
@@ -123,14 +122,17 @@ export class MerchandiseDeliveryComponent implements OnInit {
     let codAmount = 0;
     let transporterId = 0;
     let transporterPackageNumber = null;
+
     if(this.deliveryRequest){
-      if(this.deliveryRequest.shipment.length){
-        shipmentId = this.deliveryRequest.shipment[0].shipmentId;
-        totalAmount = this.deliveryRequest.shipment[0].totalAmount;
-        codAmount = this.deliveryRequest.shipment[0].codAmount;
-        transporterId = this.deliveryRequest.shipment[0].transporterId;
-        deliveryRequestId = this.deliveryRequest.shipment[0].deliveryRequestId;
-        transporterPackageNumber = this.deliveryRequest.shipment[0].transporterPackageNumber;
+      let parent = this.deliveryRequest.lsParentDetail.find( parent => parent.merchandiseWarehouseId == parentMerchandiseWarehouseId )
+      if(parent){
+        let shipment = parent.shipment ? parent.shipment: null;
+        shipmentId = shipment.shipmentId ? shipment.shipmentId: null;
+        totalAmount = shipment.totalAmount ? shipment.totalAmount: null;
+        codAmount = shipment.codAmount ? shipment.codAmount: null;
+        transporterId = shipment.transporterId ? shipment.transporterId : null;
+        deliveryRequestId = shipment.deliveryRequestId ? shipment.deliveryRequestId : null;
+        transporterPackageNumber = shipment.transporterPackageNumber ? shipment.transporterPackageNumber: null;
       }
     }
 
@@ -147,12 +149,17 @@ export class MerchandiseDeliveryComponent implements OnInit {
     this.confirmationService.confirm({
       message: "Bạn có chắc muốn hủy giao hàng gói?",
       accept: () => {
-        this.loading = false;
+        this.loading = true;
         this.merchandiseServices
           .deleteShipment(cancelShipmentParams)
           .subscribe(
             (res) => {
               if (res && res.result && res.result.success) {
+                this.deliveryRequest.lsParentDetail.forEach( parent => {
+                  if(parent.merchandiseWarehouseId == parentMerchandiseWarehouseId){
+                    parent.shipment = null;
+                  }
+                })
                 this.messageService.add({severity:'success', summary:'Hủy giao hàng', detail:'Hủy giao hàng thành công'});
               } else {
                 this.messageService.add({severity:'error', summary:'Hủy giao hàng', detail:  res.result.message });

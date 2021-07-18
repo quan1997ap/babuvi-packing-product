@@ -50,8 +50,8 @@ export class ConfigShipmentComponent implements OnInit {
 
     let shipmentId = null;
     let deliveryRequestId = null;
-    let totalAmount = 0;
-    let codAmount = 0;
+    let totalAmount = null;
+    let codAmount = null;
     let transporterId = null;
     let parentMerchandiseWarehouseId = null;
     let transporterPackageNumber = null;
@@ -60,17 +60,20 @@ export class ConfigShipmentComponent implements OnInit {
       parentMerchandiseWarehouseId =
         this.data.ParentMerchandiseWarehouse.merchandiseWarehouseId;
       let shipment = this.data.ParentMerchandiseWarehouse.shipment;
-      deliveryRequestId = shipment.deliveryRequestId;
-      shipmentId = shipment.shipmentId;
-      totalAmount = shipment.totalAmount;
-      codAmount = shipment.codAmount;
-      transporterId = shipment.transporterId;
-      transporterPackageNumber = shipment.transporterPackageNumber;
+      if(shipment){
+        deliveryRequestId = shipment.deliveryRequestId;
+        shipmentId = shipment.shipmentId;
+        totalAmount = shipment.totalAmount;
+        codAmount = shipment.codAmount;
+        transporterId = shipment.transporterId;
+        transporterPackageNumber = shipment.transporterPackageNumber;
+      }
     }
 
+    console.log(parentMerchandiseWarehouseId)
     this.shipmentForm = this.fb.group({
       ParentMerchandiseWarehouseId: [
-        parentMerchandiseWarehouseId,
+        parentMerchandiseWarehouseId ? parentMerchandiseWarehouseId : null,
         Validators.required,
       ],
       TransporterPackageNumber: [transporterPackageNumber],

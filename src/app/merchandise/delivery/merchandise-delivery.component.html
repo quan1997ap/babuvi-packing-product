@@ -157,7 +157,9 @@
                                                     style="font-size: 2em; float: right; margin-right: 12px;"
                                                     (click)="cancelShipment(rowData)">
                                                 </i>
-                                                <button styleSheetFile="{{styleSheetFile}}" class="button-print" ngxPrint printSectionId="print-ycgh-50-50-{{rowIndex}}">
+                                                <button styleSheetFile="{{styleSheetFile}}" class="button-print" ngxPrint printSectionId="print-ycgh-50-50-{{rowIndex}}"
+                                                *ngIf="this.getMerchandiseInfor(this.deliveryRequest.lsParentDetail,rowData[this.dataSource.grByField]).shipment;"
+                                                >
                                                     <i class="pi pi-print" matTooltip="In phiếu" matTooltipPosition="above"
                                                     style="font-size: 2em; float: right; margin-right: 12px;" 
                                                    ></i>

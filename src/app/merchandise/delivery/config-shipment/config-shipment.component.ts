@@ -60,11 +60,12 @@ export class ConfigShipmentComponent implements OnInit {
 
     console.log(this.data)
     if (this.data.ParentMerchandiseWarehouse.merchandiseWarehouseId) {
+      deliveryRequestId = this.data.deliveryRequest.deliveryRequestId;
       parentMerchandiseWarehouseId = this.data.ParentMerchandiseWarehouse.merchandiseWarehouseId;
       let shipment = this.data.ParentMerchandiseWarehouse.shipment;
       console.log(shipment)
       if(shipment){
-        deliveryRequestId = shipment.deliveryRequestId;
+      
         shipmentId = shipment.shipmentId;
         totalAmount = shipment.totalAmount;
         codAmount = shipment.codAmount;

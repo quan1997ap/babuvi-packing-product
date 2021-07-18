@@ -19,7 +19,7 @@
 
       <div class="control">
         <div class="label">Đơn vị vận chuyển: <span class="required"> * </span></div>
-        <p-dropdown optionLabel="label" formControlName="TransporterId" [style]="{'width':'100%'}" [options]="transporters" ></p-dropdown>
+        <p-dropdown formControlName="TransporterId" [style]="{'width':'100%'}" [options]="transporters" ></p-dropdown>
       </div>
       <div class="col alert alert-danger" role="alert" *ngIf="shipmentForm.controls.TransporterId?.errors?.required
          && shipmentForm.controls.TransporterId?.touched">

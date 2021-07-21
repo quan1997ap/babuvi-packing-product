@@ -108,6 +108,10 @@ export class MerchandiseServices extends ApiService {
         return this.post(this.apiBaseController + ApiApplication.merchandise.sendDelivery, body);
     }
 
+    finishShipment(body){
+        return this.post(this.apiBaseController + ApiApplication.merchandise.finishShipment, body);
+    }
+
     cancelDelivery(body) {
         return this.post(this.apiBaseController + ApiApplication.merchandise.cancelDelivery, body);
     }

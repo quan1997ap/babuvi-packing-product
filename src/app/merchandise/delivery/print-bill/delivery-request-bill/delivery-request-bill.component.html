@@ -1,19 +1,34 @@
-<div id="print-ycgh-50-50-{{printBillData.index}}" style="display: none;" *ngIf="printBillData.shipment">
+<div id="print-ycvc-bill-50-50" style="display: none;" *ngIf="dataPrint">
   <div class="page"  >
     <h1 style="text-align: center;"> GHN </h1>
-    <div class="arcode-section" style="text-align: center;" *ngIf="printBillData.shipment.transporterPackageNumber">
-      <ngx-barcode [bc-value]="printBillData.shipment.transporterPackageNumber" bc-height="30" bc-font-size="15" bc-width="1.8"
+    <div class="arcode-section" style="text-align: center;" *ngIf="dataPrint.transporterName">
+      <ngx-barcode [bc-value]="dataPrint.transporterPackageNumber" bc-height="30" bc-font-size="15" bc-width="1.8"
         [bc-display-value]="true" [bc-margin-top]="1" [bc-margin-bottom]="1">
       </ngx-barcode>
     </div>
-    <div *ngIf="printBillData.shipment.transporterPackageNumber">
-      <strong> {{printBillData.shipment.transporterPackageNumber}}  </strong>
+    <div *ngIf="dataPrint.transporterName">
+      <strong> {{dataPrint.transporterName}}  </strong>
     </div>
     <div class="delivery-request" >
-      <div>{{printBillData.shipment.contactName}} </div>
-      <div>{{printBillData.shipment.contactPhone}} </div>
-      <div>From: {{printBillData.shipment.fromAddress}}</div>
-      <div>To: {{printBillData.shipment.toAddress}}</div>
+      <div>{{dataPrint.contactName}} </div>
+      <div>{{dataPrint.contactPhone}} </div>
+      <div>
+        {{dataPrint.address
+          + '-' + dataPrint.wardDisplay
+          + '-' + dataPrint.districtDisplay
+          + '-' + dataPrint.cityDisplay
+          + '-' + dataPrint.countryDisplay}}
+      </div>
+    </div>
+    <div>
+      <span>COD: {{dataPrint.codAmount}} / Ship: {{dataPrint.totalAmount}} </span>
     </div>
   </div>
 </div>
+
+<button style="display: none;" #printDelivery ngxPrint printSectionId="print-ycvc-bill-50-50"
+[styleSheetFile]="styleSheetFile"></button>
+
+<ngx-spinner bdColor="rgba(0, 0, 0, 0.8)" size="medium" color="#fff" type="ball-atom" [fullScreen]="true">
+  <p style="color: white"> Loading... </p>
+</ngx-spinner>

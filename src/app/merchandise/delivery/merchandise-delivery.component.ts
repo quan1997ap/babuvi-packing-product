@@ -46,6 +46,8 @@ export class MerchandiseDeliveryComponent implements OnInit {
   symbolsLocation: string = "1";
   symbolsDisplay: string = "đ";
 
+  indexOfDeliveryBillPrinting = null;
+
   displayedColumns: string[] = [
     "orderCode",
     "merchandiseCode",
@@ -81,7 +83,7 @@ export class MerchandiseDeliveryComponent implements OnInit {
    */
 
   addOrUpdateShipment(rowData) {
-
+    this.indexOfDeliveryBillPrinting = null;
     let ParentMerchandiseWarehouseId = rowData[this.dataSource.grByField];
     let ParentMerchandise = this.deliveryRequest.lsParentDetail.find(
       (item) => item.merchandiseWarehouseId === ParentMerchandiseWarehouseId
@@ -102,18 +104,18 @@ export class MerchandiseDeliveryComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe((resultUpdateShipment) => {
       if(resultUpdateShipment){
-        console.log(resultUpdateShipment)
         this.messageService.add({
           severity: "success",
           summary: "Thông báo",
           detail: "Giao hàng thành công!",
         });
+        this.getDeliveryRequestByCode(this.deliveryRequestCode);
       }
     });
   }
 
   cancelShipment(rowData) {
-
+    this.indexOfDeliveryBillPrinting = null;
     let parentMerchandiseWarehouseId = rowData[this.dataSource.grByField];
 
     let shipmentId = null;
@@ -155,11 +157,7 @@ export class MerchandiseDeliveryComponent implements OnInit {
           .subscribe(
             (res) => {
               if (res && res.result && res.result.success) {
-                this.deliveryRequest.lsParentDetail.forEach( parent => {
-                  if(parent.merchandiseWarehouseId == parentMerchandiseWarehouseId){
-                    parent.shipment = null;
-                  }
-                })
+                this.getDeliveryRequestByCode(this.deliveryRequestCode);
                 this.messageService.add({severity:'success', summary:'Hủy giao hàng', detail:'Hủy giao hàng thành công'});
               } else {
                 this.messageService.add({severity:'error', summary:'Hủy giao hàng', detail:  res.result.message });
@@ -176,12 +174,18 @@ export class MerchandiseDeliveryComponent implements OnInit {
     });
   }
 
+
+  printDeliveryBill(rowIndex){
+    this.indexOfDeliveryBillPrinting = rowIndex;
+  }
   /**
    * Get delivery data by code
    * @param code
    */
-  getDeliveryRequestByCode(code, showDialog?: boolean) {
+  getDeliveryRequestByCode(code) {
+    this.indexOfDeliveryBillPrinting = null;
     this.loading = true;
+    this.messages = [];
     this.merchandiseServices
       .getDeliveryRequestByCode(code)
       .toPromise()
@@ -211,14 +215,17 @@ export class MerchandiseDeliveryComponent implements OnInit {
           this.deliveryRequest = new DeliveryRequest();
           this.showMessage("alert-danger", res.result.message);
         }
-        if (showDialog) {
-          // this.configPacking();
-        }
         this.expandAllTable();
       })
       .catch((error) => {
         this.loading = false;
         this.deliveryRequest = new DeliveryRequest();
+        this.dataSource = {
+          rows: [],
+          rowsFilter: [],
+          rowGroupMetadata: {},
+          grByField: "parentId"
+        }; 
         this.showMessage(
           "alert-danger",
           "Tải thông tin yêu cầu xuất hàng thất bại"
@@ -243,7 +250,7 @@ export class MerchandiseDeliveryComponent implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe((result) => {
-      this.getDeliveryRequestByCode(this.deliveryRequestCode, false);
+      this.getDeliveryRequestByCode(this.deliveryRequestCode);
       console.log(`Dialog result: ${result}`); // Pizza!
     });
   }
@@ -293,7 +300,7 @@ export class MerchandiseDeliveryComponent implements OnInit {
     this.dataSource.rowsFilter = JSON.parse(
       JSON.stringify(this.merchandiseList)
     );
-    console.log(this.dataSource);
+
     // make group rows
     this.updateRowGroupMetaData();
   }
@@ -441,13 +448,14 @@ export class MerchandiseDeliveryComponent implements OnInit {
   /**
    * Send delivery
    */
-  sendDelivery() {
+   finishShipment() {
     const body = {
       DeliveryRequestCode: this.deliveryRequestCode,
+      UserId : this.userId
     };
     this.loading = true;
     this.merchandiseServices
-      .sendDelivery(body)
+      .finishShipment(body)
       .toPromise()
       .then((res) => {
         this.loading = false;
@@ -564,8 +572,10 @@ export class MerchandiseDeliveryComponent implements OnInit {
     this.dialog.open(PrintBillComponent, {
       data: printData,
       panelClass: "print-bill-dialog",
-      width: "99%",
-      height: "90%"
+      minHeight: "300px",
+      maxHeight: "400px",
+      maxWidth: "450px",
+      minWidth: "420px"
     });
   }
 

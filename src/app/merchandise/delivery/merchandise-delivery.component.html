@@ -7,22 +7,22 @@
 <div class="btn-dashboard mb-2 p-2">
     <span class="top-feature">
         <!-- (click)="createPackage()" -->
-        <button mat-raised-button color="warn" (click)="configPacking()">Đóng gói</button>
+        <button mat-raised-button color="warn" (click)="configPacking()" [disabled]="!deliveryRequestCode || !dataSource.rowsFilter.length">Đóng gói</button>
     </span>
     <span class="top-feature">
-        <button mat-raised-button color="warn" (click)="sendDelivery()">Giao hàng</button>
+        <button mat-raised-button color="warn" (click)="finishShipment()" [disabled]="!deliveryRequestCode || !dataSource.rowsFilter.length" >Giao hàng</button>
     </span>
     <span class="top-feature">
-        <button mat-raised-button color="warn" (click)="cancelDelivery()">Hủy giao</button>
+        <button mat-raised-button color="warn" (click)="cancelDelivery()" [disabled]="!deliveryRequestCode || !dataSource.rowsFilter.length">Hủy giao</button>
     </span>
     <span class="top-feature">
-        <button mat-raised-button color="warn" (click)="exportByDeliveryRequest()">Xuất hàng</button>
+        <button mat-raised-button color="warn" (click)="exportByDeliveryRequest()" [disabled]="!deliveryRequestCode || !dataSource.rowsFilter.length" >Xuất hàng</button>
     </span>
     <span class="top-feature">
-        <button mat-raised-button color="warn" (click)="cancelExp()">Hủy xuất</button>
+        <button mat-raised-button color="warn" (click)="cancelExp()" [disabled]="!deliveryRequestCode || !dataSource.rowsFilter.length">Hủy xuất</button>
     </span>
     <span class="top-feature">
-        <button mat-raised-button color="warn" (click)="printExpBill()">In phiếu xuất</button>
+        <button mat-raised-button color="warn" (click)="printExpBill()" [disabled]="!deliveryRequestCode || !dataSource.rowsFilter.length">In phiếu xuất</button>
     </span>
 </div>
 
@@ -36,7 +36,7 @@
                     <label for="deliveryRequestCd">Mã phiếu yêu cầu xuất hàng</label>
                     <input type="text" class="form-control" id="deliveryRequestCd" name="deliveryRequestCd" required
                         #deliveryRequestCd="ngModel" ngModel [(ngModel)]="deliveryRequestCode"
-                        (keydown.enter)="getDeliveryRequestByCode(deliveryRequestCd.value, true)">
+                        (keydown.enter)="getDeliveryRequestByCode(deliveryRequestCd.value)">
                 </div>
                 <p><span class="font-weight-bold">Ngày tạo: </span>{{deliveryRequest.createdDate | date: 'dd/MM/yyyy
                     hh:mm:ss' }}
@@ -111,7 +111,7 @@
                 <div class="merchandise-table-container">
                     <div class="table-wrapper">
                         <!-- rowExpandMode="single" -->
-                        <p-table [value]="dataSource.rowsFilter" [dataKey]="dataSource.grByField"
+                        <p-table class="gr-table" [style]="{'min-width':'500px'}" [value]="dataSource.rowsFilter" [dataKey]="dataSource.grByField"
                             [expandedRowKeys]="expandedRows">
                             <ng-template pTemplate="header">
                                 <tr>
@@ -157,7 +157,8 @@
                                                     style="font-size: 2em; float: right; margin-right: 12px;"
                                                     (click)="cancelShipment(rowData)">
                                                 </i>
-                                                <button styleSheetFile="{{styleSheetFile}}" class="button-print" ngxPrint printSectionId="print-ycgh-50-50-{{rowIndex}}"
+                                                <button class="button-print"
+                                                (click)="printDeliveryBill(rowIndex)"
                                                 *ngIf="this.getMerchandiseInfor(this.deliveryRequest.lsParentDetail,rowData[this.dataSource.grByField]).shipment;"
                                                 >
                                                     <i class="pi pi-print" matTooltip="In phiếu" matTooltipPosition="above"
@@ -165,12 +166,13 @@
                                                    ></i>
                                                 </button>
 
-
-                                                <app-delivery-request-bill [printBillData]="{
-                                                    index: rowIndex,
-                                                    shipment: getMerchandiseInfor(this.deliveryRequest.lsParentDetail,rowData[dataSource.grByField]).shipment
-                                                    }">
-                                                </app-delivery-request-bill>
+                                                <div *ngIf="rowIndex == indexOfDeliveryBillPrinting">
+                                                    <app-delivery-request-bill [printBillData]="{
+                                                        index: rowIndex,
+                                                        shipment: getMerchandiseInfor(this.deliveryRequest.lsParentDetail,rowData[dataSource.grByField]).shipment
+                                                        }">
+                                                    </app-delivery-request-bill>
+                                                </div>
 
 
                                             </span>

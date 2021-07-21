@@ -1,5 +1,6 @@
+import { NgxSpinnerService } from 'ngx-spinner';
 import { MerchandiseServices } from 'app/services/merchandise.services';
-import {Component, Inject, OnInit} from '@angular/core';
+import { Component, Inject, OnInit, ElementRef, ViewChild } from '@angular/core';
 import {MAT_DIALOG_DATA} from "@angular/material/dialog";
 import {DeliveryRequest} from "app/model/delivery-request.model";
 import {PrintService} from "app/services/print.service";
@@ -12,63 +13,96 @@ import { APP_NAME } from 'app/config/app.config';
   styleUrls: ['./print-bill.component.scss']
 })
 export class PrintBillComponent implements OnInit {
+  @ViewChild("print") print!: ElementRef;
+
   APP_NAME = APP_NAME;
   messages: any[];
-  loading: boolean[] = [];
   expCode: any;
   deliveryRequestCode: any;
   deliveryRequestId: any;
-  isDisable: boolean[] = [];
   expData: WarehouseExp = new WarehouseExp();
   shipData: any;
   deliveryRequest: DeliveryRequest = new DeliveryRequest();
   sumExpWeight: number = 0;
   sumRequestWeight: number = 0;
-  symbolsLocation: string = '1';
-  symbolsDisplay: string = 'đ';
-
-  printTypes = [
-    {label:'In phiếu xuất hàng', value: 1},
-    {label:'In phiếu yêu cầu giao hàng', value: 2},
-    {label:'In phiếu yêu cầu giao hàng 50x50', value: 3},
-  ]
-  billSelected = this.printTypes[0].value;
 
   styleSheetFiles = "/assets/styles/css/print-bill.css";
   styleRequestDeliveryBillFile = "/assets/styles/css/request-delivery-bill.css";
   styleDeliveryBillFile = "/assets/styles/css/delivery-bill.css";
 
-  printDelay = 0;
+  printTypes = [
+    {
+      label:'In phiếu xuất hàng', 
+      value: {
+        id: 1,
+        printSectionId: "delivery-bill-grouped",
+        style: this.styleDeliveryBillFile
+      }
+    },
+    {
+      label:'In phiếu yêu cầu giao hàng', 
+      value: {
+        id: 2,
+        printSectionId: "request-delivery-bill-full-size",
+        style: this.styleRequestDeliveryBillFile
+      }
+    },
+    {
+      label:'In phiếu yêu cầu giao hàng 50x50', 
+      value: {
+        id: 3,
+        printSectionId: "request-delivery-bill-50x50",
+        style: this.styleRequestDeliveryBillFile
+      }
+    },
+    {
+      label:'Demo with params', 
+      value: {
+        id: 4,
+        printSectionId: "request-delivery-bill-demo",
+        style: this.styleRequestDeliveryBillFile
+      }
+    },
+  ]
+  billSelected = this.printTypes[0].value;
+
+
+  types = [];
+  typeSelected = null;
+
+  fromDate = null;
+  toDate = null;
+
+  loading = false;
+
   constructor(
       @Inject(MAT_DIALOG_DATA) private dialogData: any,
       private printService: PrintService,
-      public merchandiseServices: MerchandiseServices
+      public merchandiseServices: MerchandiseServices,
+      private spinner: NgxSpinnerService
       ) {
   }
 
   ngOnInit() {
-    if (this.dialogData.expCode) {
-      this.expCode = this.dialogData.expCode;
-      this.printWarehouseExp(this.expCode);
-    } else {
-      this.isDisable['exp'] = true;
-    }
+  }
 
-    if (this.dialogData.deliveryRequestId) {
-      this.deliveryRequestId = this.dialogData.deliveryRequestId;
-      this.printShipByDeliveryRequest(this.deliveryRequestId);
-    } else {
-      this.isDisable['ship'] = true;
-    }
+
+  printBill(){
+    // if (this.dialogData.expCode) {
+    //   this.expCode = this.dialogData.expCode;
+    //   this.printWarehouseExp(this.expCode);
+    // }
+
+    // if (this.dialogData.deliveryRequestId) {
+    //   this.deliveryRequestId = this.dialogData.deliveryRequestId;
+    //   this.printShipByDeliveryRequest(this.deliveryRequestId);
+    // }
 
     if (this.dialogData.deliveryRequestCode) {
       this.deliveryRequestCode = this.dialogData.deliveryRequestCode;
       this.printDeliveryRequest(this.deliveryRequestCode);
-    } else {
-      this.isDisable['request'] = true;
     }
   }
-
   /**
    * Show message
    * @param messageClass = bootstrap alert class
@@ -87,21 +121,16 @@ export class PrintBillComponent implements OnInit {
    * @param expCode
    */
   printWarehouseExp(expCode) {
-    this.loading['exp'] = true;
     this.printService.printWarehouseExp(expCode).toPromise()
         .then(res => {
-          this.loading['exp'] = false;
           if (res.result.success) {
             this.expData = res.result.data;
             this.sumExpWeight = this.sumWeightOfExpList();
           } else {
-            this.isDisable['exp'] = true;
             this.showMessage('alert-danger', res.result.message);
           }
         })
         .catch(() => {
-          this.loading['exp'] = false;
-          this.isDisable['exp'] = true;
           this.showMessage('alert-danger', 'Không lấy được thông tin phiếu xuất hàng');
         });
   }
@@ -111,20 +140,15 @@ export class PrintBillComponent implements OnInit {
    * @param expCode
    */
   printShipByDeliveryRequest(deliveryRequestId) {
-    this.loading['ship'] = true;
     this.printService.printShipByDeliveryRequest(deliveryRequestId).toPromise()
         .then(res => {
-          this.loading['ship'] = false;
           if (res.result.success) {
             this.shipData = res.result.data;
           } else {
-            this.isDisable['ship'] = true;
             this.showMessage('alert-danger', res.result.message);
           }
         })
         .catch(() => {
-          this.loading['ship'] = false;
-          this.isDisable['ship'] = true;
           this.showMessage('alert-danger', 'Không lấy được thông tin phiếu vận đơn');
         });
   }
@@ -134,23 +158,30 @@ export class PrintBillComponent implements OnInit {
    * @param deliveryCode
    */
   printDeliveryRequest(deliveryCode) {
-    this.loading['request'] = true;
+    this.spinner.show();
+    this.loading = true;
     this.merchandiseServices
       .getDeliveryRequestByCode(deliveryCode).toPromise()
         .then(res => {
           console.log(res)
-          this.loading['request'] = false;
           if (res.result.success) {
             this.deliveryRequest = res.result.data;
             this.sumRequestWeight = this.sumWeightOfRequestList();
+            setTimeout( () => {
+              this.print.nativeElement.click();
+              this.spinner.hide();
+              this.loading = false;
+            }, 2000);
           } else {
-            this.isDisable['request'] = true;
+            this.deliveryRequest = new DeliveryRequest();
             this.showMessage('alert-danger', res.result.message);
+            this.spinner.hide();
+            this.loading = false;
           }
+         
         })
         .catch(() => {
-          this.loading['request'] = false;
-          this.isDisable['request'] = true;
+          this.spinner.hide();
           this.showMessage('alert-danger', 'Không lấy được thông tin phiếu yêu cầu giao hàng');
         });
   }
@@ -160,7 +191,7 @@ export class PrintBillComponent implements OnInit {
    */
   sumWeightOfExpList() {
     if (this.expData.lsDetail && this.expData.lsDetail.length > 0) {
-      return this.expData.lsDetail.reduce((a, b) => a + (parseInt(b['paymentWeight']) || 0), 0);
+      return this.expData.lsDetail.reduce((a, b) => a + (parseFloat(b['paymentWeight']) || 0), 0);
     } else {
       return 0;
     }
@@ -172,7 +203,7 @@ export class PrintBillComponent implements OnInit {
    */
   sumWeightOfRequestList() {
     if (this.deliveryRequest.lsDetail && this.deliveryRequest.lsDetail.length > 0) {
-      return this.deliveryRequest.lsDetail.reduce((a, b) => a + (parseInt(b['paymentWeight']) || 0), 0);
+      return this.deliveryRequest.lsDetail.reduce((a, b) => a + (parseFloat(b['paymentWeight']) || 0), 0);
     } else {
       return 0;
     }

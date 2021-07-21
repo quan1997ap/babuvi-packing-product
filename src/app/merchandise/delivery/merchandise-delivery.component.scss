@@ -138,6 +138,9 @@ td.mat-cell:last-of-type, td.mat-footer-cell:last-of-type, th.mat-header-cell:la
 }
 
 /deep/ {
+  .table-wrapper{
+    overflow: auto;
+  }
   .merchandise-table {
     thead {
       th {

@@ -44,7 +44,6 @@ import { ConfigShipmentComponent } from './delivery/config-shipment/config-shipm
 import { NgxMaskModule, IConfig } from 'ngx-mask';
 import { NgxSpinnerModule } from "ngx-spinner";
 import { PackingProductBillComponent } from './delivery/print-bill/packing-product-bill/packing-product-bill.component';
-import { PackingProductShipmentBillComponent } from './delivery/print-bill/packing-product-shipment-bill/packing-product-shipment-bill.component';
 import { DeliveryBillComponent } from './delivery/print-bill/delivery-bill/delivery-bill.component';
 import { RequestDeliveryBillComponent } from './delivery/print-bill/request-delivery-bill/request-delivery-bill.component';
 import { DeliveryRequestBillComponent } from './delivery/print-bill/delivery-request-bill/delivery-request-bill.component';
@@ -87,7 +86,6 @@ import { DeliveryRequestBillComponent } from './delivery/print-bill/delivery-req
     PackingProductsComponent,
     ConfigShipmentComponent,
     PackingProductBillComponent,
-    PackingProductShipmentBillComponent,
     DeliveryBillComponent,
     RequestDeliveryBillComponent,
     DeliveryRequestBillComponent,

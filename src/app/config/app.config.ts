@@ -220,7 +220,8 @@ export const ApiApplication = {
         getLsTransporter:"/getLsTransporter",
         updateShipment:"updateShipment",
         addOrUpdateShipment: "addOrUpdateShipment",
-        deleteShipment: "/deleteShipment"
+        deleteShipment: "/deleteShipment",
+        finishShipment: "/finishShipment"
     },
     paymentRequest: {
         controller: ApiBaseUrl + "paymentRequest",
@@ -348,6 +349,7 @@ export const ApiApplication = {
         printWarehouseExp: 'printWarehouseExp',
         printDeliveryRequest: 'printDeliveryRequest',
         printShipByDeliveryRequest: 'printShipByDeliveryRequest',
+        printShipmentById: "printShipmentById"
     },
     referralProgram: {
       controller: ApiBaseUrl + "ReferralProgram",

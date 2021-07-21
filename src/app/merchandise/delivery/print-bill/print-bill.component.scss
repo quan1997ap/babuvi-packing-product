@@ -24,5 +24,22 @@ button:focus{
   .header{
     display: flex;
     justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    .mat-dialog-title{
+      margin-bottom: 0 !important;
+    }
   }
+
+}
+.control{
+  .label{
+    margin-bottom: 8px !important;
+    display: block;
+  }
+}
+.gr-calendar{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 }

@@ -25,7 +25,7 @@ export class PackingProductBillComponent implements OnInit {
   constructor(
   ) {
     setTimeout( () => {
-      console.log(this.printBillData)
+      // console.log(this.printBillData)
     }, 3000)
   }
 

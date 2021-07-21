@@ -1,9 +1,8 @@
-
-
+import { PrintService } from './../../../../services/print.service';
 import { APP_NAME } from './../../../../config/app.config';
-import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
-import { DeliveryRequest } from './../../../../model/delivery-request.model';
-import { Component, OnInit, Inject, Input } from '@angular/core';
+import { Component, OnInit, Inject, Input, ElementRef, ViewChild } from '@angular/core';
+import { NgxSpinnerService } from 'ngx-spinner';
+import { MessageService } from 'primeng/api';
 
 export class DeliveryRequestBillDataModel{
   index: number;
@@ -16,17 +15,47 @@ export class DeliveryRequestBillDataModel{
   styleUrls: ['./delivery-request-bill.component.scss']
 })
 export class DeliveryRequestBillComponent implements OnInit {
+  styleSheetFile = "assets/styles/css/print-gh-50-50.css";
+  @ViewChild("printDelivery") printDelivery!: ElementRef;
+
   APP_NAME = APP_NAME;
   @Input() printBillData: DeliveryRequestBillDataModel;
-  
+  dataPrint = null;
   constructor(
+    private printService: PrintService,
+    private spinner: NgxSpinnerService,
+    private messageService: MessageService
   ) {
+    this.spinner.show();
     setTimeout( () => {
       console.log(this.printBillData)
-    }, 3000)
+     this.setPrintData();
+    }, 1000);
+  }
+
+  setPrintData(){
+    this.printService.printShipmentById(this.printBillData.shipment['shipmentId']).subscribe((res: any) => {
+      console.log(res)
+      this.dataPrint = res.result.data;
+      console.log(this.dataPrint)
+      setTimeout( () => {
+        this.printDelivery.nativeElement.click();
+      }, 500);
+      this.spinner.hide();
+    }, 
+    err => {
+      this.showToast('success', 'Thành công', 'Cập nhật thông tin thành công');
+    })
   }
 
   ngOnInit() {
+  }
+
+  showToast(type: string, summary: string, detail: string) {
+    this.messageService.add({ severity: type, summary: summary, detail: detail, life: 4000 });
+    setTimeout(function () {
+      this.msgs = [];
+    }, 4000);
   }
 
 }

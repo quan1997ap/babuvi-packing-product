@@ -1,7 +1,11 @@
+<ngx-spinner bdColor="rgba(0, 0, 0, 0.8)" size="medium" color="#fff" type="ball-atom" [fullScreen]="true">
+  <p style="color: white"> Loading... </p>
+</ngx-spinner>
+
 <div class="print-bill-dialog">
   <div class="header">
-    <h2 mat-dialog-title>Thanh toán đơn hàng</h2>
-    <button mat-mini-fab mat-dialog-close style="background: #fff;">
+    <h2 mat-dialog-title>In phiếu</h2>
+    <button mat-mini-fab mat-dialog-close style="background: #fff;margin-right: -10px; box-shadow: none;">
       <mat-icon>close</mat-icon>
     </button>
 
@@ -11,48 +15,59 @@
     </div>
 
     <div class="row">
-      <div class="col-4">
-        <p-dropdown [style]="{'width':'100%' , 'margin-bottom': '12px' }" [options]="printTypes" [(ngModel)]="billSelected"></p-dropdown>
+      <div class="col-12">
+        <div class="control">
+          <strong class="label">Chọn phiếu in </strong>
+          <p-dropdown placeholder="Chọn" [style]="{'width':'100%' , 'margin-bottom': '12px' }" [options]="printTypes"
+            [(ngModel)]="billSelected"></p-dropdown>
+        </div>
 
-        <!-- Phiếu xuất hàng -->
-        <button *ngIf="billSelected == 1" ngxPrint printSectionId="delivery-bill-grouped"
-          [styleSheetFile]="styleDeliveryBillFile" [printDelay]="printDelay" mat-button [disabled]="loading['exp']"
-          class="btn btn-primary d-block w-100 mb-3">
-          In phiếu xuất hàng</button>
+        <div class="control" *ngIf="billSelected.id == 4">
+          <strong class="label">Mã loại </strong>
+          <p-dropdown [style]="{'width':'100%' , 'margin-bottom': '12px' }" placeholder="Chọn" [options]="types" [(ngModel)]="typeSelected"></p-dropdown>
+        </div>
+      
 
-        <!-- Phiếu yêu cầu giao hàng:  FULL SIZE -->
-        <button *ngIf="billSelected == 2" ngxPrint printSectionId="request-delivery-bill-full-size"
-          [styleSheetFile]="styleRequestDeliveryBillFile" [printDelay]="printDelay" mat-button
-          [disabled]="loading['request']" class="btn btn-primary d-block w-100 mb-3">In phiếu yêu cầu giao hàng</button>
+        <div class="gr-calendar">
+          <div class="control" *ngIf="billSelected.id == 4" style="width: calc( 50% - 10px);">
+            <strong class="label">Từ ngày </strong>
+            <p-calendar [style]="{'width':'100%' , 'margin-bottom': '12px' }" [(ngModel)]="fromDate"></p-calendar>
+          </div>
+  
+          <div class="control" *ngIf="billSelected.id == 4" style="width: calc( 50% - 10px);">
+            <strong class="label">Đến ngày </strong>
+            <p-calendar [style]="{'width':'100%' , 'margin-bottom': '12px' }" [(ngModel)]="toDate"></p-calendar>
+          </div>
+        </div>
 
-        <!-- Phiếu yêu cầu giao hàng : 50X50 -->
-        <button *ngIf="billSelected == 3" ngxPrint printSectionId="request-delivery-bill-50x50"
-          [styleSheetFile]="styleRequestDeliveryBillFile" [printDelay]="printDelay" mat-button
-          [disabled]="loading['request']" class="btn btn-primary d-block w-100 mb-3">In phiếu yêu cầu giao hàng 50x50
-        </button>
+        <button mat-button class="btn btn-primary d-block w-100 mb-3" (click)="printBill()"> In phiếu</button>
 
       </div>
 
-      <div class="col-8">
+      <!-- Phiếu xuất hàng -->
+      <button style="display: none;" #print ngxPrint printSectionId="{{billSelected.printSectionId}}"
+        [styleSheetFile]="billSelected.style"></button>
+
+      <div class="col-12" style="display: none;" *ngIf="loading">
         <!-- Phiếu xuất hàng -->
         <app-delivery-bill [printData]="{
-        deliveryRequest: deliveryRequest,
-        sumRequestWeight: sumRequestWeight,
-        deliveryRequestCode: deliveryRequestCode,
-        numOfBill: deliveryRequest.lsDetail?.length,
-        visible:billSelected == 1
-      }">
+          deliveryRequest: deliveryRequest,
+          sumRequestWeight: sumRequestWeight,
+          deliveryRequestCode: deliveryRequestCode,
+          numOfBill: deliveryRequest.lsDetail?.length,
+          visible: true
+        }">
         </app-delivery-bill>
 
         <!-- Phiếu yêu cầu giao hàng : 50X50 -->
         <app-request-delivery-bill [printData]="{
-        deliveryRequest: deliveryRequest,
-        sumRequestWeight: sumRequestWeight,
-        deliveryRequestCode: deliveryRequestCode,
-        numOfBill: deliveryRequest.lsDetail?.length,
-        size: '50x50',
-        visible:billSelected == 2
-      }">
+          deliveryRequest: deliveryRequest,
+          sumRequestWeight: sumRequestWeight,
+          deliveryRequestCode: deliveryRequestCode,
+          numOfBill: deliveryRequest.lsDetail?.length,
+          size: '50x50',
+          visible: true
+        }">
         </app-request-delivery-bill>
 
         <!-- Phiếu yêu cầu giao hàng:  FULL SIZE -->
@@ -62,7 +77,7 @@
         deliveryRequestCode: deliveryRequestCode,
         numOfBill: deliveryRequest.lsDetail?.length,
         size: 'full-size',
-        visible:billSelected == 3
+        visible: true
       }">
         </app-request-delivery-bill>
 
@@ -70,12 +85,5 @@
       </div>
 
     </div>
-
-
   </mat-dialog-content>
-  <div class="spinner-wrapper" [hidden]="!(loading['exp'] || loading['ship'] || loading['request'])">
-    <div class="spinner-container">
-      <mat-progress-spinner mode="indeterminate"></mat-progress-spinner>
-    </div>
-  </div>
 </div>

@@ -88,7 +88,7 @@
               &nbsp;
               <button pButton pRipple type="button" icon="pi pi-print" class="ui-button-success" (click)="printGr(i)" *ngIf="package['merchandiseCode']"
                 matTooltip="In hóa đơn" matTooltipPosition="above" styleSheetFile="{{styleSheetFile}}" ngxPrint
-                printSectionId="print-ycgh-50-50-{{i}}"></button>
+                printSectionId="print-packing-product-50-50-{{i}}"></button>
               &nbsp;
               <button pButton pRipple type="button" icon="pi pi-trash" class="ui-button-danger"
                 *ngIf="package.merchandiseWarehouseId" (click)="removeGr(i)" matTooltip="Xóa nhóm"

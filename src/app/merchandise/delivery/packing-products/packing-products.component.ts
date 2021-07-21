@@ -148,7 +148,6 @@ export class PackingProductsComponent implements OnInit {
           ParentMerchandiseWarehouseId :  this.productGrouped[i].merchandiseWarehouseId
         }).subscribe(
           (res) => {
-            console.log(res);
             if(res && res.result && res.result.success){
               this.products = this.products.concat(this.productGrouped[i].products);
               this.productGrouped.splice( i, 1 );

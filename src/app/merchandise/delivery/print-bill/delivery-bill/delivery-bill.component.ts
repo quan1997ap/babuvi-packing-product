@@ -49,6 +49,7 @@ export class DeliveryBillComponent implements OnInit {
 
   grParent(){
     let deliveryRequest = this.printData.deliveryRequest;
+    console.log(this.printData)
     if(this.printData && deliveryRequest.lsParentDetail){
       this.products = deliveryRequest.lsDetail.filter( product => product.parentId == null);
       let lsParentDetail = deliveryRequest.lsParentDetail.sort( (a, b) => {

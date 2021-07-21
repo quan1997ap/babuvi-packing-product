@@ -63,7 +63,7 @@ export class ConfigShipmentComponent implements OnInit {
       deliveryRequestId = this.data.deliveryRequest.deliveryRequestId;
       parentMerchandiseWarehouseId = this.data.ParentMerchandiseWarehouse.merchandiseWarehouseId;
       let shipment = this.data.ParentMerchandiseWarehouse.shipment;
-      console.log(shipment)
+
       if(shipment){
       
         shipmentId = shipment.shipmentId;

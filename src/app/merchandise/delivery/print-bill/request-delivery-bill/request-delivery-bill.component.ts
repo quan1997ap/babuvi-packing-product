@@ -22,7 +22,7 @@ export class RequestDeliveryBillComponent implements OnInit {
   constructor(
   ) {
     setTimeout( () => {
-      console.log(this.printData)
+      // console.log(this.printData)
     }, 3000)
   }
 

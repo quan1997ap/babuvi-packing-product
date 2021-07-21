@@ -10,6 +10,10 @@ export class PrintService extends ApiService{
         super(ApiApplication.print.controller, http, _router);
     }
 
+    printShipmentById(shipmentId){
+        return this.get(this.apiBaseController + ApiApplication.print.printShipmentById + '?shipmentId=' + shipmentId);
+
+    }
     printWarehouseExp(expCode) {
         const param = '?expCode=' + expCode
         return this.get(this.apiBaseController + ApiApplication.print.printWarehouseExp + '/' + param);

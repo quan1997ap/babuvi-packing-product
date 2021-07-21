@@ -59,8 +59,8 @@ export class PrintBillComponent implements OnInit {
       label:'Demo with params', 
       value: {
         id: 4,
-        printSectionId: "request-delivery-bill-demo",
-        style: this.styleRequestDeliveryBillFile
+        printSectionId: "delivery-bill-grouped", // "request-delivery-bill-demo",
+        style: this.styleDeliveryBillFile
       }
     },
   ]
@@ -163,7 +163,6 @@ export class PrintBillComponent implements OnInit {
     this.merchandiseServices
       .getDeliveryRequestByCode(deliveryCode).toPromise()
         .then(res => {
-          console.log(res)
           if (res.result.success) {
             this.deliveryRequest = res.result.data;
             this.sumRequestWeight = this.sumWeightOfRequestList();

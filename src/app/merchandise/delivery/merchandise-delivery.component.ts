@@ -176,7 +176,10 @@ export class MerchandiseDeliveryComponent implements OnInit {
 
 
   printDeliveryBill(rowIndex){
-    this.indexOfDeliveryBillPrinting = rowIndex;
+    this.indexOfDeliveryBillPrinting = null;
+    setTimeout(() => {
+      this.indexOfDeliveryBillPrinting = rowIndex;
+    }, 500)
   }
   /**
    * Get delivery data by code
@@ -461,8 +464,16 @@ export class MerchandiseDeliveryComponent implements OnInit {
         this.loading = false;
         if (res.result.success) {
           // TODO: set shipment value
+          this.deliveryRequestCode = null;
+          this.dataSource = {
+            rows: [],
+            rowsFilter: [],
+            rowGroupMetadata: {},
+            grByField: "parentId",
+          };
+          this.indexOfDeliveryBillPrinting = null;
           this.showMessage("alert-success", "Giao hàng thành công");
-          this.getDeliveryRequestByCode(this.deliveryRequestCode);
+
         } else {
           this.showMessage("alert-danger", res.result.message);
         }
@@ -574,8 +585,8 @@ export class MerchandiseDeliveryComponent implements OnInit {
       panelClass: "print-bill-dialog",
       minHeight: "300px",
       maxHeight: "400px",
-      maxWidth: "450px",
-      minWidth: "420px"
+      maxWidth: "500px",
+      minWidth: "450px"
     });
   }
 

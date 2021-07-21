@@ -29,14 +29,14 @@
       
 
         <div class="gr-calendar">
-          <div class="control" *ngIf="billSelected.id == 4" style="width: calc( 50% - 10px);">
+          <div class="control" *ngIf="billSelected.id == 4" style="width: calc( 50% - 10px );">
             <strong class="label">Từ ngày </strong>
-            <p-calendar [style]="{'width':'100%' , 'margin-bottom': '12px' }" [(ngModel)]="fromDate"></p-calendar>
+            <p-calendar  appendTo="body"  [style]="{'width':'calc( 50% - 10px )' , 'margin-bottom': '12px' }" [(ngModel)]="fromDate"></p-calendar>
           </div>
   
-          <div class="control" *ngIf="billSelected.id == 4" style="width: calc( 50% - 10px);">
+          <div class="control" *ngIf="billSelected.id == 4" style="width: calc( 50% - 10px );">
             <strong class="label">Đến ngày </strong>
-            <p-calendar [style]="{'width':'100%' , 'margin-bottom': '12px' }" [(ngModel)]="toDate"></p-calendar>
+            <p-calendar appendTo="body"  [style]="{'width':'calc( 50% - 10px )' , 'margin-bottom': '12px' }" [(ngModel)]="toDate"></p-calendar>
           </div>
         </div>
 
@@ -55,7 +55,8 @@
           sumRequestWeight: sumRequestWeight,
           deliveryRequestCode: deliveryRequestCode,
           numOfBill: deliveryRequest.lsDetail?.length,
-          visible: true
+          visible: true,
+          isDemo: false
         }">
         </app-delivery-bill>
 
@@ -81,6 +82,16 @@
       }">
         </app-request-delivery-bill>
 
+        <!-- Phiếu demo -->
+        <app-delivery-bill [printData]="{
+          deliveryRequest: deliveryRequest,
+          sumRequestWeight: sumRequestWeight,
+          deliveryRequestCode: deliveryRequestCode,
+          numOfBill: deliveryRequest.lsDetail?.length,
+          visible: true,
+          isDemo: true
+        }">
+        </app-delivery-bill>
 
       </div>
 

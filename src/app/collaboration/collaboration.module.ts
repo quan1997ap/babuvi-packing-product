@@ -1,3 +1,4 @@
+import { ShareCommonModule } from './../common/share-common.module';
 import { NgModule } from "@angular/core";
 import { CommonModule } from "@angular/common";
 import { FormsModule, ReactiveFormsModule } from "@angular/forms";
@@ -29,6 +30,8 @@ import { CollaborationServices } from "./../services/collaboration.services";
 import { SystemService } from "app/services/system.services";
 import { MessageService } from "primeng/api";
 import { DialogService } from 'primeng/api';
+import { CurrencyFormatChina } from './../common/pipe-china-money.component';
+
 
 export const CollaborationRoutes: Routes = [
   {
@@ -42,10 +45,11 @@ export const CollaborationRoutes: Routes = [
 ];
 
 @NgModule({
-  declarations: [CollaborationListComponent, CollaborationDetailComponent, CollaborationStatisticsComponent],
+  declarations: [ CollaborationListComponent, CollaborationDetailComponent, CollaborationStatisticsComponent],
   imports: [
     CommonModule,
     RouterModule.forChild(CollaborationRoutes),
+    ShareCommonModule,
     // primeng
     InputTextModule,
     ButtonModule,

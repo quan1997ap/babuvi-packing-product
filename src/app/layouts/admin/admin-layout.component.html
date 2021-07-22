@@ -158,7 +158,7 @@
 
             <mat-menu #menuNotifications="matMenu">
                <div class="notification">
-                  <div *ngFor="let notification of lstNotification" class="notification-item">
+                  <div *ngFor="let notification of lstNotification" class="notification-item" (click)="showDetailNotification(notification)">
                      <span class="type" tooltipPosition="bottom"  pTooltip="{{notification.typeDisplay}}" >( {{notification.typeDisplay}} )</span>
                      <span class="title" tooltipPosition="bottom" pTooltip="{{notification.title}}">{{notification.title}}</span>
                      <span class="date" tooltipPosition="bottom" pTooltip="{{notification.createdDate | date: 'dd/MM/yyyy h:mm' }}">{{notification.createdDate | date: 'dd/MM/yyyy h:mm' }} </span>
@@ -191,9 +191,11 @@
                </button>
                <button mat-menu-item>
                   <div class="rating">
-                     <i class="rating-icon pi pi-money-bill"></i>
-                     <span>Số dư &nbsp;</span>
-                     <span class="rating-number"> {{balance | currencyChina }} </span>
+                     <div style="display: flex;align-items: center;">
+                        <i class="rating-icon pi pi-money-bill"></i>
+                        <span>Số dư &nbsp;</span>
+                        <span class="rating-number"> {{balance | currencyChina }} </span>
+                     </div>
                      <span class="deposit-btn" (click)="moveToTopup()"> Nạp tiền </span>
                   </div>
                </button>
@@ -206,6 +208,7 @@
                   Thoát
                </button>
             </mat-menu>
+
          </div>
       </mat-toolbar>
       <div class="horizontal-menu text-center">

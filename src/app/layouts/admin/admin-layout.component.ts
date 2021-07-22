@@ -1,3 +1,4 @@
+import { NotificationDetailComponent } from './notification-detail/notification-detail.component';
 import { NotificationListComponent } from "./notification-list/notification-list.component";
 import { DialogService } from "primeng/api";
 import { UserService } from "app/services/user.service";
@@ -450,6 +451,19 @@ export class AdminLayoutComponent implements OnInit, OnDestroy, AfterViewInit {
   getUserNotification() {
     this.userService.getLsNotification().subscribe((resNotification) => {
       this.lstNotification = resNotification.result.data;
+      console.log( this.lstNotification)
     });
+  }
+
+  showDetailNotification(notification){
+    console.log(notification)
+    if(notification.showType == '2'){
+      this.dialog.open(NotificationDetailComponent, {
+        width: "600px",
+        data: notification
+      });
+    } else if(notification.showType == '1'){
+      window.open(notification.url, '_blank').focus();
+    }
   }
 }

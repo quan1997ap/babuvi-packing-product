@@ -24,6 +24,7 @@
 .rating {
   display: flex;
   align-items: center;
+  justify-content: space-between;
   .rating-icon {
     width: 30px;
     font-size: 30px;
@@ -51,7 +52,7 @@ button:focus {
 ::ng-deep {
   .mat-menu-panel {
     max-width: 600px !important;
-    min-width: 400px !important;
+    min-width: 300px !important;
     .notification {
       padding: 20px;
       .notification-item {
@@ -59,8 +60,12 @@ button:focus {
         margin-bottom: 8px;
         padding-bottom: 8px;
         border-bottom: 1px solid #ddd;
+        cursor: pointer;
+        &:hover{
+          background: #fcfcfc;
+        }
         .type {
-          width: 90px;
+          width: 100px;
           white-space: nowrap;
           overflow: hidden;
           text-overflow: ellipsis;
@@ -74,7 +79,7 @@ button:focus {
           padding-right: 12px;
         }
         .date {
-          width: 116px;
+          width: 140px;
           white-space: nowrap;
           overflow: hidden;
           text-overflow: ellipsis;

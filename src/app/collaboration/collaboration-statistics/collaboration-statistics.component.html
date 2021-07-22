@@ -40,7 +40,7 @@
           </p>
           <p class="count">
             <span *ngIf="!isLoading ;else loadingContent ">
-              {{ referralProgramUser?.totalRefAmount | number }}
+              {{ referralProgramUser?.totalRefAmount | currencyChina }}
             </span>
           </p>
         </div>
@@ -59,7 +59,7 @@
           </p>
           <p class="count">
             <span *ngIf="!isLoading ;else loadingContent ">
-              {{ ( referralProgramUser?.totalRefAmount - referralProgramUser?.totalPayAmount) | number }}
+              {{ ( referralProgramUser?.totalRefAmount - referralProgramUser?.totalPayAmount) | currencyChina  }}
             </span>
           </p>
         </div>
@@ -146,8 +146,8 @@
         <ng-template pTemplate="body" let-referralOrder>
           <tr>
             <td>{{referralOrder.orderId}}</td>
-            <td>{{referralOrder.refAmount}} {{referralOrder.symbols}} </td>
-            <td>{{referralOrder.refAmount}} {{referralOrder.symbols}}</td>
+            <td>{{referralOrder.refAmount | currencyChina }} {{referralOrder.symbols}} </td>
+            <td>{{referralOrder.refAmount | currencyChina }} {{referralOrder.symbols}}</td>
             <td>{{ referralOrder.createdDate | date: 'dd/MM/yyyy h:mm' }}</td>
             <td>{{referralOrder.reasion}}</td>
             <td>
@@ -180,7 +180,7 @@
           <tr>
             <td>{{requestPayment.typeDisplay}}</td>
             <td>{{requestPayment.requestDate | date: 'dd/MM/yyyy h:mm' }}</td>
-            <td>{{requestPayment.amount }} </td>
+            <td>{{requestPayment.amount | currencyChina }} </td>
             <td>
               <div pTooltip="{{requestPayment.statusDisplay}}" tooltipPosition="top" [ngClass]="{
                   'status': true, 

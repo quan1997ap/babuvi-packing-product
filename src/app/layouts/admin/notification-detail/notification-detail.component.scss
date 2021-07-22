@@ -1,0 +1,32 @@
+.header {
+  margin-bottom: 24px;
+  font-weight: bold;
+  border-bottom: 4px solid #f44335;
+  width: fit-content;
+  padding-bottom: 3px;
+  .title {
+    font-size: 16px;
+    color: #f44335;
+    text-transform: uppercase;
+  }
+}
+.notification {
+  div{
+    margin-bottom: 16px;
+  }
+  .content{
+    background: #dee2e6;
+    padding: 12px;
+    border-radius: 4px;
+  }
+}
+
+.footer {
+  display: flex;
+  justify-content: flex-end;
+  border-top: 1px solid #ddd;
+  padding-top: 20px;
+  max-width: 220px;
+  float: right;
+  min-width: 200px;
+}

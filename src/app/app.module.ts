@@ -63,6 +63,7 @@ import { ConfirmationService } from "primeng/api";
 import { CustomUrlSerializer } from "./ship-manager/custom-url-serializer";
 import { RequestInterceptor } from "./services/interceptor.service";
 import { TooltipModule } from "primeng/tooltip";
+import { NotificationDetailComponent } from './layouts/admin/notification-detail/notification-detail.component';
 
 export function HttpLoaderFactory(http: HttpClient) {
   return new TranslateHttpLoader(http);
@@ -77,7 +78,7 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
 };
 
 @NgModule({
-  declarations: [AppComponent, AdminLayoutComponent, AuthLayoutComponent, NotificationListComponent],
+  declarations: [AppComponent, AdminLayoutComponent, AuthLayoutComponent, NotificationListComponent, NotificationDetailComponent],
   imports: [
     BrowserModule,
     BrowserAnimationsModule,
@@ -134,7 +135,7 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
     LoginService,
     HttpService,
   ],
-  entryComponents: [NotificationListComponent],
+  entryComponents: [NotificationListComponent, NotificationDetailComponent],
   bootstrap: [AppComponent],
 })
 export class AppModule {}

@@ -1,0 +1,18 @@
+<div class="header">
+  <div class="title">
+    {{ notificationDetail.typeDisplay}}
+  </div>
+</div>
+<div class="notification" >
+    <div>
+      {{notificationDetail.title }}
+    </div>
+    <div class="content">
+      <div [innerHTML]="notificationDetail.content">
+      </div>
+    </div>
+</div>
+
+<div class="footer">
+  <button type="button" pButton icon="pi pi-check" label="Đóng" (click)="close()"></button>
+</div>

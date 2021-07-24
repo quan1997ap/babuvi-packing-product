@@ -65,7 +65,7 @@ button:focus {
           background: #fcfcfc;
         }
         .type {
-          width: 100px;
+          width: 108px;
           white-space: nowrap;
           overflow: hidden;
           text-overflow: ellipsis;
@@ -73,9 +73,6 @@ button:focus {
         }
         .title {
           flex: 1;
-          white-space: nowrap;
-          overflow: hidden;
-          text-overflow: ellipsis;
           padding-right: 12px;
         }
         .date {

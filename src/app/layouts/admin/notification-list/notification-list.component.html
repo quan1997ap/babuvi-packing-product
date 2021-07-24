@@ -7,8 +7,8 @@
    <div *ngFor="let notification of lstNotification" class="notification-item">
       <span class="type" pTooltip="{{notification.typeDisplay}}">( {{notification.typeDisplay}} )</span>
       <span class="title" pTooltip="{{notification.title}}">{{notification.title}}</span>
-      <span class="date" pTooltip="{{notification.createdDate | date: 'dd/MM/yyyy h:mm' }}">{{notification.createdDate |
-         date: 'dd/MM/yyyy h:mm' }} </span>
+      <span class="date" pTooltip="{{notification.createdDate | date: 'h:mm dd/MM/yyyy' }}">{{notification.createdDate |
+         date: 'h:mm dd/MM/yyyy' }} </span>
    </div>
    <div class="checkbox">
       <mat-checkbox [checked]="turnOffNotification" (change)="notificationSetting($event)"

@@ -1,6 +1,7 @@
 <p-toast></p-toast>
 <form class="collaboration-filter-section" [formGroup]="filterForm" *ngIf="filterForm">
-  <p-calendar selectionMode="range" showButtonBar="true" formControlName="dateRange" dateFormat="dd/mm/yy" placeholder="dd/mm/yyyy, dd/mm/yyyy">
+  <p-calendar selectionMode="range" showButtonBar="true" formControlName="dateRange" dateFormat="dd/mm/yy"
+    placeholder="dd/mm/yyyy, dd/mm/yyyy">
   </p-calendar>
 
   <p-dropdown appendTo="body" formControlName="referralProgramUserId" placeholder="Chiến dịch" showClear="true"
@@ -59,7 +60,7 @@
           </p>
           <p class="count">
             <span *ngIf="!isLoading ;else loadingContent ">
-              {{ ( referralProgramUser?.totalRefAmount - referralProgramUser?.totalPayAmount) | currencyChina  }}
+              {{ ( referralProgramUser?.totalRefAmount - referralProgramUser?.totalPayAmount) | currencyChina }}
             </span>
           </p>
         </div>
@@ -110,91 +111,168 @@
 </div>
 
 <div class="statistic-table">
+
   <div class="row">
     <div class="col-sm-12 col-md-12 col-lg-8">
       <h5 class="title"> Danh sách đơn hàng </h5>
       <div class="statistic-row row" *ngIf="lsReferralOrder">
-        <div class="col-sm-12 col-md-3 col-lg-3 statistic-item">
+        <div class="col-sm-6 col-md-6 col-lg-3 statistic-item">
           <div class="count" *ngIf="lsReferralOrder.countAll !== null"> {{ lsReferralOrder.countAll }} </div>
           <div class="status all"> Tổng số </div>
         </div>
-        <div class="col-sm-12 col-md-3 col-lg-3 statistic-item">
+        <div class="col-sm-6 col-md-6 col-lg-3 statistic-item">
           <div class="count" *ngIf="lsReferralOrder.countAccept !== null"> {{ lsReferralOrder.countAccept }} </div>
           <div class="status accept"> Tạm duyệt </div>
         </div>
-        <div class="col-sm-12 col-md-3 col-lg-3 statistic-item">
+        <div class="col-sm-6 col-md-6 col-lg-3 statistic-item">
           <div class="count" *ngIf="lsReferralOrder.countCancel !== null"> {{ lsReferralOrder.countCancel }} </div>
           <div class="status cancel"> Từ chối </div>
         </div>
-        <div class="col-sm-12 col-md-3 col-lg-3 statistic-item">
+        <div class="col-sm-6 col-md-6 col-lg-3 statistic-item">
           <div class="count" *ngIf="lsReferralOrder.countWait !== null"> {{ lsReferralOrder.countWait }} </div>
           <div class="status wait"> Chờ xử lý </div>
         </div>
       </div>
-      <p-table [value]="lsReferralOrder['lsData']" *ngIf="lsReferralOrder && lsReferralOrder['lsData']"
-        [paginator]="true" [rows]="10">
-        <ng-template pTemplate="header">
-          <tr>
-            <th>Mã ĐH</th>
-            <th>Hoa hồng</th>
-            <th>Thanh toán</th>
-            <th>Ngày đặt</th>
-            <th>Lý do</th>
-            <th>Trạng thái</th>
-          </tr>
-        </ng-template>
-        <ng-template pTemplate="body" let-referralOrder>
-          <tr>
-            <td>{{referralOrder.orderId}}</td>
-            <td>{{referralOrder.refAmount | currencyChina }} {{referralOrder.symbols}} </td>
-            <td>{{referralOrder.refAmount | currencyChina }} {{referralOrder.symbols}}</td>
-            <td>{{ referralOrder.createdDate | date: 'dd/MM/yyyy h:mm' }}</td>
-            <td>{{referralOrder.reasion}}</td>
-            <td>
-              <div pTooltip="{{referralOrder.statusDisplay}}" tooltipPosition="top" [ngClass]="{
+
+      <div class="large-table">
+        <p-table [value]="lsReferralOrder['lsData']" *ngIf="lsReferralOrder && lsReferralOrder['lsData']"
+          [paginator]="true" [rows]="10">
+          <ng-template pTemplate="header">
+            <tr class="table-header-responsive-large">
+              <th>Mã ĐH</th>
+              <th>Hoa hồng</th>
+              <th>Thanh toán</th>
+              <th>Ngày đặt</th>
+              <th>Lý do</th>
+              <th>Trạng thái</th>
+            </tr>
+          </ng-template>
+          <ng-template pTemplate="body" let-referralOrder>
+            <tr>
+              <td>{{referralOrder.orderId}}</td>
+              <td>{{referralOrder.refAmount | currencyChina }} {{referralOrder.symbols}} </td>
+              <td>{{referralOrder.refAmount | currencyChina }} {{referralOrder.symbols}}</td>
+              <td>{{ referralOrder.createdDate | date: 'dd/MM/yyyy h:mm' }}</td>
+              <td>{{referralOrder.reasion}}</td>
+              <td>
+                <div pTooltip="{{referralOrder.statusDisplay}}" tooltipPosition="top" [ngClass]="{
                   'status': true, 
                   'accept': referralOrder.status == '1',
                   'wait': referralOrder.status == '2',
                   'cancel': referralOrder.status == '3',
                   'all': referralOrder.status == null
                 }">
-                {{referralOrder.statusDisplay}}
-              </div>
-            </td>
-          </tr>
-        </ng-template>
-      </p-table>
+                  {{referralOrder.statusDisplay}}
+                </div>
+              </td>
+            </tr>
+          </ng-template>
+        </p-table>
+      </div>
+
+      <div class="small-table">
+        <p-table [value]="lsReferralOrder['lsData']" *ngIf="lsReferralOrder && lsReferralOrder['lsData']"
+          [paginator]="true" [rows]="10">
+          <ng-template pTemplate="body" let-referralOrder>
+            <tr>
+              <td colspan="6">
+                <div  class="mr-bottom-12px" style="display: flex; align-items: center; justify-content: space-between;">
+                  <div><strong>Mã ĐH</strong> : {{referralOrder.orderId}}</div>
+                  <div pTooltip="{{referralOrder.statusDisplay}}" tooltipPosition="top" [ngClass]="{
+                    'status': true, 
+                    'accept': referralOrder.status == '1',
+                    'wait': referralOrder.status == '2',
+                    'cancel': referralOrder.status == '3',
+                    'all': referralOrder.status == null
+                  }">
+                    {{referralOrder.statusDisplay}}
+                  </div>
+
+                </div>
+                <div  class="mr-bottom-12px">
+                  <strong>Hoa hồng</strong> :
+                  {{referralOrder.refAmount | currencyChina }} {{referralOrder.symbols}}
+                </div>
+                <div  class="mr-bottom-12px">
+                  <strong>Thanh toán</strong> :
+                  {{referralOrder.refAmount | currencyChina }} {{referralOrder.symbols}}
+                </div>
+                <div  class="mr-bottom-12px">
+                  <strong>Ngày đặt</strong> :
+                  {{ referralOrder.createdDate | date: 'dd/MM/yyyy h:mm' }}
+                </div>
+                <div  class="mr-bottom-12px">
+                  <strong>Lý do</strong> :
+                  {{referralOrder.reasion}}
+                </div>
+              </td>
+            </tr>
+          </ng-template>
+        </p-table>
+      </div>
+
     </div>
+
+
     <div class="col-sm-12 col-md-12 col-lg-4">
       <h5 class="title"> Lịch sử mua hàng đơn hàng </h5>
-      <p-table [value]="lsCommissionRequestPayment['lsData']" [paginator]="true" [rows]="10">
-        <ng-template pTemplate="header">
-          <tr>
-            <th>Phương thức</th>
-            <th>Ngày thanh toán</th>
-            <th>Tổng tiền</th>
-            <th>Trạng thái</th>
-          </tr>
-        </ng-template>
-        <ng-template pTemplate="body" let-requestPayment>
-          <tr>
-            <td>{{requestPayment.typeDisplay}}</td>
-            <td>{{requestPayment.requestDate | date: 'dd/MM/yyyy h:mm' }}</td>
-            <td>{{requestPayment.amount | currencyChina }} </td>
-            <td>
-              <div pTooltip="{{requestPayment.statusDisplay}}" tooltipPosition="top" [ngClass]="{
+      <div class="large-table">
+        <p-table [value]="lsCommissionRequestPayment['lsData']" [paginator]="true" [rows]="10">
+          <ng-template pTemplate="header">
+            <tr>
+              <th>Phương thức</th>
+              <th>Ngày thanh toán</th>
+              <th>Tổng tiền</th>
+              <th>Trạng thái</th>
+            </tr>
+          </ng-template>
+          <ng-template pTemplate="body" let-requestPayment>
+            <tr>
+              <td>{{requestPayment.typeDisplay}}</td>
+              <td>{{requestPayment.requestDate | date: 'dd/MM/yyyy h:mm' }}</td>
+              <td>{{requestPayment.amount | currencyChina }} </td>
+              <td>
+                <div pTooltip="{{requestPayment.statusDisplay}}" tooltipPosition="top" [ngClass]="{
                   'status': true, 
                   'accept': requestPayment.status == '1',
                   'wait': requestPayment.status == '2',
                   'cancel': requestPayment.status == '3',
                   'all': requestPayment.status == null
                 }">
-                {{requestPayment.statusDisplay}}
-              </div>
-            </td>
-          </tr>
-        </ng-template>
-      </p-table>
+                  {{requestPayment.statusDisplay}}
+                </div>
+              </td>
+            </tr>
+          </ng-template>
+        </p-table>
+      </div>
+
+      <div class="small-table">
+        <p-table [value]="lsCommissionRequestPayment['lsData']" [paginator]="true" [rows]="10">
+          <ng-template pTemplate="body" let-requestPayment>
+            <tr>
+              <td colspan="4">
+                <div class="mr-bottom-12px"><strong>Phương thức</strong> : {{requestPayment.typeDisplay}}</div>
+                <div class="mr-bottom-12px"><strong>Ngày thanh toán</strong> : {{requestPayment.requestDate | date: 'dd/MM/yyyy h:mm' }}</div>
+                <div class="mr-bottom-12px"><strong>Thanh toán</strong> : {{requestPayment.amount | currencyChina }} </div>
+                <div style="display: flex; align-items: center;">
+                  <strong>Trạng thái</strong>&nbsp; : &nbsp;
+                  <div pTooltip="{{requestPayment.statusDisplay}}" tooltipPosition="top" [ngClass]="{
+                      'status': true, 
+                      'accept': requestPayment.status == '1',
+                      'wait': requestPayment.status == '2',
+                      'cancel': requestPayment.status == '3',
+                      'all': requestPayment.status == null
+                    }">
+                    {{requestPayment.statusDisplay}}
+                  </div>
+                </div>
+              </td>
+            </tr>
+          </ng-template>
+        </p-table>
+      </div>
     </div>
+
   </div>
 </div>

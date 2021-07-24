@@ -33,6 +33,7 @@
               <div style=" display: flex; width: 100%; align-items: center;">
                 <i class="fa fa-search" style="margin: 4px 9px 0 0; font-size: 20px;"></i>
                 <input type="text" pInputText size="50" placeholder="Tìm kiếm"
+                  (keydown.enter)="addProductToGr($event.target.value)"
                   (input)="dt.filter($event.target.value, 'merchandiseCode' ,'contains' )"
                   style="flex: 1; max-width: calc( 100% - 30px );">
               </div>
@@ -73,7 +74,7 @@
                 </p-radioButton>
               </div>
               <div>
-                <span> Kiện số <strong>{{ i + 1 }}</strong> </span>
+                <span> Kiện số <strong>{{ productGrouped.length - i }}</strong> </span>
                 <strong *ngIf="package['merchandiseCode']" > - {{package['merchandiseCode']}} </strong>
                 <span *ngIf="package['products'] && package['products'].length;">
                   - <strong> {{package['products'].length}} </strong> mã -
@@ -91,7 +92,7 @@
                 printSectionId="print-packing-product-50-50-{{i}}"></button>
               &nbsp;
               <button pButton pRipple type="button" icon="pi pi-trash" class="ui-button-danger"
-                *ngIf="package.merchandiseWarehouseId" (click)="removeGr(i)" matTooltip="Xóa nhóm"
+                *ngIf="package['products'].length" (click)="removeGr(i, package.merchandiseWarehouseId)" matTooltip="Xóa nhóm"
                 matTooltipPosition="above"></button>
 
 

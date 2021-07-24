@@ -10,12 +10,11 @@ import { PackingProductBillDataModel } from "../print-bill/packing-product-bill/
   selector: "app-packing-products",
   templateUrl: "./packing-products.component.html",
   styleUrls: ["./packing-products.component.scss"],
-  providers: [ConfirmationService]
+  providers: [ConfirmationService],
 })
 export class PackingProductsComponent implements OnInit {
-
   styleSheetFile = "assets/styles/css/print-ycgh-50-50.css";
-  
+
   isLoading = false;
   selectedProducts = [];
   products = [];
@@ -24,7 +23,7 @@ export class PackingProductsComponent implements OnInit {
     sumNetWeight: 0,
     products: [],
     merchandiseWarehouseId: null, // id
-    merchandiseCode: null
+    merchandiseCode: null,
   };
   productGrouped = [];
 
@@ -43,7 +42,7 @@ export class PackingProductsComponent implements OnInit {
     private messageService: MessageService,
     private confirmationService: ConfirmationService
   ) {
-    // console.log(this.data);
+    console.log(this.data);
   }
 
   close() {
@@ -51,35 +50,43 @@ export class PackingProductsComponent implements OnInit {
   }
 
   ngOnInit() {
-    if(this.data && this.data.lsParentDetail){
-      this.products = this.data.lsDetail.filter( product => product.parentId == null);
-      let lsParentDetail = this.data.lsParentDetail.sort( (a, b) => {
-        if( a.merchandiseWarehouseId == null){
+    if (this.data && this.data.lsParentDetail) {
+      this.products = this.data.lsDetail.filter(
+        (product) => product.parentId == null
+      );
+      let lsParentDetail = this.data.lsParentDetail.sort((a, b) => {
+        if (a.merchandiseWarehouseId == null) {
           return -99999;
         } else {
           return 0;
         }
-      } )
-      if(this.products && this.products.length == 0){
-        lsParentDetail = lsParentDetail.filter( parent => parent.merchandiseWarehouseId != null)
+      });
+      if (this.products && this.products.length == 0) {
+        lsParentDetail = lsParentDetail.filter(
+          (parent) => parent.merchandiseWarehouseId != null
+        );
       }
-  
-      this.productGrouped = lsParentDetail
-      .map( parent => {
+
+      this.productGrouped = lsParentDetail.map((parent) => {
         let defaultParent = JSON.parse(JSON.stringify(this.defaultPackage));
-        if(this.data && this.data.lsDetail && parent.merchandiseWarehouseId != null){
-          defaultParent.products = this.data.lsDetail.filter( product => product.parentId == parent.merchandiseWarehouseId)
-        } else if(parent.merchandiseWarehouseId == null) {
+        if (
+          this.data &&
+          this.data.lsDetail &&
+          parent.merchandiseWarehouseId != null
+        ) {
+          defaultParent.products = this.data.lsDetail.filter(
+            (product) => product.parentId == parent.merchandiseWarehouseId
+          );
+        } else if (parent.merchandiseWarehouseId == null) {
           defaultParent.products = [];
         }
-        if(parent.merchandiseWarehouseId == null){
+        if (parent.merchandiseWarehouseId == null) {
           return defaultParent;
         } else {
-          return { ...defaultParent, ...parent }
+          return { ...defaultParent, ...parent };
         }
-      })
+      });
       this.checkSumNetWeight();
-
     }
     this.packageIndexSelected = 0;
   }
@@ -101,28 +108,40 @@ export class PackingProductsComponent implements OnInit {
   }
 
   addGroup() {
-    this.productGrouped.unshift(JSON.parse(JSON.stringify(this.defaultPackage)));
+    this.productGrouped.unshift(
+      JSON.parse(JSON.stringify(this.defaultPackage))
+    );
     this.packageIndexSelected = 0;
   }
 
   saveGr(i: number) {
     let saveParams = {
-      lsId: this.productGrouped[i].products.map((item) => item.merchandiseWarehouseId),
+      DeliveryRequestId: this.data.deliveryRequestId,
+      lsId: this.productGrouped[i].products.map(
+        (item) => item.merchandiseWarehouseId
+      ),
     };
     this.isLoading = true;
     this.merchandiseServices.createPackage(saveParams).subscribe(
       (res) => {
-        if(res && res.result && res.result.success){
-          this.productGrouped[i].merchandiseWarehouseId = res.result.data.merchandiseWarehouseId;
-          this.productGrouped[i].merchandiseCode = res.result.data.merchandiseCode;
+        console.log(res);
+        if (res && res.result && res.result.success) {
+          this.productGrouped[i].merchandiseWarehouseId =
+            res.result.data.merchandiseWarehouseId;
+          this.productGrouped[i].merchandiseCode =
+            res.result.data.merchandiseCode;
           this.productGrouped[i].merchandiseId = res.result.data.merchandiseId;
           this.checkSumNetWeight();
-          if(this.products && this.products.length){
+          if (this.products && this.products.length) {
             this.addGroup();
           }
           this.showMessage("success", "Lưu nhóm", "Bạn đã lưu nhóm thành công");
         } else {
-          this.showMessage("error", "Lưu nhóm", "Bạn đã lưu nhóm không thành công");          
+          this.showMessage(
+            "error",
+            "Lưu nhóm",
+            "Bạn đã lưu nhóm không thành công"
+          );
         }
         this.isLoading = false;
       },
@@ -131,50 +150,69 @@ export class PackingProductsComponent implements OnInit {
         this.showMessage("error", "Lưu nhóm", "Bạn chưa lưu được nhóm");
       }
     );
-
   }
 
-  printGr(i){
+  printGr(i) {
     this.isLoading = false;
   }
 
-  removeGr(i) {
+  removeGr(i, merchandiseWarehouseId) {
     this.confirmationService.confirm({
       message: "Bạn có chắc muốn xóa gói?",
       accept: () => {
-        this.isLoading = true;
-        this.merchandiseServices.deletePackage({
-          DeliveryRequestId : this.data.deliveryRequestId,
-          ParentMerchandiseWarehouseId :  this.productGrouped[i].merchandiseWarehouseId
-        }).subscribe(
-          (res) => {
-            if(res && res.result && res.result.success){
-              this.products = this.products.concat(this.productGrouped[i].products);
-              this.productGrouped.splice( i, 1 );
-              if(this.productGrouped && this.productGrouped.length == 0){
-                this.addGroup();
+        if (merchandiseWarehouseId) {
+          this.isLoading = true;
+          this.merchandiseServices
+            .deletePackage({
+              DeliveryRequestId: this.data.deliveryRequestId,
+              ParentMerchandiseWarehouseId:
+                this.productGrouped[i].merchandiseWarehouseId,
+            })
+            .subscribe(
+              (res) => {
+                if (res && res.result && res.result.success) {
+                  this.products = this.products.concat(
+                    this.productGrouped[i].products
+                  );
+                  this.productGrouped.splice(i, 1);
+                  if (this.productGrouped && this.productGrouped.length == 0) {
+                    this.addGroup();
+                  } else if (
+                    this.productGrouped.filter(
+                      (item) => item.merchandiseWarehouseId == null
+                    ).length == 0
+                  ) {
+                    this.addGroup();
+                  }
+                  this.checkSumNetWeight();
+                  this.showMessage(
+                    "success",
+                    "Xóa nhóm",
+                    "Bạn đã xóa nhóm thành công"
+                  );
+                } else {
+                  this.showMessage("error", "Xóa nhóm", res.result.message);
+                }
+                this.isLoading = false;
+              },
+              (error) => {
+                this.isLoading = false;
+                this.showMessage("error", "Lưu nhóm", "Bạn chưa lưu được nhóm");
               }
-              else if(
-                this.productGrouped.filter( item => item.merchandiseWarehouseId == null).length == 0
-              ){
-                this.addGroup();
-              }
-              this.checkSumNetWeight();
-              this.showMessage(
-                "success",
-                "Xóa nhóm",
-                "Bạn đã xóa nhóm thành công"
-              );;
-            } else {
-              this.showMessage("error", "Xóa nhóm", res.result.message);          
-            }
-            this.isLoading = false;
-          },
-          (error) => {
-            this.isLoading = false;
-            this.showMessage("error", "Lưu nhóm", "Bạn chưa lưu được nhóm");
+            );
+        } else {
+          this.products = this.products.concat(this.productGrouped[i].products);
+          this.productGrouped.splice(i, 1);
+          if (this.productGrouped && this.productGrouped.length == 0) {
+            this.addGroup();
+          } else if (
+            this.productGrouped.filter(
+              (item) => item.merchandiseWarehouseId == null
+            ).length == 0
+          ) {
+            this.addGroup();
           }
-        );
+        }
       },
     });
   }
@@ -194,13 +232,38 @@ export class PackingProductsComponent implements OnInit {
     this.productGrouped.forEach((group) => {
       if (group && group.products && group.products.length) {
         let sum = 0;
-        group.products.forEach(product => {
-          sum += product.netWeight
+        group.products.forEach((product) => {
+          sum += product.netWeight;
         });
         group.sumNetWeight = sum;
       } else {
         group.sumNetWeight = 0;
       }
     });
+  }
+
+  addProductToGr(merchandiseCode) {
+    console.log(merchandiseCode);
+
+    let productSelected = this.products.filter(
+      (item) => item.merchandiseCode == merchandiseCode
+    );
+
+    console.log(productSelected);
+    if (productSelected && productSelected.length) {
+      this.productGrouped[this.packageIndexSelected].products =
+        this.productGrouped[this.packageIndexSelected].products.concat(
+          productSelected
+        );
+
+      this.products = this.products.filter(
+        (item) => item.merchandiseCode !== merchandiseCode
+      );
+      this.selectedProducts = this.selectedProducts.filter(
+        (item) => item.merchandiseCode !== merchandiseCode
+      );
+      this.checkSumNetWeight();
+      this.cdr.detectChanges();
+    }
   }
 }

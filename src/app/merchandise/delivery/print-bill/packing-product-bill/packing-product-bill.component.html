@@ -1,13 +1,13 @@
 <div id="print-packing-product-50-50-{{printBillData.index}}" [ngStyle]= "{'display': printBillData.visible ? 'block' : 'none' }">
   <div class="page"  >
-    <h1 style="text-align: center;"> GÓI HÀNG {{printBillData.index}} / {{printBillData.numOfBill}} </h1>
+    <h1 style="text-align: center;"> GÓI HÀNG {{printBillData.numOfBill - printBillData.index}} / {{printBillData.numOfBill}} </h1>
     <div class="arcode-section" style="text-align: center;">
       <ngx-barcode [bc-value]="printBillData.merchandiseCode" bc-height="30" bc-font-size="15" bc-width="1.8"
         [bc-display-value]="true" [bc-margin-top]="1" [bc-margin-bottom]="1">
       </ngx-barcode>
     </div>
-    <div *ngIf="printBillData.shipment && printBillData.shipment.transporterPackageNumber">
-      <strong> {{printBillData.shipment.transporterPackageNumber}}  </strong>
+    <div *ngIf="printBillData.deliveryRequest && printBillData.deliveryRequest.deliveryRequestCode">
+      <strong> {{printBillData.deliveryRequest.deliveryRequestCode}}  </strong>
     </div>
     <div class="delivery-request" >
       <div>{{printBillData.deliveryRequest.contactName}} </div>

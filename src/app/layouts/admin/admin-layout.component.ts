@@ -451,7 +451,6 @@ export class AdminLayoutComponent implements OnInit, OnDestroy, AfterViewInit {
   getUserNotification() {
     this.userService.getLsNotification().subscribe((resNotification) => {
       this.lstNotification = resNotification.result.data;
-      console.log( this.lstNotification)
     });
   }
 

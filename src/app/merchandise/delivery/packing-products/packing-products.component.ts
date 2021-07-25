@@ -1,6 +1,6 @@
 import { MerchandiseServices } from "./../../../services/merchandise.services";
 import { MatDialogRef } from "@angular/material";
-import { Component, OnInit, Inject, ChangeDetectorRef } from "@angular/core";
+import { Component, OnInit, Inject, ChangeDetectorRef, ViewChild, ElementRef } from "@angular/core";
 import { MAT_DIALOG_DATA } from "@angular/material/dialog";
 import { MessageService } from "primeng/api";
 import { ConfirmationService } from "primeng/api";
@@ -13,6 +13,9 @@ import { PackingProductBillDataModel } from "../print-bill/packing-product-bill/
   providers: [ConfirmationService],
 })
 export class PackingProductsComponent implements OnInit {
+  @ViewChild('filterGlobalProduct') filterGlobalProduct: ElementRef;
+  searchPrTxt = '';
+
   styleSheetFile = "assets/styles/css/print-ycgh-50-50.css";
 
   isLoading = false;
@@ -25,7 +28,9 @@ export class PackingProductsComponent implements OnInit {
     merchandiseWarehouseId: null, // id
     merchandiseCode: null,
   };
+
   productGrouped = [];
+  productGroupedFilter = [];
 
   packageIndexSelected = null;
 
@@ -42,7 +47,7 @@ export class PackingProductsComponent implements OnInit {
     private messageService: MessageService,
     private confirmationService: ConfirmationService
   ) {
-    console.log(this.data);
+    // console.log(this.data);
   }
 
   close() {
@@ -242,14 +247,12 @@ export class PackingProductsComponent implements OnInit {
     });
   }
 
-  addProductToGr(merchandiseCode) {
-    console.log(merchandiseCode);
+  addProductToGr(dt, merchandiseCode) {
 
     let productSelected = this.products.filter(
       (item) => item.merchandiseCode == merchandiseCode
     );
 
-    console.log(productSelected);
     if (productSelected && productSelected.length) {
       this.productGrouped[this.packageIndexSelected].products =
         this.productGrouped[this.packageIndexSelected].products.concat(
@@ -264,6 +267,9 @@ export class PackingProductsComponent implements OnInit {
       );
       this.checkSumNetWeight();
       this.cdr.detectChanges();
+      this.filterGlobalProduct.nativeElement.value = '';
+      dt.filter('', 'merchandiseCode' ,'contains' );
     }
   }
+
 }

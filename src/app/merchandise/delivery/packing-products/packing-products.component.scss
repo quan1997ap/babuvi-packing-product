@@ -10,6 +10,15 @@
   flex-direction: column;
 }
 
+.filter-pr-in-gr{
+  display: flex;
+  width: 100%;
+  align-items: center;
+  background: #f4f4f4;
+  padding: 8px 12px;
+  border: 1px solid #a6a6a6;
+  margin-bottom: 12px;
+}
 ::ng-deep {
   .ui-confirmdialog {
     z-index: 5001 !important;

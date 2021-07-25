@@ -32,8 +32,8 @@
               </div>
               <div style=" display: flex; width: 100%; align-items: center;">
                 <i class="fa fa-search" style="margin: 4px 9px 0 0; font-size: 20px;"></i>
-                <input type="text" pInputText size="50" placeholder="Tìm kiếm"
-                  (keydown.enter)="addProductToGr($event.target.value)"
+                <input type="text" pInputText size="50" placeholder="Tìm kiếm" #filterGlobalProduct
+                  (keydown.enter)="addProductToGr(dt, $event.target.value)"  
                   (input)="dt.filter($event.target.value, 'merchandiseCode' ,'contains' )"
                   style="flex: 1; max-width: calc( 100% - 30px );">
               </div>
@@ -65,6 +65,11 @@
       <div class="col-sm-12 col-md-6 p-bottom-20px">
         <div class="title">
           Danh sách gói kiện hàng
+        </div>
+        <div class="filter-pr-in-gr">
+          <i class="fa fa-search" style="margin: 4px 9px 0 0; font-size: 20px;"></i>
+          <input type="text" pInputText size="50" placeholder="Tìm kiếm" [(ngModel)]="searchPrTxt"
+            style="flex: 1; max-width: calc( 100% - 30px );">
         </div>
         <div *ngFor="let package of productGrouped; let i = index;" class="package-config">
           <div class="package-header" [ngClass]="{ 'active':  packageIndexSelected == i }">
@@ -120,7 +125,7 @@
                 </tr>
               </ng-template>
               <ng-template pTemplate="body" let-rowData let-columns="columns">
-                <tr [pSelectableRow]="rowData">
+                <tr [pSelectableRow]="rowData" *ngIf="searchPrTxt == '' || searchPrTxt.includes(rowData.merchandiseCode) ">
                   <td *ngFor="let col of columns">
                     {{rowData[col.id]}}
                   </td>

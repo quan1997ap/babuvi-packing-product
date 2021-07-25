@@ -1,7 +1,7 @@
 import { ConfigShipmentComponent } from "./config-shipment/config-shipment.component";
 import { PackingProductsComponent } from "./packing-products/packing-products.component";
 import { Shipment } from "./../../model/shipment.model";
-import { Component, OnInit, ViewChild } from "@angular/core";
+import { Component, OnInit, ViewChild, ElementRef } from "@angular/core";
 import { MerchandiseServices } from "app/services/merchandise.services";
 import { DeliveryRequest } from "app/model/delivery-request.model";
 import { MatTableDataSource } from "@angular/material/table";
@@ -25,6 +25,8 @@ export class MerchandiseDeliveryComponent implements OnInit {
   styleSheetFile = "assets/styles/css/print-gh-50-50.css";
 
   @ViewChild("dt") private dataTable: DataTable;
+  @ViewChild("deliveryRequestInput") private deliveryRequestInput: ElementRef;
+  
   expandedRows = {}; // { "id": 1 }
 
   isDisable = false;
@@ -464,14 +466,18 @@ export class MerchandiseDeliveryComponent implements OnInit {
         this.loading = false;
         if (res.result.success) {
           // TODO: set shipment value
-          this.deliveryRequestCode = null;
-          this.dataSource = {
-            rows: [],
-            rowsFilter: [],
-            rowGroupMetadata: {},
-            grByField: "parentId",
-          };
-          this.indexOfDeliveryBillPrinting = null;
+          // this.deliveryRequestCode = null;
+          // this.dataSource = {
+          //   rows: [],
+          //   rowsFilter: [],
+          //   rowGroupMetadata: {},
+          //   grByField: "parentId",
+          // };
+          // this.indexOfDeliveryBillPrinting = null;
+
+          this.getDeliveryRequestByCode(this.deliveryRequestCode);
+          this.deliveryRequestInput.nativeElement.focus();
+          this.deliveryRequestInput.nativeElement.select();
           this.showMessage("alert-success", "Giao hàng thành công");
 
         } else {

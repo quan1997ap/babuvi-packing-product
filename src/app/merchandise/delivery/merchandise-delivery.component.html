@@ -35,7 +35,7 @@
                 <div class="form-group">
                     <label for="deliveryRequestCd">Mã phiếu yêu cầu xuất hàng</label>
                     <input type="text" class="form-control" id="deliveryRequestCd" name="deliveryRequestCd" required
-                        #deliveryRequestCd="ngModel" ngModel [(ngModel)]="deliveryRequestCode"
+                        #deliveryRequestCd="ngModel" ngModel [(ngModel)]="deliveryRequestCode" #deliveryRequestInput
                         (keydown.enter)="getDeliveryRequestByCode(deliveryRequestCd.value)">
                 </div>
                 <p><span class="font-weight-bold">Ngày tạo: </span>{{deliveryRequest.createdDate | date: 'dd/MM/yyyy
@@ -44,7 +44,7 @@
                 <p>Hình thức giao: <span class="font-weight-bold">{{ deliveryRequest.typeDisplay }}</span></p>
                 <p>Kho: <span class="font-italic">[{{ deliveryRequest.warehouseId }}
                         ] {{ deliveryRequest.warehouseName }}</span></p>
-                <p>Trạng thái phiếu giao hàng : {{ deliveryRequest.statusDisplay }}</p>
+                <p>Trạng thái phiếu giao hàng : <strong>{{ deliveryRequest.statusDisplay }}</strong></p>
             </div>
         </div>
 
@@ -125,7 +125,7 @@
                             <ng-template pTemplate="body" #dt let-rowData let-rowIndex="rowIndex"
                                 let-expanded="expanded" let-columns="columns">
                                 <tr class="ui-widget-header"
-                                    *ngIf="dataSource.rowGroupMetadata[rowData[dataSource.grByField]].index === rowIndex">
+                                    *ngIf="dataSource.rowGroupMetadata[rowData[dataSource.grByField]].index == rowIndex">
                                     <td colspan="4" class="group-header">
                                         <span style="cursor: pointer;">
                                             <i [pRowToggler]="rowData"
@@ -133,7 +133,7 @@
 
                                             <span *ngIf="rowData[dataSource.grByField] != null; else nullParent">
                                                 <span [pRowToggler]="rowData">
-                                                    Kiện số <strong>{{rowIndex}}</strong> -
+                                                    Kiện số <strong>{{dataSource.rowsFilter.length - rowIndex}}</strong> -
                                                     <strong>
                                                         {{
                                                         getMerchandiseInfor(deliveryRequest.lsParentDetail,rowData[dataSource.grByField]).merchandiseCode
@@ -145,19 +145,19 @@
                                                         rowData[dataSource.grByField]).paymentWeight }}</strong> kg
                                                 </span>
 
-                                                <ng-template #hasShipment>
-                                                    <i class="pi pi-shopping-cart" matTooltip="Giao hàng"
-                                                        matTooltipPosition="above"
-                                                        style="font-size: 2em; float: right; margin-right: 12px;"
-                                                        (click)="addOrUpdateShipment(rowData)"></i>
-                                                </ng-template>
-
+                                                <!-- *ngIf="this.getMerchandiseInfor(this.deliveryRequest.lsParentDetail,rowData[this.dataSource.grByField]).shipment; else hasShipment" -->
                                                 <i class="pi pi-times-circle" matTooltip="Hủy giao hàng"
                                                     matTooltipPosition="above"
-                                                    *ngIf="this.getMerchandiseInfor(this.deliveryRequest.lsParentDetail,rowData[this.dataSource.grByField]).shipment; else hasShipment"
                                                     style="font-size: 2em; float: right; margin-right: 12px;"
+                                                    *ngIf="this.getMerchandiseInfor(this.deliveryRequest.lsParentDetail,rowData[this.dataSource.grByField]).shipment;"
                                                     (click)="cancelShipment(rowData)">
                                                 </i>
+
+                                                <i class="pi pi-shopping-cart" matTooltip="Giao hàng"
+                                                matTooltipPosition="above"
+                                                style="font-size: 2em; float: right; margin-right: 12px;"
+                                                (click)="addOrUpdateShipment(rowData)"></i>
+
                                                 <button class="button-print"
                                                 (click)="printDeliveryBill(rowIndex)"
                                                 *ngIf="this.getMerchandiseInfor(this.deliveryRequest.lsParentDetail,rowData[this.dataSource.grByField]).shipment;"

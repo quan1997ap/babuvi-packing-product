@@ -162,12 +162,11 @@ export class PackingProductsComponent implements OnInit {
     this.isLoading = false;
   }
 
-  removeProductInGr(i, merchandiseWarehouseId, merchandiseId, productIndex, rowData) {
-    console.log(i, merchandiseWarehouseId, merchandiseId, productIndex, rowData);
+  removeProductInGr(i, merchandiseWarehouseId, merchandiseId, productIndex) {
     this.confirmationService.confirm({
       message: "Bạn có chắc muốn xóa gói?",
       accept: () => {
-        console.log(merchandiseWarehouseId)
+
         if (merchandiseWarehouseId) {
           this.isLoading = true;
           this.merchandiseServices

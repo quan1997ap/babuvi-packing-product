@@ -4,10 +4,10 @@
    </div>
 </div>
 <div class="notification" *ngIf="!loading && !error ">
-   <div *ngFor="let notification of lstNotification" class="notification-item">
-      <span class="type" pTooltip="{{notification.typeDisplay}}">( {{notification.typeDisplay}} )</span>
-      <span class="title" pTooltip="{{notification.title}}">{{notification.title}}</span>
-      <span class="date" pTooltip="{{notification.createdDate | date: 'h:mm dd/MM/yyyy' }}">{{notification.createdDate |
+   <div *ngFor="let notification of lstNotification" class="notification-item" (click)="showDetailNotification(notification)">
+      <span class="type" tooltipPosition="bottom"  pTooltip="{{notification.typeDisplay}}">( {{notification.typeDisplay}} )</span>
+      <span class="title" tooltipPosition="bottom"  pTooltip="{{notification.title}}">{{notification.title}}</span>
+      <span class="date" tooltipPosition="bottom"  pTooltip="{{notification.createdDate | date: 'h:mm dd/MM/yyyy' }}">{{notification.createdDate |
          date: 'h:mm dd/MM/yyyy' }} </span>
    </div>
    <div class="checkbox">

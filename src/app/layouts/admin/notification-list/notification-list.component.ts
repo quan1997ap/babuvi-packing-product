@@ -1,6 +1,8 @@
+import { NotificationDetailComponent } from './../notification-detail/notification-detail.component';
 import { MatDialogRef } from "@angular/material";
 import { UserService } from "app/services/user.service";
 import { Component, OnInit } from "@angular/core";
+import { MatDialog } from "@angular/material";
 
 @Component({
   selector: "app-notification-list",
@@ -15,7 +17,8 @@ export class NotificationListComponent implements OnInit {
   error = false;
   constructor(
     private userService: UserService,
-    public dialogRef: MatDialogRef<NotificationListComponent>
+    public dialogRef: MatDialogRef<NotificationListComponent>,
+    public dialog: MatDialog
   ) {}
 
   ngOnInit() {
@@ -55,4 +58,17 @@ export class NotificationListComponent implements OnInit {
   close() {
     this.dialogRef.close();
   }
+
+  showDetailNotification(notification){
+    console.log(notification)
+    if(notification.showType == '2'){
+      this.dialog.open(NotificationDetailComponent, {
+        width: "600px",
+        data: notification
+      });
+    } else if(notification.showType == '1'){
+      window.open(notification.url, '_blank').focus();
+    }
+  }
+
 }

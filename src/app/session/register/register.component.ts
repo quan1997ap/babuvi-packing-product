@@ -102,7 +102,9 @@ export class RegisterComponent {
         if (this.referralCode) {
           this.collaborationServices
             .updateClickReferralLink(this.referralCode)
-            .subscribe((res) => {});
+            .subscribe((res) => {
+              console.log(res)
+            });
         }
       } catch (error) {
         console.error(error);

@@ -60,7 +60,7 @@ button:focus {
         margin-bottom: 8px;
         padding-bottom: 8px;
         border-bottom: 1px solid #ddd;
-        cursor: pointer;
+        cursor: pointer !important;
         &:hover{
           background: #fcfcfc;
         }

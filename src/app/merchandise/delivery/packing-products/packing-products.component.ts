@@ -37,6 +37,7 @@ export class PackingProductsComponent implements OnInit {
   colSelectedTables = [
     { name: "Mã kiện", id: "merchandiseCode" },
     { name: "Cân nặng", id: "netWeight" },
+
   ];
 
   constructor(
@@ -161,6 +162,51 @@ export class PackingProductsComponent implements OnInit {
     this.isLoading = false;
   }
 
+  removeProductInGr(i, merchandiseWarehouseId, merchandiseId, productIndex, rowData) {
+    console.log(i, merchandiseWarehouseId, merchandiseId, productIndex, rowData);
+    this.confirmationService.confirm({
+      message: "Bạn có chắc muốn xóa gói?",
+      accept: () => {
+        console.log(merchandiseWarehouseId)
+        if (merchandiseWarehouseId) {
+          this.isLoading = true;
+          this.merchandiseServices
+            .deletePackageDetail({
+              DeliveryRequestId: this.data.deliveryRequestId,
+              ParentMerchandiseWarehouseId:
+                this.productGrouped[i].merchandiseWarehouseId,
+                ChildMerchandiseWarehouseId : merchandiseId
+            })
+            .subscribe(
+              (res) => {
+                if (res && res.result && res.result.success) {
+                  this.products.push(this.productGrouped[i].products[productIndex]);
+                  this.productGrouped[i].products.splice(productIndex, 1);
+                  this.checkSumNetWeight();
+                  this.showMessage(
+                    "success",
+                    "Xóa nhóm",
+                    "Bạn đã xóa kiện thành công"
+                  );
+                } else {
+                  this.showMessage("error", "Xóa kiện", res.result.message);
+                }
+                this.isLoading = false;
+              },
+              (error) => {
+                this.isLoading = false;
+                this.showMessage("error", "Xóa kiện", "Bạn chưa xóa được kiện");
+              }
+            );
+        } else {
+          this.products.push(this.productGrouped[i].products[productIndex]);
+          this.productGrouped[i].products.splice(productIndex, 1);
+        }
+      },
+    });
+  }
+
+  
   removeGr(i, merchandiseWarehouseId) {
     this.confirmationService.confirm({
       message: "Bạn có chắc muốn xóa gói?",
@@ -205,6 +251,7 @@ export class PackingProductsComponent implements OnInit {
                 this.showMessage("error", "Lưu nhóm", "Bạn chưa lưu được nhóm");
               }
             );
+
         } else {
           this.products = this.products.concat(this.productGrouped[i].products);
           this.productGrouped.splice(i, 1);

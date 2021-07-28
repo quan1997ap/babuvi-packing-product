@@ -465,27 +465,21 @@ export class MerchandiseDeliveryComponent implements OnInit {
       .then((res) => {
         this.loading = false;
         if (res.result.success) {
-          // TODO: set shipment value
-          // this.deliveryRequestCode = null;
-          // this.dataSource = {
-          //   rows: [],
-          //   rowsFilter: [],
-          //   rowGroupMetadata: {},
-          //   grByField: "parentId",
-          // };
-          // this.indexOfDeliveryBillPrinting = null;
-
           this.getDeliveryRequestByCode(this.deliveryRequestCode);
           this.deliveryRequestInput.nativeElement.focus();
           this.deliveryRequestInput.nativeElement.select();
           this.showMessage("alert-success", "Giao hàng thành công");
 
         } else {
+          this.deliveryRequestInput.nativeElement.focus();
+          this.deliveryRequestInput.nativeElement.select();
           this.showMessage("alert-danger", res.result.message);
         }
       })
       .catch(() => {
         this.loading = false;
+        this.deliveryRequestInput.nativeElement.focus();
+        this.deliveryRequestInput.nativeElement.select();
         this.showMessage("alert-danger", "Giao hàng thất bại");
       });
   }

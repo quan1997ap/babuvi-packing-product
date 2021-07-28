@@ -122,12 +122,20 @@
                   <th *ngFor="let col of columns">
                     {{col.name}}
                   </th>
+                  <th style="width: 50px">
+                    
+                  </th>
                 </tr>
               </ng-template>
-              <ng-template pTemplate="body" let-rowData let-columns="columns">
+              <ng-template pTemplate="body" let-rowData let-columns="columns"  let-rowIndex="rowIndex">
                 <tr [pSelectableRow]="rowData" *ngIf="searchPrTxt == '' || searchPrTxt.includes(rowData.merchandiseCode) ">
                   <td *ngFor="let col of columns">
                     {{rowData[col.id]}}
+                  </td>
+                  <td>
+                    <button style="transform: scale(0.8);" pButton pRipple type="button" icon="pi pi-trash" class="ui-button-danger"
+                    *ngIf="package['products'].length > 1" (click)="removeProductInGr(i, package.merchandiseWarehouseId, rowData.merchandiseId, rowIndex , rowData)" matTooltip="Xóa kiện"
+                    matTooltipPosition="above"></button>
                   </td>
                 </tr>
               </ng-template>

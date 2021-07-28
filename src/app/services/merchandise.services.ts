@@ -104,6 +104,16 @@ export class MerchandiseServices extends ApiService {
         return this.put(this.apiBaseController + ApiApplication.merchandise.deletePackage, body);
     }
 
+    deletePackageDetail(body){
+        // {
+        //     public long DeliveryRequestId { get; set; }
+        //     public long ParentMerchandiseWarehouseId{ get; set; }
+        //     public long ChildMerchandiseWarehouseId { get; set; }
+        // }
+        return this.put(this.apiBaseController + ApiApplication.merchandise.deletePackageDetail, body);
+
+    }
+
     sendDelivery(body) {
         return this.post(this.apiBaseController + ApiApplication.merchandise.sendDelivery, body);
     }

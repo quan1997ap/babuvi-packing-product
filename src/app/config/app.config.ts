@@ -208,6 +208,7 @@ export const ApiApplication = {
         refreshImageDeliveryRequest: 'refreshImageDeliveryRequest',
         createPackage: 'createPackage/',
         deletePackage: 'deletePackage',
+        deletePackageDetail: 'deletePackageDetail',
         sendDelivery: 'sendDelivery/',
         cancelDelivery: 'cancelDelivery/',
         getDeliveryAddressDefault: 'getDeliveryAddressDefault/',

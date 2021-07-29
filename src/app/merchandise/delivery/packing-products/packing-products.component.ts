@@ -141,12 +141,12 @@ export class PackingProductsComponent implements OnInit {
           if (this.products && this.products.length) {
             this.addGroup();
           }
-          this.showMessage("success", "Lưu nhóm", "Bạn đã lưu nhóm thành công");
+          this.showMessage("success", "Lưu nhóm", "Bạn đã đóng gói kiện hàng thành công");
         } else {
           this.showMessage(
             "error",
             "Lưu nhóm",
-            "Bạn đã lưu nhóm không thành công"
+            "Không thể đóng gói kiện hàng"
           );
         }
         this.isLoading = false;
@@ -162,9 +162,9 @@ export class PackingProductsComponent implements OnInit {
     this.isLoading = false;
   }
 
-  removeProductInGr(i, merchandiseWarehouseId, merchandiseId, productIndex) {
+  removeProductInGr(i, merchandiseWarehouseId, merchandiseId, productIndex, countProduct) {
     this.confirmationService.confirm({
-      message: "Bạn có chắc muốn xóa gói?",
+      message: "Bạn có chắc muốn xóa kiện đang chọn không ?",
       accept: () => {
 
         if (merchandiseWarehouseId) {
@@ -187,6 +187,20 @@ export class PackingProductsComponent implements OnInit {
                     "Xóa nhóm",
                     "Bạn đã xóa kiện thành công"
                   );
+
+                  if(countProduct == 1){
+                    this.productGrouped.splice(i, 1);
+                    if (this.productGrouped && this.productGrouped.length == 0) {
+                      this.addGroup();
+                    } else if (
+                      this.productGrouped.filter(
+                        (item) => item.merchandiseWarehouseId == null
+                      ).length == 0
+                    ) {
+                      this.addGroup();
+                    }
+                  }
+
                 } else {
                   this.showMessage("error", "Xóa kiện", res.result.message);
                 }
@@ -200,6 +214,18 @@ export class PackingProductsComponent implements OnInit {
         } else {
           this.products.push(this.productGrouped[i].products[productIndex]);
           this.productGrouped[i].products.splice(productIndex, 1);
+          if(countProduct == 1){
+            this.productGrouped.splice(i, 1);
+            if (this.productGrouped && this.productGrouped.length == 0) {
+              this.addGroup();
+            } else if (
+              this.productGrouped.filter(
+                (item) => item.merchandiseWarehouseId == null
+              ).length == 0
+            ) {
+              this.addGroup();
+            }
+          }
         }
       },
     });

@@ -162,7 +162,7 @@ export class PackingProductsComponent implements OnInit {
     this.isLoading = false;
   }
 
-  removeProductInGr(i, merchandiseWarehouseId, merchandiseId, productIndex, countProduct) {
+  removeProductInGr(i, merchandiseWarehouseId, childMerchandiseWarehouseId, productIndex, countProduct) {
     this.confirmationService.confirm({
       message: "Bạn có chắc muốn xóa kiện đang chọn không ?",
       accept: () => {
@@ -174,7 +174,7 @@ export class PackingProductsComponent implements OnInit {
               DeliveryRequestId: this.data.deliveryRequestId,
               ParentMerchandiseWarehouseId:
                 this.productGrouped[i].merchandiseWarehouseId,
-                ChildMerchandiseWarehouseId : merchandiseId
+                ChildMerchandiseWarehouseId : childMerchandiseWarehouseId
             })
             .subscribe(
               (res) => {

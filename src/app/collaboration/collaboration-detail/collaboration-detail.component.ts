@@ -63,13 +63,13 @@ export class CollaborationDetailComponent implements OnInit {
   downloadImg(banner) {
     this.http.get(banner.url, { responseType: "blob" }).subscribe(
       (val) => {
-        console.log(val);
+        // console.log(val);
         const url = URL.createObjectURL(val);
         this.downloadUrl(url, "image.png");
         URL.revokeObjectURL(url);
       },
       (error) => {
-        console.log(error);
+        // console.log(error);
         this.messageService.add({
           severity: "error",
           summary: "Error",
@@ -104,7 +104,7 @@ export class CollaborationDetailComponent implements OnInit {
       (res) => {
         this.listBanner = res.result.data;
         this.listBanner = this.listBanner.sort( (imgA, imgB) => Number(imgB.status) - Number(imgA.status) );
-        console.log(this.listBanner);
+        // console.log(this.listBanner);
         this.isLoading = false;
         this.loadBannerError = false;
       },

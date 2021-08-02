@@ -14,8 +14,8 @@
     <div *ngFor="let message of messages" class="message alert {{message.messageClass}}" role="alert">{{message.detail}}
     </div>
 
-    <div class="row">
-      <div class="col-12">
+    <div class="row" style="margin: 0 0;">
+      <div class="col-12" style="padding: 0 0px;">
         <div class="control">
           <strong class="label">Chọn phiếu in </strong>
           <p-dropdown placeholder="Chọn" [style]="{'width':'100%' , 'margin-bottom': '12px' }" [options]="printTypes"

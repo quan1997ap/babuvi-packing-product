@@ -7,13 +7,13 @@
           [bc-display-value]="true"></ngx-barcode>
         <div class="info" >
           <div><strong>Loại:</strong> {{printData.deliveryRequest.typeDisplay}} </div>
-          <div><strong>Khách hàng:</strong> {{printData.deliveryRequest.customerName}} </div>
-          <div><strong>Điện thoại:</strong> {{printData.deliveryRequest.customerPhone}} </div>
-          <div><strong>Địa chỉ:</strong> {{printData.deliveryRequest.customerAddress
-            + '-' + printData.deliveryRequest.customerWard
-            + '-' + printData.deliveryRequest.customerDistrict
-            + '-' + printData.deliveryRequest.customerCity
-            + '-' + printData.deliveryRequest.customerCountry}}</div>
+          <div><strong>Khách hàng:</strong> {{printData.deliveryRequest.contactName}} </div>
+          <div><strong>Điện thoại:</strong> {{printData.deliveryRequest.contactPhone}} </div>
+          <div><strong>Địa chỉ:</strong> {{printData.deliveryRequest.address
+            + '-' + printData.deliveryRequest.wardDisplay
+            + '-' + printData.deliveryRequest.districtDisplay
+            + '-' + printData.deliveryRequest.cityDisplay
+            + '-' + printData.deliveryRequest.countryDisplay}}</div>
           <div class="text-center">**************</div>
           <div><strong>Nhà xe:</strong> {{printData.deliveryRequest.vehicleName}} </div>
           <div><strong>Điện thoại:</strong> {{printData.deliveryRequest.vehiclePhone}}</div>
@@ -36,9 +36,9 @@
                 <td>{{mer.paymentWeight}}</td>
               </tr>
               <tr>
-                <td class="no-border">{{printData.totalPackage}} kiện hàng</td>
+                <td class="no-border">{{printData.deliveryRequest.lsDetail?.length}} kiện hàng</td>
                 <td class="no-border"></td>
-                <td class="no-border">{{printData.totalWeight}} kg</td>
+                <td class="no-border">{{printData.sumRequestWeight}} kg</td>
               </tr>
             </tbody>
           </table>
@@ -64,13 +64,13 @@
           >
          </ngx-barcode>
           <div class="infor50">
-            <div><strong>Khách hàng:</strong> {{printData.deliveryRequest.customerName}} </div>
-            <div><strong>Điện thoại:</strong> {{printData.deliveryRequest.customerPhone}} </div>
-            <div><strong>Địa chỉ:</strong> {{printData.deliveryRequest.customerAddress
-              + '-' + printData.deliveryRequest.customerWard
-              + '-' + printData.deliveryRequest.customerDistrict
-              + '-' + printData.deliveryRequest.customerCity
-              + '-' + printData.deliveryRequest.customerCountry}}</div>
+            <div>{{printData.deliveryRequest.contactName}} </div>
+            <div>{{printData.deliveryRequest.contactPhone}} </div>
+            <div>{{ printData.deliveryRequest.address
+            + '-' + printData.deliveryRequest.wardDisplay
+            + '-' + printData.deliveryRequest.districtDisplay
+            + '-' + printData.deliveryRequest.cityDisplay
+            + '-' + printData.deliveryRequest.countryDisplay}}</div>
             <div>
               {{printData.deliveryRequest.lsDetail?.length}} Kiện hàng / TT:
               <span>{{printData.deliveryRequest.missingAmount| currencyChina}}</span>  

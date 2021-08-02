@@ -85,14 +85,20 @@ export class PrintBillComponent implements OnInit {
     private printService: PrintService,
     public merchandiseServices: MerchandiseServices,
     private spinner: NgxSpinnerService
-  ) {}
+  ) {
+    if (this.dialogData.expCode == null) {
+      this.printTypes = this.printTypes.filter( item => [1,4].includes(item.value.id) == false)
+    }
+  }
 
   ngOnInit() {}
 
   printBill() {
-    if (this.dialogData.expCode) {
-      this.expCode = this.dialogData.expCode;
-      this.printWarehouseExp(this.expCode);
+    if( this.billSelected && [1,4].includes(this.billSelected.id ) ){
+      if (this.dialogData.expCode) {
+        this.expCode = this.dialogData.expCode;
+        this.printWarehouseExp(this.expCode);
+      }
     }
 
     // if (this.dialogData.deliveryRequestId) {
@@ -100,9 +106,11 @@ export class PrintBillComponent implements OnInit {
     //   this.printShipByDeliveryRequest(this.deliveryRequestId);
     // }
 
-    if (this.dialogData.deliveryRequestCode) {
-      this.deliveryRequestCode = this.dialogData.deliveryRequestCode;
-      // this.printDeliveryRequest(this.deliveryRequestCode);
+    if( this.billSelected && [2,3].includes(this.billSelected.id ) ){
+      if (this.dialogData.deliveryRequestCode) {
+        this.deliveryRequestCode = this.dialogData.deliveryRequestCode;
+        this.printDeliveryRequest(this.deliveryRequestCode);
+      }
     }
   }
   /**
@@ -183,8 +191,8 @@ export class PrintBillComponent implements OnInit {
   printDeliveryRequest(deliveryCode) {
     this.spinner.show();
     this.loading = true;
-    this.merchandiseServices
-      .getDeliveryRequestByCode(deliveryCode)
+    // this.merchandiseServices.getDeliveryRequestByCode(deliveryCode)
+    this.printService.printDeliveryRequest(deliveryCode)
       .toPromise()
       .then((res) => {
         if (res.result.success) {

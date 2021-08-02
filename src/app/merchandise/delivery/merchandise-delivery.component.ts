@@ -95,7 +95,7 @@ export class MerchandiseDeliveryComponent implements OnInit {
       width: "96%",
       height: "96%",
       maxWidth: "450px",
-      maxHeight: "500px",
+      maxHeight: "540px",
       disableClose: true,
       data: {
         ParentMerchandiseWarehouse: ParentMerchandise,
@@ -256,7 +256,7 @@ export class MerchandiseDeliveryComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe((result) => {
       this.getDeliveryRequestByCode(this.deliveryRequestCode);
-      console.log(`Dialog result: ${result}`); // Pizza!
+      // console.log(`Dialog result: ${result}`); // Pizza!
     });
   }
   /**
@@ -580,6 +580,7 @@ export class MerchandiseDeliveryComponent implements OnInit {
       deliveryRequestCode: this.deliveryRequestCode,
       deliveryRequestId: this.deliveryRequest.deliveryRequestId,
     };
+    // console.log(printData)
     this.dialog.open(PrintBillComponent, {
       data: printData,
       panelClass: "print-bill-dialog",

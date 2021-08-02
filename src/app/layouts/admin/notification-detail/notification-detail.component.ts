@@ -16,8 +16,6 @@ export class NotificationDetailComponent implements OnInit {
     public dialogRef: MatDialogRef<NotificationDetailComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any
   ) { 
-
-    console.log(data)
     this.notificationDetail =  data;
   }
 

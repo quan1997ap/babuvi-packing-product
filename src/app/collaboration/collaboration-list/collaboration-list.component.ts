@@ -140,7 +140,7 @@ export class CollaborationListComponent implements OnInit, OnDestroy  {
   paginate(event) {
     this.pageIndex = event.page + 1;
     this.searchCollaboration();
-    console.log(this.pageIndex)
+    // console.log(this.pageIndex)
   }
 
   viewDetail(collaboration: Collaboration){

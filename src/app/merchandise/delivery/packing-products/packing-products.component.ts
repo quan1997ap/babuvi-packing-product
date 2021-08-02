@@ -130,7 +130,6 @@ export class PackingProductsComponent implements OnInit {
     this.isLoading = true;
     this.merchandiseServices.createPackage(saveParams).subscribe(
       (res) => {
-        console.log(res);
         if (res && res.result && res.result.success) {
           this.productGrouped[i].merchandiseWarehouseId =
             res.result.data.merchandiseWarehouseId;

@@ -455,7 +455,6 @@ export class AdminLayoutComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   showDetailNotification(notification){
-    console.log(notification)
     if(notification.showType == '2'){
       this.dialog.open(NotificationDetailComponent, {
         width: "600px",

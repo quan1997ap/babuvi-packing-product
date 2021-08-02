@@ -48,7 +48,6 @@ export class ConfigShipmentComponent implements OnInit {
       TotalAmount: ParentMerchandise.CouponCode
      */
 
-    console.log(this.transporters);
 
     let shipmentId = null;
     let deliveryRequestId = null;
@@ -58,7 +57,7 @@ export class ConfigShipmentComponent implements OnInit {
     let parentMerchandiseWarehouseId = null;
     let transporterPackageNumber = null;
 
-    console.log(this.data)
+
     if (this.data.ParentMerchandiseWarehouse.merchandiseWarehouseId) {
       deliveryRequestId = this.data.deliveryRequest.deliveryRequestId;
       parentMerchandiseWarehouseId = this.data.ParentMerchandiseWarehouse.merchandiseWarehouseId;
@@ -97,7 +96,7 @@ export class ConfigShipmentComponent implements OnInit {
          TotalAmount: totalAmount
        }
     )
-    console.log( this.shipmentForm.getRawValue() )
+
   }
 
   ngOnInit() {}

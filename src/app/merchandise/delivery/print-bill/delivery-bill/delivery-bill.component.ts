@@ -43,7 +43,7 @@ export class DeliveryBillComponent implements OnInit {
     private cdr: ChangeDetectorRef
   ) {
     setTimeout( () => {
-      // console.log(this.printData);
+      // console.log(this.printData)
       this.grParent();
     }, 1000)
   }

@@ -1,6 +1,6 @@
 import { APP_NAME } from 'app/config/app.config';
 import { DeliveryRequest } from 'app/model/delivery-request.model';
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit, ChangeDetectorRef } from '@angular/core';
 export class PackingProductBillDataModel{
   numOfBill?: number;
   deliveryRequest?: DeliveryRequest;
@@ -40,9 +40,10 @@ export class DeliveryBillComponent implements OnInit {
   productGrouped = [];
 
   constructor(
+    private cdr: ChangeDetectorRef
   ) {
     setTimeout( () => {
-      console.log(this.printData)
+      // console.log(this.printData);
       this.grParent();
     }, 1000)
   }
@@ -50,9 +51,8 @@ export class DeliveryBillComponent implements OnInit {
 
   grParent(){
     let deliveryRequest = this.printData.deliveryRequest;
-    console.log(this.printData)
     if(this.printData && deliveryRequest.lsParentDetail){
-      this.products = deliveryRequest.lsDetail.filter( product => product.parentId == null);
+      this.products = deliveryRequest.lsDetail.filter( product => product.merchandiseWarehouseParentId == null);
       let lsParentDetail = deliveryRequest.lsParentDetail.sort( (a, b) => {
         if( a.merchandiseWarehouseId == null){
           return -99999;
@@ -69,7 +69,7 @@ export class DeliveryBillComponent implements OnInit {
       .map( parent => {
         let defaultParent = JSON.parse(JSON.stringify(this.defaultPackage));
         if( deliveryRequest.lsDetail && parent.merchandiseWarehouseId != null){
-          defaultParent.products = deliveryRequest.lsDetail.filter( product => product.parentId == parent.merchandiseWarehouseId)
+          defaultParent.products = deliveryRequest.lsDetail.filter( product => product.merchandiseWarehouseParentId == parent.merchandiseWarehouseId)
           defaultParent.products.forEach( product => {
             product['index'] = index;
             index++;
@@ -84,7 +84,7 @@ export class DeliveryBillComponent implements OnInit {
         }
       })
       this.checkSumNetWeight();
-      console.log(this.productGrouped)
+      // console.log(this.productGrouped)
     }
   }
 
@@ -100,6 +100,7 @@ export class DeliveryBillComponent implements OnInit {
         group.sumNetWeight = 0;
       }
     });
+    this.cdr.detectChanges();
   }
 
   ngOnInit() {

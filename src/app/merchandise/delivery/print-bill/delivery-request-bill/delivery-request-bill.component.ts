@@ -28,23 +28,22 @@ export class DeliveryRequestBillComponent implements OnInit {
   ) {
     this.spinner.show();
     setTimeout( () => {
-      console.log(this.printBillData)
+      // console.log(this.printBillData)
      this.setPrintData();
     }, 1000);
   }
 
   setPrintData(){
     this.printService.printShipmentById(this.printBillData.shipment['shipmentId']).subscribe((res: any) => {
-      console.log(res)
       this.dataPrint = res.result.data;
-      console.log(this.dataPrint)
+      // console.log(this.dataPrint)
       setTimeout( () => {
         this.printDelivery.nativeElement.click();
       }, 500);
       this.spinner.hide();
     }, 
     err => {
-      this.showToast('success', 'Thành công', 'Cập nhật thông tin thành công');
+      this.showToast('error', 'Thất bại', 'Không lấy được dữ liệu');
     })
   }
 

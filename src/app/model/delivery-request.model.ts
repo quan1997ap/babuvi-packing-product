@@ -1,6 +1,19 @@
 import { Shipment } from "./shipment.model";
 
 export class DeliveryRequest {
+    customerName;
+    customerPhone;
+    customerWard;
+    customerDistrict;
+    customerCity;
+    customerCountry;
+    totalPackage ;
+    totalWeight;
+    customerAddress;
+    expWarehousePhone;
+    expWarehouseName;
+    deliveryRequestTypeDisplay;
+    expDate;
     deliveryRequestId;
     deliveryRequestCode;
     type;

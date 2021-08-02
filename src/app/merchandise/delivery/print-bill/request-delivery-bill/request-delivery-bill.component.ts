@@ -8,6 +8,8 @@ export class PackingProductBillDataModel{
   deliveryRequestCode?: string;
   size?: string; // "full-size", "50x50"
   visible?: boolean;
+  totalPackage: number;
+  totalWeight: number
 }
 
 @Component({

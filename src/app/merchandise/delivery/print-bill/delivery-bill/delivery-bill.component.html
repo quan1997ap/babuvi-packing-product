@@ -18,19 +18,26 @@
         <div class="info">
           <div  style="margin-bottom: 8px;">
             <strong>Phiếu y/c:</strong> {{printData.deliveryRequestCode}} -
-            <strong>Ngày y/c:</strong> {{printData.deliveryRequest.createdDate | date: 'dd/MM/yyyy hh:mm a'}}
-            - <strong>{{printData.deliveryRequest.typeDisplay}}</strong>
+            <strong>Ngày y/c:</strong> {{printData.deliveryRequest.expDate | date: 'dd/MM/yyyy hh:mm a'}}
+            - <strong>{{printData.deliveryRequest.deliveryRequestTypeDisplay}}</strong>
+          </div>
+          <div style="margin-bottom: 8px;">
+            <strong>Kho xuất:</strong> {{printData.deliveryRequest.expWarehouseName }}
+            <span> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+            <strong>Điện thoại:</strong> {{printData.deliveryRequest.expWarehousePhone }}
+            <span> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+            <strong>{{printData.deliveryRequest.typeDisplay}}</strong>
           </div>
           <div style="margin-bottom: 8px;">
             <strong>Người nhận:</strong> {{printData.deliveryRequest.contactName}}
             <span> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
             <strong>Điện thoại:</strong> {{printData.deliveryRequest.contactPhone}}
           </div>
-          <div  style="margin-bottom: 8px;" ><strong>Địa chỉ:</strong> {{printData.deliveryRequest.address
-            + '-' + printData.deliveryRequest.wardDisplay
-            + '-' + printData.deliveryRequest.districtDisplay
-            + '-' + printData.deliveryRequest.cityDisplay
-            + '-' + printData.deliveryRequest.countryDisplay}}</div>
+          <div  style="margin-bottom: 8px;" ><strong>Địa chỉ:</strong> {{printData.deliveryRequest.customerAddress
+            + '-' + printData.deliveryRequest.customerWard
+            + '-' + printData.deliveryRequest.customerDistrict 
+            + '-' + printData.deliveryRequest.customerCity 
+            + '-' + printData.deliveryRequest.customerCountry }}</div>
           <br />
           <div class="text-center">****************************************</div>
           <br/>
@@ -45,12 +52,17 @@
             <tbody>
               <ng-container *ngFor="let package of productGrouped; let i=index;">
                 <tr>
-                  <td style="text-align: left;" [colSpan]="colSelectedTables.length"><span> Kiện số <strong>{{ i + 1 }}</strong> </span>
+                  <td style="text-align: left;" [colSpan]="colSelectedTables.length">
+                    <span> Kiện số <strong>{{ i + 1 }}</strong> </span>
                     <strong *ngIf="package['merchandiseCode']" > - {{package['merchandiseCode']}} </strong>
                     <span *ngIf="package['products'] && package['products'].length;">
                       - <strong> {{package['products'].length}} </strong> mã -
                       <strong>{{package['sumNetWeight']}} kg</strong>
                     </span> 
+
+                    <span>&nbsp;&nbsp;&nbsp;&nbsp;</span>
+                    <span>Vận đơn</span>
+                    <strong> {{package?.shipment?.transporterPackageNumber  }} - {{package?.shipment?.transporterName  }}  </strong>
                   </td>
                 </tr>
                 <tr *ngFor="let product of package.products" >
@@ -70,10 +82,10 @@
               <tr > 
                 <td [colSpan]="colSelectedTables.length" style="text-align: left;">
                   <div>
-                    <strong>Tổng cộng: </strong> {{printData.deliveryRequest.lsDetail?.length}} kiện hàng
+                    <strong>Tổng cộng: </strong> {{printData.deliveryRequest.totalPackage }} kiện hàng
                   </div>
                   <div>
-                    <strong>Trọng lượng: </strong> {{printData.sumRequestWeight}} kg
+                    <strong>Trọng lượng: </strong> {{printData.deliveryRequest.totalWeight }} kg
                   </div>
                   <div>
                     <strong>Tổng tiền cần thanh toán: </strong> {{printData.deliveryRequest.missingAmount }} 

@@ -202,7 +202,7 @@ export class PrintBillComponent implements OnInit {
             this.print.nativeElement.click();
             this.spinner.hide();
             this.loading = false;
-          }, 2000);
+          }, 3000);
         } else {
           this.deliveryRequest = new DeliveryRequest();
           this.showMessage("alert-danger", res.result.message);

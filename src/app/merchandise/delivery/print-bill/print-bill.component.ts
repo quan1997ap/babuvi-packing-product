@@ -197,12 +197,12 @@ export class PrintBillComponent implements OnInit {
       .then((res) => {
         if (res.result.success) {
           this.deliveryRequest = res.result.data;
-          this.sumRequestWeight = this.sumWeightOfRequestList();
+          // this.sumRequestWeight = this.sumWeightOfRequestList();
           setTimeout(() => {
             this.print.nativeElement.click();
             this.spinner.hide();
             this.loading = false;
-          }, 3000);
+          }, 5000);
         } else {
           this.deliveryRequest = new DeliveryRequest();
           this.showMessage("alert-danger", res.result.message);

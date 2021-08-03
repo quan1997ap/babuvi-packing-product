@@ -10,15 +10,15 @@
             Ngày xuất : {{ currentTime | date: 'dd/MM/yyyy hh:mm a' }}
           </p>
           <div class="bc">
-            <ngx-barcode [bc-value]="printData.deliveryRequestCode" bc-height="20" bc-font-size="13" bc-width="1.8"
+            <ngx-barcode [bc-value]="printData.deliveryRequest.deliveryRequestCode" bc-height="20" bc-font-size="13" bc-width="1.8"
               [bc-display-value]="true"></ngx-barcode>
           </div>
         </div>
         <br/>
         <div class="info">
           <div  style="margin-bottom: 8px;">
-            <strong>Phiếu y/c:</strong> {{printData.deliveryRequestCode}} -
-            <strong>Ngày y/c:</strong> {{printData.deliveryRequest.expDate | date: 'dd/MM/yyyy hh:mm a'}}
+            <strong>Phiếu y/c:</strong> {{printData.deliveryRequest.deliveryRequestCode}} -
+            <strong>Ngày y/c:</strong> {{printData.deliveryRequest.deliveryRequestDate | date: 'dd/MM/yyyy hh:mm a'}}
             - <strong>{{printData.deliveryRequest.deliveryRequestTypeDisplay}}</strong>
           </div>
           <div style="margin-bottom: 8px;">

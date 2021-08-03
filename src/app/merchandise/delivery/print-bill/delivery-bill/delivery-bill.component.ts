@@ -45,7 +45,7 @@ export class DeliveryBillComponent implements OnInit {
     setTimeout( () => {
       // console.log(this.printData)
       this.grParent();
-    }, 1000)
+    }, 2000)
   }
 
 

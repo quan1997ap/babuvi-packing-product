@@ -177,7 +177,8 @@ export class MerchandiseDeliveryComponent implements OnInit {
   }
 
 
-  printDeliveryBill(rowIndex){
+  printDeliveryBill(rowIndex, rowData){
+    console.log(rowData, this.getMerchandiseInfor(this.deliveryRequest.lsParentDetail,rowData[this.dataSource.grByField]))
     this.indexOfDeliveryBillPrinting = null;
     setTimeout(() => {
       this.indexOfDeliveryBillPrinting = rowIndex;
@@ -306,6 +307,8 @@ export class MerchandiseDeliveryComponent implements OnInit {
       JSON.stringify(this.merchandiseList)
     );
 
+    console.log(this.dataSource.rowsFilter)
+
     // make group rows
     this.updateRowGroupMetaData();
   }
@@ -386,10 +389,21 @@ export class MerchandiseDeliveryComponent implements OnInit {
       }
     }
 
+    console.log(this.dataSource.rowGroupMetadata)
+
     // Expand Rows https://stackblitz.com/edit/primeng-turbo-table-u53rsg?file=app%2Fprovider-search%2Fprovider-search.component.ts
     Object.keys(this.dataSource.rowGroupMetadata).forEach((key) => {
       this.expandedRows[key] = true;
     });
+  }
+
+  getGrIndex(key){
+    // DlR2021224 no null
+    // DlR2021235 has null
+    let keys = Object.keys(this.dataSource.rowGroupMetadata);
+    keys = keys.filter( item => item != "null" );
+    return keys.length - keys.findIndex( item => item == key );
+
   }
 
   /**

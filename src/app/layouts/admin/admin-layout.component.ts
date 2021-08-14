@@ -113,9 +113,19 @@ export class AdminLayoutComponent implements OnInit, OnDestroy, AfterViewInit {
         if (configNotification.settingValue == "1") {
           this.turnOffNotification = false;
           if(showDialog == true){
-            this.dialog.open(NotificationListComponent, {
-              width: "600px",
-            });
+            this.userService.getLsNotification().subscribe(
+              (resNotification) => {
+                if(resNotification.result.data && resNotification.result.data.length){
+                  this.dialog.open(NotificationListComponent, {
+                    width: "700px",
+                    data: {
+                      lstNotification:  resNotification.result.data
+                    }
+                  });
+                }
+              }
+            );
+
           }
         }
         // settingValue = 2 ---> k hiển thị popup

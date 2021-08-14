@@ -133,7 +133,9 @@
 
                                             <span *ngIf="rowData[dataSource.grByField] != null; else nullParent">
                                                 <span [pRowToggler]="rowData">
-                                                    Kiện số <strong>{{dataSource.rowsFilter.length - rowIndex}}</strong> -
+                                                    Kiện số <strong>{{ getGrIndex(rowData.parentId)  }}  
+                                                        <!-- {{rowData.parentId}} -->
+                                                    </strong> -
                                                     <strong>
                                                         {{
                                                         getMerchandiseInfor(deliveryRequest.lsParentDetail,rowData[dataSource.grByField]).merchandiseCode
@@ -142,14 +144,21 @@
                                                     <strong> {{dataSource.rowGroupMetadata[rowData.parentId].size}}
                                                     </strong> mã -
                                                     <strong>{{ getMerchandiseInfor(deliveryRequest.lsParentDetail,
-                                                        rowData[dataSource.grByField]).paymentWeight }}</strong> kg
+                                                        rowData[dataSource.grByField]).paymentWeight }}</strong> kg 
+
+                                                    <span *ngIf="getMerchandiseInfor(this.deliveryRequest.lsParentDetail,rowData[this.dataSource.grByField]).shipment">
+                                                        &nbsp; / &nbsp;
+                                                       <strong>  {{ getMerchandiseInfor(this.deliveryRequest.lsParentDetail,rowData[this.dataSource.grByField]).shipment.transporterName }} </strong>
+                                                        <span> - </span>
+                                                       <strong> {{ getMerchandiseInfor(this.deliveryRequest.lsParentDetail,rowData[this.dataSource.grByField]).shipment.transporterPackageNumber }}</strong>
+                                                    </span>
                                                 </span>
 
-                                                <!-- *ngIf="this.getMerchandiseInfor(this.deliveryRequest.lsParentDetail,rowData[this.dataSource.grByField]).shipment; else hasShipment" -->
+                                                <!-- *ngIf="getMerchandiseInfor(this.deliveryRequest.lsParentDetail,rowData[this.dataSource.grByField]).shipment; else hasShipment" -->
                                                 <i class="pi pi-times-circle" matTooltip="Hủy giao hàng"
                                                     matTooltipPosition="above"
                                                     style="font-size: 2em; float: right; margin-right: 12px;"
-                                                    *ngIf="this.getMerchandiseInfor(this.deliveryRequest.lsParentDetail,rowData[this.dataSource.grByField]).shipment;"
+                                                    *ngIf="getMerchandiseInfor(this.deliveryRequest.lsParentDetail,rowData[this.dataSource.grByField]).shipment"
                                                     (click)="cancelShipment(rowData)">
                                                 </i>
 
@@ -159,7 +168,7 @@
                                                 (click)="addOrUpdateShipment(rowData)"></i>
 
                                                 <button class="button-print"
-                                                (click)="printDeliveryBill(rowIndex)"
+                                                (click)="printDeliveryBill(rowIndex, rowData)"
                                                 *ngIf="this.getMerchandiseInfor(this.deliveryRequest.lsParentDetail,rowData[this.dataSource.grByField]).shipment;"
                                                 >
                                                     <i class="pi pi-print" matTooltip="In phiếu" matTooltipPosition="above"

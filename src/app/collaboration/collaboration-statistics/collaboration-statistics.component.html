@@ -116,21 +116,18 @@
     <div class="col-sm-12 col-md-12 col-lg-8">
       <h5 class="title"> Danh sách đơn hàng </h5>
       <div class="statistic-row row" *ngIf="lsReferralOrder">
-        <div class="col-sm-6 col-md-6 col-lg-3 statistic-item">
-          <div class="count" *ngIf="lsReferralOrder.countAll !== null"> {{ lsReferralOrder.countAll }} </div>
-          <div class="status all"> Tổng số </div>
-        </div>
-        <div class="col-sm-6 col-md-6 col-lg-3 statistic-item">
-          <div class="count" *ngIf="lsReferralOrder.countAccept !== null"> {{ lsReferralOrder.countAccept }} </div>
-          <div class="status accept"> Tạm duyệt </div>
-        </div>
-        <div class="col-sm-6 col-md-6 col-lg-3 statistic-item">
-          <div class="count" *ngIf="lsReferralOrder.countCancel !== null"> {{ lsReferralOrder.countCancel }} </div>
-          <div class="status cancel"> Từ chối </div>
-        </div>
-        <div class="col-sm-6 col-md-6 col-lg-3 statistic-item">
-          <div class="count" *ngIf="lsReferralOrder.countWait !== null"> {{ lsReferralOrder.countWait }} </div>
-          <div class="status wait"> Chờ xử lý </div>
+
+        <div class="col-sm-6 col-md-6 col-lg-3 statistic-item" *ngFor="let statusItem of lsReferralOrder['groupStatus']">
+          <div class="count"> {{ statusItem.count }} </div>
+          <div class="status"
+            [ngClass]="{
+              'all': statusItem.status == null, 
+              'accept': statusItem.status == '1',
+              'wait': statusItem.status == '2',
+              'cancel': statusItem.status == '3',
+              'other': !['1', '2', '3', null ].includes(statusItem.status) 
+             }"
+          >  {{ statusItem.statusDisplay }} </div>
         </div>
       </div>
 
@@ -160,7 +157,8 @@
                   'accept': referralOrder.status == '1',
                   'wait': referralOrder.status == '2',
                   'cancel': referralOrder.status == '3',
-                  'all': referralOrder.status == null
+                  'all': referralOrder.status == null,
+                  'other': !['1', '2', '3', null ].includes(referralOrder.status) 
                 }">
                   {{referralOrder.statusDisplay}}
                 </div>

@@ -93,21 +93,11 @@ export class CollaborationStatisticsComponent implements OnInit {
             res.result.data.lsReferralOrder.lsData.length
           ) {
             this.lsReferralOrder = res.result.data.lsReferralOrder;
+            this.lsReferralOrder.groupStatus = this.lsReferralOrder.groupStatus.sort( (a, b) => {
+              return a.ord - b.ord;
+            });
 
-            this.lsReferralOrder["countAccept"] =
-              res.result.data.lsReferralOrder.lsData.filter(
-                (item) => item.status == "1"
-              ).length;
-            this.lsReferralOrder["countWait"] =
-              res.result.data.lsReferralOrder.lsData.filter(
-                (item) => item.status == "2"
-              ).length;
-            this.lsReferralOrder["countCancel"] =
-              res.result.data.lsReferralOrder.lsData.filter(
-                (item) => item.status == "3"
-              ).length;
-            this.lsReferralOrder["countAll"] =
-              res.result.data.lsReferralOrder.lsData.length;
+           
           }
 
           this.isLoading = false;

@@ -1,8 +1,7 @@
 import { NotificationDetailComponent } from './../notification-detail/notification-detail.component';
-import { MatDialogRef } from "@angular/material";
 import { UserService } from "app/services/user.service";
-import { Component, OnInit } from "@angular/core";
-import { MatDialog } from "@angular/material";
+import { Component, Inject, OnInit } from "@angular/core";
+import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 
 @Component({
   selector: "app-notification-list",
@@ -18,11 +17,15 @@ export class NotificationListComponent implements OnInit {
   constructor(
     private userService: UserService,
     public dialogRef: MatDialogRef<NotificationListComponent>,
+    @Inject(MAT_DIALOG_DATA) public data: any,
     public dialog: MatDialog
   ) {}
 
   ngOnInit() {
-    this.getUserNotification();
+    // this.getUserNotification();
+    this.lstNotification = this.data.lstNotification;
+    this.loading = false;
+    this.error = false;
   }
 
   getUserNotification() {

@@ -29,7 +29,6 @@ export class UserService extends ApiService {
             setting.settingValue = status;
           }
         });
-        console.log(lUserSettings)
         localStorage.setItem('lUserSettings', JSON.stringify(lUserSettings));
       } else {
         console.log("Không có config Notification");

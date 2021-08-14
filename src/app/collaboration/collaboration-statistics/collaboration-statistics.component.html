@@ -119,7 +119,7 @@
 
         <div class="col-sm-6 col-md-6 col-lg-3 statistic-item" *ngFor="let statusItem of lsReferralOrder['groupStatus']">
           <div class="count"> {{ statusItem.count }} </div>
-          <div class="status"
+          <div class="status" style="cursor: pointer;" pTooltip="Click để lọc theo trạng thái" (click)="filterTableByStatus(statusItem.status )"
             [ngClass]="{
               'all': statusItem.status == null, 
               'accept': statusItem.status == '1',
@@ -132,7 +132,7 @@
       </div>
 
       <div class="large-table">
-        <p-table [value]="lsReferralOrder['lsData']" *ngIf="lsReferralOrder && lsReferralOrder['lsData']"
+        <p-table #dtLarge [value]="lsReferralOrder['lsData']" *ngIf="lsReferralOrder && lsReferralOrder['lsData']"
           [paginator]="true" [rows]="10">
           <ng-template pTemplate="header">
             <tr class="table-header-responsive-large">
@@ -169,7 +169,7 @@
       </div>
 
       <div class="small-table">
-        <p-table [value]="lsReferralOrder['lsData']" *ngIf="lsReferralOrder && lsReferralOrder['lsData']"
+        <p-table #dtSmall [value]="lsReferralOrder['lsData']" *ngIf="lsReferralOrder && lsReferralOrder['lsData']"
           [paginator]="true" [rows]="10">
           <ng-template pTemplate="body" let-referralOrder>
             <tr>

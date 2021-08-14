@@ -2,9 +2,10 @@ import { MessageService } from "primeng/api";
 import { SystemService } from "app/services/system.services";
 import { CollaborationServices } from "./../../services/collaboration.services";
 import { FormGroup, FormControl } from "@angular/forms";
-import { Component, OnDestroy, OnInit, ChangeDetectorRef } from "@angular/core";
+import { Component, OnDestroy, OnInit, ChangeDetectorRef, ViewChild } from "@angular/core";
 import { DialogService } from "primeng/api";
 import * as moment from 'moment';
+import { Table } from "primeng/table";
 
 @Component({
   selector: "app-collaboration-statistics",
@@ -12,6 +13,10 @@ import * as moment from 'moment';
   styleUrls: ["./collaboration-statistics.component.scss"],
 })
 export class CollaborationStatisticsComponent implements OnInit {
+
+  @ViewChild('dtLarge') private dataTableLarge: Table;
+  @ViewChild('dtSmall') private dataTableSmall: Table;
+
   filterForm: FormGroup;
   isLoading = false;
   hasError = false;
@@ -23,6 +28,7 @@ export class CollaborationStatisticsComponent implements OnInit {
   statistic = {};
   pageSize = 1000;
   pageIndex = 1;
+
 
   constructor(
     private collaborationServices: CollaborationServices,
@@ -113,6 +119,14 @@ export class CollaborationStatisticsComponent implements OnInit {
         }
       );
   }
+
+
+  filterTableByStatus(status){
+    this.dataTableLarge.filter(status, 'status', 'equals' );
+    this.dataTableSmall.filter(status, 'status', 'equals' );
+
+  }
+
 
   ngOnDestroy() {}
 }

@@ -1,6 +1,8 @@
 import { Shipment } from "./shipment.model";
 
 export class DeliveryRequest {
+    paymentShipType;
+    paymentShipTypeDisplay;
     deliveryRequestDate;
     customerName;
     customerPhone;

@@ -178,7 +178,6 @@ export class MerchandiseDeliveryComponent implements OnInit {
 
 
   printDeliveryBill(rowIndex, rowData){
-    console.log(rowData, this.getMerchandiseInfor(this.deliveryRequest.lsParentDetail,rowData[this.dataSource.grByField]))
     this.indexOfDeliveryBillPrinting = null;
     setTimeout(() => {
       this.indexOfDeliveryBillPrinting = rowIndex;
@@ -197,6 +196,7 @@ export class MerchandiseDeliveryComponent implements OnInit {
       .toPromise()
       .then((res) => {
         this.loading = false;
+
         if (res.result.success) {
           this.deliveryRequest = res.result.data;
           if (
@@ -257,7 +257,6 @@ export class MerchandiseDeliveryComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe((result) => {
       this.getDeliveryRequestByCode(this.deliveryRequestCode);
-      // console.log(`Dialog result: ${result}`); // Pizza!
     });
   }
   /**
@@ -334,6 +333,7 @@ export class MerchandiseDeliveryComponent implements OnInit {
    * @param value
    */
   applyFilter(value: string) {
+    this.indexOfDeliveryBillPrinting = -1;
     if (
       this.deliveryRequest &&
       this.deliveryRequest.lsParentDetail &&
@@ -389,12 +389,30 @@ export class MerchandiseDeliveryComponent implements OnInit {
       }
     }
 
-    console.log(this.dataSource.rowGroupMetadata)
-
     // Expand Rows https://stackblitz.com/edit/primeng-turbo-table-u53rsg?file=app%2Fprovider-search%2Fprovider-search.component.ts
     Object.keys(this.dataSource.rowGroupMetadata).forEach((key) => {
       this.expandedRows[key] = true;
     });
+  }
+
+  sumShipment(){
+    let shipAmount = 0;
+    if(this.deliveryRequest.lsParentDetail && this.deliveryRequest.lsParentDetail.length){
+      this.deliveryRequest.lsParentDetail.forEach( parent => {
+        if(parent && parent.shipment ){
+          shipAmount += parent.shipment.totalAmount
+        }
+      })
+    }
+    return shipAmount;
+  }
+
+  needTopupAmountCalc(){
+    if(this.deliveryRequest.paymentShipType == 1){
+      return this.deliveryRequest.walletAmount - this.sumShipment() - this.deliveryRequest.missingAmount;
+    } else if (this.deliveryRequest.paymentShipType == 2 ){
+      return this.deliveryRequest.walletAmount - this.deliveryRequest.missingAmount;
+    }
   }
 
   getGrIndex(key){
@@ -594,7 +612,7 @@ export class MerchandiseDeliveryComponent implements OnInit {
       deliveryRequestCode: this.deliveryRequestCode,
       deliveryRequestId: this.deliveryRequest.deliveryRequestId,
     };
-    // console.log(printData)
+
     this.dialog.open(PrintBillComponent, {
       data: printData,
       panelClass: "print-bill-dialog",

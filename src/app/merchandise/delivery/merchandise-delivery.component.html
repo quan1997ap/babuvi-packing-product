@@ -169,7 +169,7 @@
 
                                                 <button class="button-print"
                                                 (click)="printDeliveryBill(rowIndex, rowData)"
-                                                *ngIf="this.getMerchandiseInfor(this.deliveryRequest.lsParentDetail,rowData[this.dataSource.grByField]).shipment;"
+                                                *ngIf="this.getMerchandiseInfor(this.deliveryRequest.lsParentDetail,rowData[this.dataSource.grByField]).shipment != null"
                                                 >
                                                     <i class="pi pi-print" matTooltip="In phiếu" matTooltipPosition="above"
                                                     style="font-size: 2em; float: right; margin-right: 12px;" 
@@ -271,6 +271,15 @@
                         </span>
                         <span class="corF44335" [innerHTML]="symbolsLocation === '1' ? symbolsDisplay : ''"></span>
                     </div>
+                    <div class="font-weight-bold mb-2">Tổng phí ship:
+                        <span class="corF44335">
+                            {{ sumShipment()| currencyChina}}
+                        </span>
+                        <span class="corF44335" [innerHTML]="symbolsLocation === '1' ? symbolsDisplay : ''"></span>
+                        <span class="corF44335">
+                            - {{deliveryRequest?.paymentShipTypeDisplay}}
+                        </span>
+                    </div>
                     <div class="font-weight-bold mb-2">Số tiền trong ví:
                         <!-- <span
                                 class="text-danger">{{deliveryRequest.walletAmount| currencyFormat}}</span> -->
@@ -281,11 +290,9 @@
                         <span class="corF44335" [innerHTML]="symbolsLocation === '1' ? symbolsDisplay : ''"></span>
                     </div>
                     <div class="font-weight-bold mb-2">Số tiền còn thiếu:
-                        <!-- <span
-                                    class="text-danger">{{deliveryRequest.needTopupAmount| currencyFormat}}</span> -->
                         <span class="corF44335" [innerHTML]="symbolsLocation=== '2' ? symbolsDisplay : ''"></span>
                         <span class="corF44335">
-                            {{deliveryRequest.needTopupAmount| currencyChina}}
+                            {{ needTopupAmountCalc() | currencyChina}}
                         </span>
                         <span class="corF44335" [innerHTML]="symbolsLocation === '1' ? symbolsDisplay : ''"></span>
                     </div>

@@ -1,3 +1,4 @@
+import { NotificationSourceService } from './layouts/admin/notification-detail/refresh-notification.service';
 import { AppInforRatingService } from "./services/app-state/app-infor-rating.service";
 import { SystemService } from "./services/system.services";
 import { MessagesUtilsService } from "./services/messages-utils.service";
@@ -114,6 +115,7 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
     TooltipModule,
   ],
   providers: [
+    NotificationSourceService,
     AppInforRatingService,
     SystemService,
     ConfirmationService,

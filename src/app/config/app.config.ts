@@ -327,7 +327,8 @@ export const ApiApplication = {
         getCaptcha: "getCaptcha",
         getLsNotification: "getLsNotification",
         turnOffNotification: "turnOffNotification",
-        turnOnNotification: "turnOnNotification"
+        turnOnNotification: "turnOnNotification",
+        readNotification: "readNotification"
     },
     wallet: {
         controller: ApiBaseUrl + "wallet",

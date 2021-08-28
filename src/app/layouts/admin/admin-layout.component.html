@@ -158,7 +158,7 @@
 
             <mat-menu #menuNotifications="matMenu">
                <div class="notification" *ngIf="lstNotification && lstNotification.length; else noNotify">
-                  <div *ngFor="let notification of lstNotification" class="notification-item" (click)="showDetailNotification(notification)">
+                  <div *ngFor="let notification of lstNotification; let i = index;" class="notification-item" [ngClass]="{'unread': notification.status == 1 }" (click)="showDetailNotification(notification, i)">
                      <span class="type" tooltipPosition="bottom"  pTooltip="{{notification.typeDisplay}}" >( {{notification.typeDisplay}} )</span>
                      <span class="title" tooltipPosition="bottom" pTooltip="{{notification.title}}">{{notification.title}}</span>
                      <span class="date" tooltipPosition="bottom" pTooltip="{{notification.createdDate | date: 'h:mm dd/MM/yyyy' }}">{{notification.createdDate | date: 'h:mm dd/MM/yyyy' }} </span>

@@ -103,7 +103,6 @@ export class RegisterComponent {
           this.collaborationServices
             .updateClickReferralLink(this.referralCode)
             .subscribe((res) => {
-              console.log(res)
             });
         }
       } catch (error) {

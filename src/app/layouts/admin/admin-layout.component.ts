@@ -1,4 +1,5 @@
-import { NotificationDetailComponent } from './notification-detail/notification-detail.component';
+import { NotificationSourceService } from './notification-detail/refresh-notification.service';
+import { NotificationDetailComponent } from "./notification-detail/notification-detail.component";
 import { NotificationListComponent } from "./notification-list/notification-list.component";
 import { DialogService } from "primeng/api";
 import { UserService } from "app/services/user.service";
@@ -76,6 +77,7 @@ export class AdminLayoutComponent implements OnInit, OnDestroy, AfterViewInit {
   _subMenu: ChildrenItems[];
 
   lstNotification = [];
+  notificationUnreadCount = 0;
   turnOffNotification = true;
 
   constructor(
@@ -92,7 +94,8 @@ export class AdminLayoutComponent implements OnInit, OnDestroy, AfterViewInit {
     public translate: TranslateService,
     private appInforRatingService: AppInforRatingService,
     private userService: UserService,
-    public dialog: MatDialog
+    public dialog: MatDialog,
+    private notificationSourceService: NotificationSourceService
   ) {
     const browserLang: string = translate.getBrowserLang();
     translate.use(browserLang.match(/en|fr/) ? browserLang : "en");
@@ -100,9 +103,12 @@ export class AdminLayoutComponent implements OnInit, OnDestroy, AfterViewInit {
     // set Notification
     this.getUserNotification();
     this.checkNotificationStatus(true);
+    this.notificationSourceService.getNotificationSource().subscribe( res => {
+      this.getUserNotification();
+    })
   }
 
-  checkNotificationStatus(showDialog: boolean ) {
+  checkNotificationStatus(showDialog: boolean) {
     let lUserSettings = JSON.parse(localStorage.getItem("lUserSettings"));
     if (lUserSettings && lUserSettings.length) {
       let configNotification = lUserSettings.find(
@@ -112,20 +118,22 @@ export class AdminLayoutComponent implements OnInit, OnDestroy, AfterViewInit {
         // settingValue = 1 ---> hiển thị popup
         if (configNotification.settingValue == "1") {
           this.turnOffNotification = false;
-          if(showDialog == true){
-            this.userService.getLsNotification().subscribe(
-              (resNotification) => {
-                if(resNotification.result.data && resNotification.result.data.length){
+          if (showDialog == true) {
+            this.userService
+              .getLsNotification()
+              .subscribe((resNotification) => {
+                if (
+                  resNotification.result.data &&
+                  resNotification.result.data.length
+                ) {
                   this.dialog.open(NotificationListComponent, {
                     width: "700px",
                     data: {
-                      lstNotification:  resNotification.result.data
-                    }
+                      lstNotification: resNotification.result.data,
+                    },
                   });
                 }
-              }
-            );
-
+              });
           }
         }
         // settingValue = 2 ---> k hiển thị popup
@@ -461,17 +469,23 @@ export class AdminLayoutComponent implements OnInit, OnDestroy, AfterViewInit {
   getUserNotification() {
     this.userService.getLsNotification().subscribe((resNotification) => {
       this.lstNotification = resNotification.result.data;
+      this.notificationUnreadCount = this.lstNotification.filter(
+        (item) => item.status == 1
+      ).length;
     });
   }
 
-  showDetailNotification(notification){
-    if(notification.showType == '2'){
-      this.dialog.open(NotificationDetailComponent, {
+  showDetailNotification(notification, i) {
+    if (notification.showType == "2") {
+      let dialogRef = this.dialog.open(NotificationDetailComponent, {
         width: "600px",
-        data: notification
+        data: notification,
       });
-    } else if(notification.showType == '1'){
-      window.open(notification.url, '_blank').focus();
+      dialogRef.afterClosed().subscribe((res) => {
+        this.lstNotification[i].status = 2;
+      });
+    } else if (notification.showType == "1") {
+      window.open(notification.url, "_blank").focus();
     }
   }
 }

@@ -15,6 +15,7 @@ export class CollaborationDetailComponent implements OnInit {
   viewBanner = false;
   isLoading = false;
   listBanner = [];
+  groups: any[] = [];
   loadBannerError = false;
   timeoutUpdateClickReferralLink: any;
   disableCopyBtn = false;
@@ -100,11 +101,17 @@ export class CollaborationDetailComponent implements OnInit {
   getBannerDesign(bannerId) {
     this.isLoading = true;
     this.loadBannerError = false;
+    const unique = (value, index, self) => {
+      return self.indexOf(value) === index
+    }
+
     this.collaborationServices.getLsBannerDesignByBannerId(bannerId).subscribe(
       (res) => {
         this.listBanner = res.result.data;
         this.listBanner = this.listBanner.sort( (imgA, imgB) => Number(imgB.status) - Number(imgA.status) );
         // console.log(this.listBanner);
+        this.groups = this.listBanner.map( item => item.groupRow ).filter(unique).sort( (a,b) => a -b )
+        console.log(this.groups)
         this.isLoading = false;
         this.loadBannerError = false;
       },

@@ -41,7 +41,13 @@ export class UserService extends ApiService {
       this.apiBaseController + ApiApplication.user.getLsNotification
     );
   }
-
+  
+  readNotification(notificationUserId){
+    return this.put(
+      this.apiBaseController + ApiApplication.user.readNotification + `?notificationUserId=${notificationUserId}`,
+      {}
+    );
+  } 
   turnOffNotification() {
     return this.put(
       this.apiBaseController + ApiApplication.user.turnOffNotification

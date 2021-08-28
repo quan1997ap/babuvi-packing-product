@@ -67,17 +67,22 @@
         <div class="banner-imgs"  *ngIf="!listBanner || !listBanner.length">
           Tìm thấy 0 banner
         </div>
-        <div class="banner-imgs" *ngIf="listBanner && listBanner.length">
-          <div *ngFor="let banner of listBanner" class="img-section">
-            <img [src]="banner?.url" alt="{{banner.title}}" [ngClass]="{ 
-              'status-1': banner.type == '1',
-               'status-2' : banner.type == '2',
-               'status-3' : banner.type == '3' }" />
-            <div *ngIf="banner?.url" class="gr-btn">
-              <button pButton type="button" label="Copy link" class="ui-button-secondary" ngxClipboard
-                [cbContent]="banner?.url" (click)="copyImgUrl()"></button>
-              <button pButton type="button" label="Tải xuống" class="ui-button-secondary"
-                (click)="downloadImg(banner)"></button>
+        <div *ngFor="let gr of groups">
+          <div class="gr-title">
+            Nhóm {{gr}} : 
+          </div>
+          <div class="banner-imgs" *ngIf="listBanner && listBanner.length">
+            <div *ngFor="let banner of listBanner" class="img-section" [ngClass]="{'d-none': gr != banner.groupRow }" >
+              <img [src]="banner?.url" alt="{{banner.title}}" [ngClass]="{ 
+                'status-1': banner.type == '1',
+                 'status-2' : banner.type == '2',
+                 'status-3' : banner.type == '3' }" />
+              <div *ngIf="banner?.url" class="gr-btn">
+                <button pButton type="button" label="Copy link" class="ui-button-secondary" ngxClipboard
+                  [cbContent]="banner?.url" (click)="copyImgUrl()"></button>
+                <button pButton type="button" label="Tải xuống" class="ui-button-secondary"
+                  (click)="downloadImg(banner)"></button>
+              </div>
             </div>
           </div>
         </div>

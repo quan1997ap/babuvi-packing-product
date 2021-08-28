@@ -4,7 +4,7 @@
    </div>
 </div>
 <div class="notification" *ngIf="!loading && !error ">
-   <div *ngFor="let notification of lstNotification" class="notification-item" (click)="showDetailNotification(notification)">
+   <div *ngFor="let notification of lstNotification; let i = index;" [ngClass]="{'unread': notification.status == 1 }" class="notification-item" (click)="showDetailNotification(notification, i)">
       <span class="type" tooltipPosition="bottom"  pTooltip="{{notification.typeDisplay}}">( {{notification.typeDisplay}} )</span>
       <span class="title" tooltipPosition="bottom"  pTooltip="{{notification.title}}">{{notification.title}}</span>
       <span class="date" tooltipPosition="bottom"  pTooltip="{{notification.createdDate | date: 'h:mm dd/MM/yyyy' }}">{{notification.createdDate |

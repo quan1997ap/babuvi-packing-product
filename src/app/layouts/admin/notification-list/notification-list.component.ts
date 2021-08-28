@@ -62,12 +62,15 @@ export class NotificationListComponent implements OnInit {
     this.dialogRef.close();
   }
 
-  showDetailNotification(notification){
+  showDetailNotification(notification, i ){
 
     if(notification.showType == '2'){
-      this.dialog.open(NotificationDetailComponent, {
+      let dialogRef = this.dialog.open(NotificationDetailComponent, {
         width: "600px",
-        data: notification
+        data: notification,
+      });
+      dialogRef.afterClosed().subscribe((res) => {
+        this.lstNotification[i].status = 2;
       });
     } else if(notification.showType == '1'){
       window.open(notification.url, '_blank').focus();

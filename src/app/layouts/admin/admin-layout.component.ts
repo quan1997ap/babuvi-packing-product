@@ -467,6 +467,7 @@ export class AdminLayoutComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   getUserNotification() {
+    this.notificationUnreadCount = 0;
     this.userService.getLsNotification().subscribe((resNotification) => {
       this.lstNotification = resNotification.result.data;
       this.notificationUnreadCount = this.lstNotification.filter(
@@ -485,6 +486,12 @@ export class AdminLayoutComponent implements OnInit, OnDestroy, AfterViewInit {
         this.lstNotification[i].status = 2;
       });
     } else if (notification.showType == "1") {
+      this.lstNotification[i].status = 2;
+      this.userService
+      .readNotification(notification.notificationUserId)
+      .subscribe((res) => {
+        this.notificationSourceService.setNotificationSource( new Date().getTime() );
+      });
       window.open(notification.url, "_blank").focus();
     }
   }

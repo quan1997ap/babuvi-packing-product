@@ -1,3 +1,4 @@
+import { NotificationSourceService } from './../notification-detail/refresh-notification.service';
 import { NotificationDetailComponent } from './../notification-detail/notification-detail.component';
 import { UserService } from "app/services/user.service";
 import { Component, Inject, OnInit } from "@angular/core";
@@ -18,7 +19,8 @@ export class NotificationListComponent implements OnInit {
     private userService: UserService,
     public dialogRef: MatDialogRef<NotificationListComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any,
-    public dialog: MatDialog
+    public dialog: MatDialog,
+    private notificationSourceService: NotificationSourceService
   ) {}
 
   ngOnInit() {
@@ -73,6 +75,12 @@ export class NotificationListComponent implements OnInit {
         this.lstNotification[i].status = 2;
       });
     } else if(notification.showType == '1'){
+      this.lstNotification[i].status = 2;
+      this.userService
+      .readNotification(notification.notificationUserId)
+      .subscribe((res) => {
+        this.notificationSourceService.setNotificationSource( new Date().getTime() );
+      });
       window.open(notification.url, '_blank').focus();
     }
   }

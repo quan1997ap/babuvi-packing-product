@@ -151,7 +151,7 @@
             </mat-menu>
             <button mat-icon-button class="ml-xs overflow-visible">
                <mat-icon (click)="checkNotificationStatus(false)" [matMenuTriggerFor]="menuNotifications">notifications</mat-icon>
-               <span class="notification-label" [innerHTML]="lstNotification && lstNotification.length"></span>
+               <span class="notification-label" [innerHTML]="notificationUnreadCount"></span>
 
                <!-- <span *ngIf="showNotify" class="notification-label" [innerHTML]="notificationCount"></span> -->
             </button>

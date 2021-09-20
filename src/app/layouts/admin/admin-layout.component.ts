@@ -128,6 +128,7 @@ export class AdminLayoutComponent implements OnInit, OnDestroy, AfterViewInit {
                 ) {
                   this.dialog.open(NotificationListComponent, {
                     width: "700px",
+                    maxWidth: "90vw",
                     data: {
                       lstNotification: resNotification.result.data,
                     },

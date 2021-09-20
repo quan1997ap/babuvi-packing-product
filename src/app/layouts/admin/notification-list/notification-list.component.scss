@@ -13,6 +13,24 @@
 .unread{
   font-weight: bold;
 }
+@media (max-width: 600px) {
+  .notification{
+    .notification-item {
+      display: flex;
+      flex-direction: column;
+      span{
+        text-align: left;
+        margin-bottom: 4px;
+      }
+      .date{
+        text-align: left !important;
+      }
+    }
+    .checkbox{
+      justify-content: flex-start !important;
+    }
+  }
+}
 
 .notification {
   .notification-item {

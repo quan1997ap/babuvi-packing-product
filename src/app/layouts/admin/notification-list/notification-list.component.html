@@ -1,38 +1,45 @@
-<div class="header">
-   <div class="title">
-      THÔNG BÁO
-   </div>
-</div>
-<div class="notification" *ngIf="!loading && !error ">
-   <div *ngFor="let notification of lstNotification; let i = index;" [ngClass]="{'unread': notification.status == 1 }" class="notification-item" (click)="showDetailNotification(notification, i)">
-      <span class="type" tooltipPosition="bottom"  pTooltip="{{notification.typeDisplay}}">( {{notification.typeDisplay}} )</span>
-      <span class="title" tooltipPosition="bottom"  pTooltip="{{notification.title}}">{{notification.title}}</span>
-      <span class="date" tooltipPosition="bottom"  pTooltip="{{notification.createdDate | date: 'h:mm dd/MM/yyyy' }}">{{notification.createdDate |
-         date: 'h:mm dd/MM/yyyy' }} </span>
-   </div>
-   <div class="checkbox">
-      <mat-checkbox [checked]="turnOffNotification" (change)="notificationSetting($event)"
-         (click)="$event.stopPropagation()">Không hiển thị lại đến khi có thông báo mới!</mat-checkbox>
-   </div>
-</div>
-
-<div  *ngIf="!loading && error == true" class="error" >
-   <div class="error-content"> 
-      <div>
-         Không lấy được dữ liệu thông báo
-      </div>
-      <div class="try-again">
-         <button pButton type="button" label="Thử lại" (click)="getUserNotification()" ></button>
+<div class="noti-wrap">
+   <div class="header">
+      <div class="title">
+         THÔNG BÁO
       </div>
    </div>
-</div>
-
-<div *ngIf="loading" class="loading">
-   <div class="loading-content">
-      <div> <i class="pi pi-spin pi-spinner"></i> </div>
-      <div>Loading ....</div>
+   <div class="notification" *ngIf="!loading && !error ">
+      <div *ngFor="let notification of lstNotification; let i = index;"
+         [ngClass]="{'unread': notification.status == 1 }" class="notification-item"
+         (click)="showDetailNotification(notification, i)">
+         <span class="type" tooltipPosition="bottom" pTooltip="{{notification.typeDisplay}}">(
+            {{notification.typeDisplay}} )</span>
+         <span class="title" tooltipPosition="bottom" pTooltip="{{notification.title}}">{{notification.title}}</span>
+         <span class="date" tooltipPosition="bottom"
+            pTooltip="{{notification.createdDate | date: 'h:mm dd/MM/yyyy' }}">{{notification.createdDate |
+            date: 'h:mm dd/MM/yyyy' }} </span>
+      </div>
    </div>
-</div>
-<div class="footer">
-   <button type="button" pButton icon="pi pi-check" label="Đóng" (click)="close()"></button>
+
+   <div *ngIf="!loading && error == true" class="error">
+      <div class="error-content">
+         <div>
+            Không lấy được dữ liệu thông báo
+         </div>
+         <div class="try-again">
+            <button pButton type="button" label="Thử lại" (click)="getUserNotification()"></button>
+         </div>
+      </div>
+   </div>
+
+   <div *ngIf="loading" class="loading">
+      <div class="loading-content">
+         <div> <i class="pi pi-spin pi-spinner"></i> </div>
+         <div>Loading ....</div>
+      </div>
+   </div>
+   <div class="footer">
+      <div class="checkbox">
+         <mat-checkbox [checked]="turnOffNotification" (change)="notificationSetting($event)"
+            (click)="$event.stopPropagation()">Không hiển thị lại đến khi có thông báo mới!</mat-checkbox>
+      </div>
+
+      <button style="width: 100px; float: right;" type="button" pButton  label="Đóng" (click)="close()"></button>
+   </div>
 </div>

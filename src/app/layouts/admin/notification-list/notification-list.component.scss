@@ -1,3 +1,11 @@
+:host{
+  height: 100%;
+  width: 100%;
+}
+.noti-wrap{
+  display: flex;
+  flex-direction: column;
+}
 .header {
   margin-bottom: 24px;
   font-weight: bold;
@@ -15,6 +23,7 @@
 }
 @media (max-width: 600px) {
   .notification{
+
     .notification-item {
       display: flex;
       flex-direction: column;
@@ -33,11 +42,15 @@
 }
 
 .notification {
+  max-height: calc( 90vh - 210px ) !important;
+  overflow: auto;
   .notification-item {
     display: flex;
     margin-bottom: 8px;
-    padding-bottom: 8px;
-    border-bottom: 1px solid #ddd;
+    &:not(:last-child){
+      border-bottom: 1px solid #ddd;
+      padding-bottom: 8px;
+    }
     cursor: pointer;
     &:hover{
       background: #fcfcfc;
@@ -61,20 +74,20 @@
       text-align: center;
     }
   }
-  .checkbox {
-    display: flex;
-    justify-content: flex-end;
-    margin-top: 24px;
-    margin-bottom: 12px;
-  }
 }
 
 .footer {
+  align-items: flex-end;
+  .checkbox {
+    display: flex;
+    justify-content: flex-end;
+    bottom: 100px;
+    padding: 16px 0;
+  }
   display: flex;
   justify-content: flex-end;
+  flex-direction: column;
   border-top: 1px solid #ddd;
-  padding-top: 20px;
-  max-width: 220px;
   float: right;
   min-width: 200px;
 }
